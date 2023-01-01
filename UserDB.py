@@ -27,8 +27,23 @@ class users:
         conn.close()
         return "Record created successfully"
 
+    def check_user_by_Username_and_Password(self, UserName, password):
+            conn=sqlite3.connect('UserDB.db')
+            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'" + " AND " + self.Password + "=" + "'" +str(password) + "'"
+            cursor = conn.execute(strsql)
+            row=cursor.fetchall()
+            if row:
+                return True
+            else:
+                return False
+            conn.commit()
+            conn.close()
+
+
 
 
 
 
 u = users()
+u.check_user_by_Username_and_Password("2Aura2","12345")
+#u.insert_user("David Jvania", "2Aura2","12345")
