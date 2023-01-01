@@ -39,6 +39,17 @@ class users:
             conn.commit()
             conn.close()
 
+    def delete_by_UserName(self, UserName):
+        try:
+            conn = sqlite3.connect('UserDB.db')
+            str_delete = "DELETE from " + self.tablename + " where " + self.UserName + "=" + "'" + str(UserName) + "'"
+            conn.execute(str_delete)
+            conn.commit()
+            conn.close()
+            print("User Deleted successfully")
+            return "Success"
+        except:
+            return "Failed to delete user"
 
 
 
