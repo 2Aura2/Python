@@ -1,6 +1,6 @@
 import sqlite3
 
-class users:
+class history:
     def __init__(self,tablename="History",HistoryId="HistoryId",Start="Start",End="End",FindorNot="FindorNot", Solution="Solution"):
         self.tablename = tablename
         self.HistoryId = HistoryId 
@@ -11,7 +11,7 @@ class users:
         
         conn=sqlite3.connect('DataBase\HistoryDB.db')
         print("Opened database successfully")
-        str = "CREATE TABLE IF NOT EXISTS " + self.tablename + "(" + self.historyId + " " + "INTEGER PRIMARY KEY AUTOINCREMENT ,"
+        str = "CREATE TABLE IF NOT EXISTS " + self.tablename + "(" + self.HistoryId + " " + "INTEGER PRIMARY KEY AUTOINCREMENT ,"
         str += " " + self.Start + " TEXT    NOT NULL ,"
         str += " " + self.End + " TEXT    NOT NULL ,"
         str += " " + self.FindorNot + " TEXT    NOT NULL ,"
@@ -19,3 +19,7 @@ class users:
         conn.execute(str)
         conn.commit()
         conn.close()
+        
+        
+        
+h = history()
