@@ -8,6 +8,7 @@ class users:
         self.UserName = UserName
         self.Password = Password
         
+        
         conn=sqlite3.connect('UserDB.db')
         print("Opened database successfully")
         str = "CREATE TABLE IF NOT EXISTS " + self.tablename + "(" + self.UserId + " " + "INTEGER PRIMARY KEY AUTOINCREMENT ,"
