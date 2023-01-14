@@ -38,16 +38,16 @@ class Register_Screen(tkinter.Toplevel):
 
     def register_user(self):
         if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:
-            messagebox.showerror("Please write everything", "Error")
+            messagebox.showerror("Error","Please write everything")
             return
         else:
             arr = ["Register", self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
             str_arr = ",".join(arr)
             print(str_arr)
             self.parent.client_socket.send(str_arr.encode())
-            data = self.parent.recv(1024).decode()
+            data = self.parent.client_socket.recv(1024).decode()
             if data == "The user already exists":
-                messagebox.showerror(data,"Error")
+                messagebox.showerror("Error",data)
                 return
             else:
                 messagebox.showinfo(title="Register", message=data)

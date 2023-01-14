@@ -4,6 +4,9 @@ import socket
 from tkinter import ttk, messagebox
 import threading
 from Register import Register_Screen
+
+
+
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
@@ -52,15 +55,19 @@ class Login_Screen(tkinter.Tk):
     def login_user(self):
         try:
             if len(self.enr_Username.get())==0 and len(self.enr_Password.get())==0:
-                messagebox.showerror("Please write Username and password","Error")
+                messagebox.showerror("Error","Please write Username and password")
                 return
-            print("Login")
-            arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
-            str_arr = ",".join(arr)
-            print(str_arr)
-            self.client_socket.send(str_arr.encode())
-            data = self.client_socket.recv(1024).decode()
-            print(data)
+            elif len(self.enr_Username.get())==0:
+                messagebox.showerror("Error","Please write Username")
+                return
+            elif len(self.enr_Password.get())==0:
+                messagebox.showerror("Error","Please write password")
+                return
+            else:
+                arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
+                str_arr = ",".join(arr)
+                self.client_socket.send(str_arr.encode())
+                data = self.client_socket.recv(1024).decode()
         except Exception as e:
             print("Error", e)
 

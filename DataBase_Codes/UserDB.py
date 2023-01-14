@@ -40,6 +40,18 @@ class users:
             conn.commit()
             conn.close()
 
+    def check_user_by_Username(self, UserName):
+            conn=sqlite3.connect('DataBase\\UserDB.db')
+            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
+            cursor = conn.execute(strsql)
+            row=cursor.fetchall()
+            if row:
+                return True
+            else:
+                return False
+            conn.commit()
+            conn.close()
+
     def delete_by_UserName(self, UserName):
         try:
             conn = sqlite3.connect('DataBase\\UserDB.db')

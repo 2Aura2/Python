@@ -41,31 +41,27 @@ class server(object):
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
                     arr = server_data.split(",")
-                    print(server_data)
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
-                        print("Login")
-                        print(arr)
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
                         print("server data:", server_data)
                         if server_data == True:
-                            print(arr[1])
                             client_socket.send(f"welcome {arr[1]}".encode())
                         elif server_data == False:
                             client_socket.send("This account does not exist".encode())
                     elif arr != None and arr[0]=="Register" and len(arr)==4:
                         print("Register")
                         print(arr)
-                        server_data = UserDB.users().check_user_by_Username_and_Password(arr[2],arr[3])
+                        server_data = UserDB.users().check_user_by_Username(arr[2])
                         if server_data == True:
                             client_socket.send("The user already exists".encode())
                         elif server_data == False:
                             answer = UserDB.users().insert_user(arr[1],arr[2],arr[3])
                             print(answer)
-                            client_socket.send("User created successful".encode())
+                            client_socket.send("User created successfully".encode())
                     else:
                         server_data = "False"
                 except Exception as e:
-                    print("Error", e)
+                    print("Error",e)
                     not_crash = False
                     break
 
