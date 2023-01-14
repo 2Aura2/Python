@@ -20,10 +20,19 @@ class Register_Screen(tkinter.Toplevel):
 
 
     def create_gui(self):
-        self.lbl_Fullname = Label(self,text="Fullname:").place(relx=0.7,rely=0.7,anchor='center')
+        self.lbl_Fullname = Label(self,text="Fullname:").place(relx=0.7,rely=0.3,anchor='center')
         self.enr_Fullname = Entry(self)
-        self.enr_Fullname.place(relx=0.8,rely=0.7,anchor='center')
+        self.enr_Fullname.place(relx=0.8,rely=0.3,anchor='center')
 
+        self.lbl_Username = Label(self,text="Username:").place(relx=0.7,rely=0.4,anchor='center')
+        self.enr_Username = Entry(self)
+        self.enr_Username.place(relx=0.8,rely=0.4,anchor='center')
+
+        self.lbl_Password = Label(self,text="Password:").place(relx=0.7,rely=0.5,anchor='center')
+        self.enr_Password = Entry(self)
+        self.enr_Password.place(relx=0.8,rely=0.5,anchor='center')
+
+        self.btn_Register = Button(self, text="Register").place(relx=0.77,rely=0.6,anchor='center')
 
     def return_to_Login_page(self):
         self.parent.deiconify()

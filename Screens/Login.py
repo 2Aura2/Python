@@ -27,6 +27,8 @@ class Login_Screen(tkinter.Tk):
         self.enr_Password = Entry(self)
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
 
+        
+
 
     
     def open_Register_screen(self):
