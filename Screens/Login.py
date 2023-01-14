@@ -14,7 +14,7 @@ class Login(tkinter.Tk):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5, rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login").place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="login",command=self.login_user).place(relx=0.5,rely=0.8,anchor='center')
         
         self.lbl_Register = Label(self, text="Don't have account, register here:").place(relx=0.5, rely=0.9,anchor='center')
 
@@ -48,9 +48,9 @@ class Login(tkinter.Tk):
             arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
             str_arr = ",".join(arr)
             print(str_arr)
-            self.client_scoket.send(str_arr.encode())
-            #data = self.client_socket.recv(1024).decode()
-            #print(data)
+            self.client_socket.send(str_arr.encode())
+            data = self.client_socket.recv(1024).decode()
+            print(data)
             #self.textvar.set(data)
         except Exception as e:
             print("Error", e)

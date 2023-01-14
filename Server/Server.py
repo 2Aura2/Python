@@ -1,11 +1,11 @@
 import socket
 import threading
 import sys
-sys.path.insert(1,'D:\\School Project\\Python\\DataBase_Codes\\UserDB.py')
+sys.path.insert(1,'D://School Project//Python//DataBase_Codes//')
 import UserDB
 
 
-class Server(object):
+class server(object):
     def __init__(self,ip,port):
         self.ip = ip
         self.port = port
@@ -21,7 +21,7 @@ class Server(object):
 
             while True:
                 print("Watinig for a new client")
-                clientSocket, client_addresses = self.socket.accept()
+                clientSocket, client_addresses = self.sock.accept()
                 print("new client entered")
                 clientSocket.send("Hello, this is server".encode())
                 self.count += 1
@@ -43,18 +43,28 @@ class Server(object):
                     arr = server_data.split(",")
                     print(server_data)
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
-                        print("Login\n"+arr)
+                        print("Login")
+                        print(arr)
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
                         print("server data:", server_data)
-                        if server_data == "True":
+                        if server_data == True:
                             print(arr[1])
-                            client_socket.send(f"welcome {arr[1]}")
-                        elif server_data == "False":
+                            client_socket.send(f"welcome {arr[1]}".encode())
+                        elif server_data == False:
                             client_socket.send("This account does not exist".encode())
-                    
                     else:
                         server_data = "False"
-                except:
-                    print("error")
+                except Exception as e:
+                    print("Error", e)
                     not_crash = False
                     break
+
+
+if __name__ == "__main__":
+    ip = "0.0.0.0"
+    port = 6060
+    s = server(ip,port)
+    s.start()
+
+
+
