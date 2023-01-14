@@ -15,7 +15,14 @@ class Register_Screen(tkinter.Toplevel):
         self.title("Register")
         self.UserDB = UserDB.users()
 
-        Button(self,text="Login Page",command=self.return_to_Login_page).place(relx=0.8,rely=0.8,anchor='center')
+        self.create_gui()
+        Button(self,text="Login Page",command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
+
+
+    def create_gui(self):
+        self.lbl_Fullname = Label(self,text="Fullname:").place(relx=0.7,rely=0.7,anchor='center')
+        self.enr_Fullname = Entry(self)
+        self.enr_Fullname.place(relx=0.8,rely=0.7,anchor='center')
 
 
     def return_to_Login_page(self):
