@@ -9,7 +9,7 @@ class history:
         self.FindorNot = FindorNot
         self.Solution = Solution
         
-        conn=sqlite3.connect('DataBase\HistoryDB.db')
+        conn=sqlite3.connect('DataBase\\HistoryDB.db')
         print("Opened database successfully")
         str = "CREATE TABLE IF NOT EXISTS " + self.tablename + "(" + self.HistoryId + " " + "INTEGER PRIMARY KEY AUTOINCREMENT ,"
         str += " " + self.Start + " TEXT    NOT NULL ,"
@@ -23,7 +23,7 @@ class history:
         
         
     def AddScan(self, Start, End, FindorNot, Solution):
-        conn = sqlite3.connect('DataBase\HistoryDB.db')
+        conn = sqlite3.connect('DataBase\\HistoryDB.db')
         str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution})VALUES('{Start}','{End}','{FindorNot}','{Solution}')"
         conn.execute(str_insert)
         conn.commit()
@@ -32,7 +32,7 @@ class history:
     
     def get_scan_by_start_end(self,Start,End):
         try:
-            conn = sqlite3.connect("DataBase\HistoryDB.db")
+            conn = sqlite3.connect("DataBase\\HistoryDB.db")
             strsql = f"SELECT * from {self.tablename} where {self.Start} = '{str(Start)}' And {self.End} = '{str(End)}'"
             cursor = conn.execute(strsql)
             row = cursor.fetchone()
@@ -48,7 +48,7 @@ class history:
         
     def delete_by_UserName(self, Start):
         try:
-            conn = sqlite3.connect('DataBase\HistoryDB.db')
+            conn = sqlite3.connect('DataBase\\HistoryDB.db')
             str_delete = "DELETE from " + self.tablename + " where " + self.Start + "=" + "'" + str(Start) + "'"
             conn.execute(str_delete)
             conn.commit()
