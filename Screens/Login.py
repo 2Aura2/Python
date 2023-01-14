@@ -3,8 +3,8 @@ from tkinter import *
 import socket
 from tkinter import ttk, messagebox
 import threading
-
-class Login(tkinter.Tk):
+from Register import Register_Screen
+class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
         self.geometry("960x540")
@@ -17,6 +17,7 @@ class Login(tkinter.Tk):
         self.btn_Login = Button(self, text="login",command=self.login_user).place(relx=0.5,rely=0.8,anchor='center')
         
         self.lbl_Register = Label(self, text="Don't have account, register here:").place(relx=0.5, rely=0.9,anchor='center')
+        self.btn_register = Button(self,text="Register",command=self.open_Register_screen).place(relx=0.6,rely=0.875)
 
         self.lbl_Username = Label(self, text="Username:").place(relx=0.4, rely=0.6,anchor='center')
         self.enr_Username = Entry(self)
@@ -25,6 +26,13 @@ class Login(tkinter.Tk):
         self.lbl_Password = Label(self, text="Password:").place(relx=0.4, rely=0.7,anchor='center')
         self.enr_Password = Entry(self)
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
+
+
+    
+    def open_Register_screen(self):
+        window = Register_Screen(self)
+        window.grab_set()
+        self.withdraw()
 
     def handle_thread_socket(self):
         client_handler = threading.Thread(target=self.creat_socket, args=())
@@ -51,11 +59,10 @@ class Login(tkinter.Tk):
             self.client_socket.send(str_arr.encode())
             data = self.client_socket.recv(1024).decode()
             print(data)
-            #self.textvar.set(data)
         except Exception as e:
             print("Error", e)
 
 
 if __name__ == "__main__":
-    app = Login()
+    app = Login_Screen()
     app.mainloop()
