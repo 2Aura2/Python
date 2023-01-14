@@ -1,9 +1,9 @@
 import socket
 import threading
-#import sys
-#sys.path.insert(1,'D:\\School Project\\Python\\DataBase_Codes\\UserDB.py')
-#import UserDB
-from DataBase_Codes import UserDB
+import sys
+sys.path.insert(1,'D:\\School Project\\Python\\DataBase_Codes\\UserDB.py')
+import UserDB
+
 
 class Server(object):
     def __init__(self,ip,port):
@@ -44,7 +44,16 @@ class Server(object):
                     print(server_data)
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         print("Login\n"+arr)
-                        server_data = UserDB.users.check_user_by_Username_and_Password(arr[1],arr[2])
+                        server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
+                        print("server data:", server_data)
+                        if server_data == "True":
+                            print(arr[1])
+                            client_socket.send(f"welcome {arr[1]}")
+                        elif server_data == "False":
+                            client_socket.send("This account does not exist".encode())
+                    
+                    else:
+                        server_data = "False"
                 except:
                     print("error")
                     not_crash = False
