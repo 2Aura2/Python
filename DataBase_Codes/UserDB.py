@@ -58,4 +58,4 @@ class users:
 
 u = users()
 #u.check_user_by_Username_and_Password("2Aura2","12345")
-#u.insert_user("David Jvania", "2Aura2","12345")
+#u.insert_user("David Jvania", "2Aura","12345")

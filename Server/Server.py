@@ -1,5 +1,7 @@
 import socket
 import threading
+from DataBase_Codes import UserDB as UDB
+#from UDB import UserDB
 
 class Server(object):
     def __init__(self,ip,port):
@@ -36,6 +38,11 @@ class Server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
+                    arr = server_data.split(",")
+                    print(server_data)
+                    if arr!= None and arr[0]=="Login" and len(arr)==3:
+                        print("Login\n"+arr)
+                        server_data = self.UserDB.check_user_by_Username_and_Password()
                 except:
                     print("error")
                     not_crash = False
