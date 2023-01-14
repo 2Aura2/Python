@@ -1,7 +1,9 @@
 import socket
 import threading
-from DataBase_Codes import UserDB as UDB
-#from UDB import UserDB
+#import sys
+#sys.path.insert(1,'D:\\School Project\\Python\\DataBase_Codes\\UserDB.py')
+#import UserDB
+from DataBase_Codes import UserDB
 
 class Server(object):
     def __init__(self,ip,port):
@@ -42,7 +44,7 @@ class Server(object):
                     print(server_data)
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         print("Login\n"+arr)
-                        server_data = self.UserDB.check_user_by_Username_and_Password()
+                        server_data = UserDB.users.check_user_by_Username_and_Password(arr[1],arr[2])
                 except:
                     print("error")
                     not_crash = False

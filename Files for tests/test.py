@@ -1,6 +1,12 @@
 import tkinter
 from tkinter import *
-from DataBase_Codes import UserDB as DB
+import sys
+sys.path.insert(1,'D://School Project//Python//DataBase_Codes')
+import UserDB
+
+
+
+
 
 
 
