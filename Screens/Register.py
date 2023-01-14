@@ -35,6 +35,7 @@ class Register_Screen(tkinter.Toplevel):
 
         self.btn_Register = Button(self, text="Register",command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
 
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5, rely=0.2,anchor='center')
 
     def register_user(self):
         if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:

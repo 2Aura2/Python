@@ -15,7 +15,7 @@ class Login_Screen(tkinter.Tk):
 
         self.handle_thread_socket()
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5, rely=0.2,anchor='center')
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5,rely=0.2,anchor='center')
 
         self.btn_Login = Button(self, text="login",command=self.login_user).place(relx=0.5,rely=0.8,anchor='center')
         
