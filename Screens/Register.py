@@ -1,6 +1,7 @@
 import threading
 import tkinter
 from tkinter import *
+from tkinter import ttk, messagebox
 import sys
 sys.path.insert(1,'D://School Project//Python//DataBase_Codes//')
 import UserDB
@@ -32,7 +33,25 @@ class Register_Screen(tkinter.Toplevel):
         self.enr_Password = Entry(self)
         self.enr_Password.place(relx=0.8,rely=0.5,anchor='center')
 
-        self.btn_Register = Button(self, text="Register").place(relx=0.77,rely=0.6,anchor='center')
+        self.btn_Register = Button(self, text="Register",command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
+
+
+    def register_user(self):
+        if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:
+            messagebox.showerror("Please write everything", "Error")
+            return
+        else:
+            arr = ["Register", self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
+            str_arr = ",".join(arr)
+            print(str_arr)
+            self.parent.client_socket.send(str_arr.encode())
+            data = self.parent.recv(1024).decode()
+            if data == "The user already exists":
+                messagebox.showerror(data,"Error")
+                return
+            else:
+                messagebox.showinfo(title="Register", message=data)
+    
 
     def return_to_Login_page(self):
         self.parent.deiconify()
