@@ -43,7 +43,6 @@ class Register_Screen(tkinter.Toplevel):
         else:
             arr = ["Register", self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
             str_arr = ",".join(arr)
-            print(str_arr)
             self.parent.client_socket.send(str_arr.encode())
             data = self.parent.client_socket.recv(1024).decode()
             if data == "The user already exists":
