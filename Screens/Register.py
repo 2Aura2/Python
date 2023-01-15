@@ -51,6 +51,7 @@ class Register_Screen(tkinter.Toplevel):
                 return
             else:
                 messagebox.showinfo(title="Register", message=data)
+                self.return_to_Login_page()
     
 
     def return_to_Login_page(self):
