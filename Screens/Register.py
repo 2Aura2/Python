@@ -3,7 +3,7 @@ import tkinter
 from tkinter import *
 from tkinter import ttk, messagebox
 import sys
-sys.path.insert(1,'D://School Project//Python//DataBase_Codes//')
+sys.path.insert(1,'C://School Project//Python//DataBase_Codes//')
 import UserDB
 
 
