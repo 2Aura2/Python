@@ -22,7 +22,7 @@ class users:
 
 
     def insert_user(self, FullName, UserName, Password):
-        conn = sqlite3.connect('DataBase\\UserDB.db')
+        conn = sqlite3.connect(self.Location)
         str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES('{FullName}','{UserName}','{Password}')"
         conn.execute(str_insert)
         conn.commit()
@@ -30,7 +30,7 @@ class users:
         return "Record created successfully"
 
     def check_user_by_Username_and_Password(self, UserName, password):
-        conn=sqlite3.connect('DataBase\\UserDB.db')
+        conn=sqlite3.connect(self.Location)
         strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'" + " AND " + self.Password + "=" + "'" +str(password) + "'"
         cursor = conn.execute(strsql)
         row=cursor.fetchall()
@@ -42,7 +42,7 @@ class users:
         conn.close()
 
     def check_user_by_Username(self, UserName):
-        conn=sqlite3.connect('DataBase\\UserDB.db')
+        conn=sqlite3.connect(self.Location)
         strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
         cursor = conn.execute(strsql)
         row=cursor.fetchall()
@@ -55,7 +55,7 @@ class users:
 
     def delete_by_UserName(self, UserName):
         try:
-            conn = sqlite3.connect('DataBase\\UserDB.db')
+            conn = sqlite3.connect(self.Location)
             str_delete = "DELETE from " + self.tablename + " where " + self.UserName + "=" + "'" + str(UserName) + "'"
             conn.execute(str_delete)
             conn.commit()
