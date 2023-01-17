@@ -41,11 +41,7 @@ class Login_Screen(tkinter.Tk):
         
         
 
-        self.bind('<Configure>', resize)
 
-    def resize(e):
-        size = e.width / 10
-        btn_register.config(font=('',int(size)))
     
     
     
