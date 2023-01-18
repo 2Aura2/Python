@@ -4,7 +4,7 @@ import socket
 from tkinter import ttk, messagebox
 import threading
 from Register import Register_Screen
-
+from PIL import ImageTk, Image
 
 
 class Login_Screen(tkinter.Tk):
@@ -12,27 +12,38 @@ class Login_Screen(tkinter.Tk):
         super().__init__()
         self.geometry("960x540")
         self.title("Login")
+        self.img = Image.open('Images\Anti_Virus_BG.jpg')
+        self.resized = self.img.resize((1920,1080), Image.ANTIALIAS)
+        self.bg = ImageTk.PhotoImage(self.resized)
+        self.IMGLabel = Label(self, image=self.bg)
+        self.IMGLabel.pack(expand=YES)
 
         self.handle_thread_socket()
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5,rely=0.2,anchor='center')
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16)).place(relx=0.5,rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login",command=self.login_user).place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="login",command=self.login_user,font=('',16)).place(relx=0.5,rely=0.8,anchor='center')
         
         self.lbl_Register = Label(self, text="Don't have account, register here:").place(relx=0.5, rely=0.9,anchor='center')
-        self.btn_register = Button(self,text="Register",command=self.open_Register_screen).place(relx=0.6,rely=0.875)
+        self.btn_register = Button(self,text="Register",command=self.open_Register_screen)
+        self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
-        self.lbl_Username = Label(self, text="Username:").place(relx=0.4, rely=0.6,anchor='center')
-        self.enr_Username = Entry(self)
+        #self.lbl_Username = Label(self, text="Username:").place(relx=0.4, rely=0.6,anchor='center')
+        self.enr_Username = Entry(self,font=('',16))
+        self.enr_Username.insert(0,"Username")
         self.enr_Username.place(relx=0.5,rely=0.6,anchor='center')
 
-        self.lbl_Password = Label(self, text="Password:").place(relx=0.4, rely=0.7,anchor='center')
-        self.enr_Password = Entry(self)
+        #self.lbl_Password = Label(self, text="Password:").place(relx=0.4, rely=0.7,anchor='center')
+        self.enr_Password = Entry(self,font=('',16))
+        self.enr_Password.insert(0,"Password")
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
 
         
+        
 
 
+    
+    
     
     def open_Register_screen(self):
         window = Register_Screen(self)
