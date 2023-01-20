@@ -1,7 +1,7 @@
 import tkinter
 
 
-class overview(tkinter.Toplevel):
+class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
         self.parent = parent
