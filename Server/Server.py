@@ -1,7 +1,9 @@
 import socket
 import threading
 import sys
-sys.path.insert(1,'D://School Project//Python//DataBase_Codes//')
+str_path = "D://School Project//Python//DataBase_Codes//"
+str_path1 = "C://School Project//Python//DataBase_Codes//"
+sys.path.insert(1,str_path)
 import UserDB
 
 
