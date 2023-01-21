@@ -4,6 +4,7 @@ import socket
 from tkinter import ttk, messagebox
 import threading
 from Register import Register_Screen
+from Overview import Overview_Screen
 from PIL import ImageTk, Image
 
 
@@ -42,7 +43,10 @@ class Login_Screen(tkinter.Tk):
         
 
 
-    
+    def open_Overview_screen(self):
+        window = Overview_Screen(self)
+        window.grab_set()
+        self.withdraw()
     
     
     def open_Register_screen(self):
@@ -79,6 +83,10 @@ class Login_Screen(tkinter.Tk):
                 str_arr = ",".join(arr)
                 self.client_socket.send(str_arr.encode())
                 data = self.client_socket.recv(1024).decode()
+                if data == f"Welcome {self.enr_Username.get()}":
+                    self.open_Overview_screen()
+                else:
+                    messagebox.showerror("Error",data)
         except Exception as e:
             print("Error", e)
 

@@ -1,7 +1,9 @@
 import socket
 import threading
 import sys
-sys.path.insert(1,'D://School Project//Python//DataBase_Codes//')
+str_path = "D://School Project//Python//DataBase_Codes//"
+str_path1 = "C://School Project//Python//DataBase_Codes//"
+sys.path.insert(1,str_path1)
 import UserDB
 
 
@@ -45,9 +47,9 @@ class server(object):
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
                         print("server data:", server_data)
                         if server_data == True:
-                            client_socket.send(f"welcome {arr[1]}".encode())
+                            client_socket.send(f"Welcome {arr[1]}".encode())
                         elif server_data == False:
-                            client_socket.send("This account does not exist".encode())
+                            client_socket.send("Username or Password are incorrect".encode())
                     elif arr != None and arr[0]=="Register" and len(arr)==4:
                         print("Register")
                         print(arr)
