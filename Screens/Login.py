@@ -87,6 +87,7 @@ class Login_Screen(tkinter.Tk):
                     self.open_Overview_screen()
                 else:
                     messagebox.showerror("Error",data)
+                    return
         except Exception as e:
             print("Error", e)
 

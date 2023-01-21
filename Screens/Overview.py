@@ -12,5 +12,5 @@ class Overview_Screen(tkinter.Toplevel):
         self.create_gui()
     
     def create_gui(self):
-        photo = PhotoImage(file=r"Images//Settings Button.jpg")
-        self.btn_settings = Button(self, text="hello",image=photo).place(relx=0.2,rely=0.8,anchor='center')
+        self.btn_settings = Button(self,text="Settings")
+        self.btn_settings.pack()

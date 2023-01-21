@@ -5,7 +5,7 @@ from tkinter import ttk, messagebox
 import sys
 str_path = "D://School Project//Python//DataBase_Codes//"
 str_path1 = "C://School Project//Python//DataBase_Codes//"
-sys.path.insert(1,str_path1)
+sys.path.insert(1,str_path)
 import UserDB
 
 
