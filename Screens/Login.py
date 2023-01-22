@@ -25,7 +25,7 @@ class Login_Screen(tkinter.Tk):
 
         self.btn_Login = Button(self, text="login",command=self.open_Overview_screen,font=('',16)).place(relx=0.5,rely=0.8,anchor='center')
         
-        self.lbl_Register = Label(self, text="Don't have account, register here:").place(relx=0.5, rely=0.9,anchor='center')
+        self.lbl_Register = Label(self, text="Don't have an account, register here:").place(relx=0.49, rely=0.9,anchor='center')
         self.btn_register = Button(self,text="Register",command=self.open_Register_screen)
         self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
