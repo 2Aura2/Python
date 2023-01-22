@@ -21,19 +21,19 @@ class Login_Screen(tkinter.Tk):
 
         self.handle_thread_socket()
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16)).place(relx=0.5,rely=0.2,anchor='center')
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light green').place(relx=0.5,rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login",command=self.open_Overview_screen,font=('',16)).place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="login",command=self.open_Overview_screen,font=('',16),bg='light green').place(relx=0.5,rely=0.8,anchor='center')
         
-        self.lbl_Register = Label(self, text="Don't have an account, register here:").place(relx=0.49, rely=0.9,anchor='center')
-        self.btn_register = Button(self,text="Register",command=self.open_Register_screen)
+        self.lbl_Register = Label(self, text="Don't have an account, register here:",bg='light green',font=('',10)).place(relx=0.49, rely=0.9,anchor='center')
+        self.btn_register = Button(self,text="Register",bg='light green',font=('',8),command=self.open_Register_screen)
         self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
-        self.lbl_Username = Label(self, text="Username:",font=('',16)).place(relx=0.3, rely=0.6,anchor='center')
+        self.lbl_Username = Label(self, text="Username:",font=('',16),bg='light green').place(relx=0.3, rely=0.6,anchor='center')
         self.enr_Username = Entry(self,font=('',16))
         self.enr_Username.place(relx=0.5,rely=0.6,anchor='center')
 
-        self.lbl_Password = Label(self, text="Password:",font=('',16)).place(relx=0.3, rely=0.7,anchor='center')
+        self.lbl_Password = Label(self, text="Password:",font=('',16),bg='light green').place(relx=0.3, rely=0.7,anchor='center')
         self.enr_Password = Entry(self,font=('',16),show="*")
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
 
