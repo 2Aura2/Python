@@ -12,5 +12,11 @@ class Overview_Screen(tkinter.Toplevel):
         self.create_gui()
     
     def create_gui(self):
-        self.btn_settings = Button(self,text="Settings")
-        self.btn_settings.pack()
+
+        self.btn_overview = Button(self,text="Overview",font=("",16),bg='orange',width=17).place(relx=0.2,rely=0.2,anchor='center')
+        self.btn_computer_scan = Button(self,text="Computer Scan",font=("",16),bg='orange',width=17).place(relx=0.2,rely=0.35,anchor='center')
+        self.btn_Junk_remover = Button(self,text="Junk Files Remover ",font=("",16),bg='orange').place(relx=0.2,rely=0.5,anchor='center')
+        self.btn_hisotry = Button(self,text="History",font=("",16),width=17,bg='orange').place(relx=0.2,rely=0.65,anchor='center')
+        self.btn_settings = Button(self,text="Settings",font=("",16),width=17,bg='orange').place(relx=0.2,rely=0.8,anchor='center')
+        
+
