@@ -8,6 +8,11 @@ class Overview_Screen(tkinter.Toplevel):
         self.parent = parent
         self.geometry("960x540")
         self.title("Overview")
+        self.img = Image.open('Images\Anti_Virus_BG.jpg')
+        self.resized = self.img.resize((1920,1080), Image.ANTIALIAS)
+        self.bg = ImageTk.PhotoImage(self.resized)
+        self.IMGLabel = Label(self, image=self.bg)
+        self.IMGLabel.pack(expand=YES)
         
         self.create_gui()
     

@@ -5,7 +5,7 @@ from tkinter import ttk, messagebox
 import sys
 str_path = "D://School Project//Python//DataBase_Codes//"
 str_path1 = "C://School Project//Python//DataBase_Codes//"
-sys.path.insert(1,str_path)
+sys.path.insert(1,str_path1)
 import UserDB
 
 
@@ -17,6 +17,11 @@ class Register_Screen(tkinter.Toplevel):
         self.geometry("960x540")
         self.title("Register")
         self.UserDB = UserDB.users()
+        self.img = Image.open('Images\Anti_Virus_BG.jpg')
+        self.resized = self.img.resize((1920,1080), Image.ANTIALIAS)
+        self.bg = ImageTk.PhotoImage(self.resized)
+        self.IMGLabel = Label(self, image=self.bg)
+        self.IMGLabel.pack(expand=YES)
 
         self.create_gui()
         Button(self,text="Login Page",command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
