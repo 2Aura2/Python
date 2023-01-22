@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import *
-
+from PIL import ImageTk, Image
 
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -17,5 +17,9 @@ class Overview_Screen(tkinter.Toplevel):
         self.create_gui()
     
     def create_gui(self):
-        self.btn_settings = Button(self,text="Settings")
-        self.btn_settings.pack()
+        self.btn_settings = Button(self,text="Overview",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.2,anchor='center')
+        self.btn_settings = Button(self,text="Computer Scan",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.35,anchor='center')
+        self.btn_settings = Button(self,text="Junk Files Remover",font=("",18),bg="orange").place(relx=0.2,rely=0.5,anchor='center')
+        self.btn_settings = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
+        self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
+        
