@@ -29,14 +29,12 @@ class Login_Screen(tkinter.Tk):
         self.btn_register = Button(self,text="Register",command=self.open_Register_screen)
         self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
-        #self.lbl_Username = Label(self, text="Username:").place(relx=0.4, rely=0.6,anchor='center')
+        self.lbl_Username = Label(self, text="Username:",font=('',16)).place(relx=0.3, rely=0.6,anchor='center')
         self.enr_Username = Entry(self,font=('',16))
-        self.enr_Username.insert(0,"Username")
         self.enr_Username.place(relx=0.5,rely=0.6,anchor='center')
 
-        #self.lbl_Password = Label(self, text="Password:").place(relx=0.4, rely=0.7,anchor='center')
-        self.enr_Password = Entry(self,font=('',16))
-        self.enr_Password.insert(0,"Password")
+        self.lbl_Password = Label(self, text="Password:",font=('',16)).place(relx=0.3, rely=0.7,anchor='center')
+        self.enr_Password = Entry(self,font=('',16),show="*")
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
 
         
