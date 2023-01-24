@@ -1,11 +1,14 @@
 import hashlib
+import os
 
-def md5_hash(filename):
+#get hash of file
+def sha256_hash(filename):
     with open(filename,"rb")as f:
         bytes = f.read()
-        md5hash = hashlib.md5(bytes).hexdigest()
+        sha256hash = hashlib.sha256(bytes).hexdigest()
         f.close()
-    return md5hash
+        print(sha256hash)
+    return sha256hash
 
 
 #print(md5_hash("Images\\Anti_Virus_BG.jpg"))
@@ -14,7 +17,7 @@ def md5_hash(filename):
 #print(md5_hash("Images\\thumb-1920-77840.jpg"))
 
 
-def malware_checker(PathOfFile):
+#def malware_checker(PathOfFile):
     hash_malware_check = md5_hash(PathOfFile)
     
     malware_hashes = open("Files for tests\\virushash.txt","r")
@@ -28,6 +31,42 @@ def malware_checker(PathOfFile):
         print(virusinfo.index(str(malware_hashes_read.index(hash_malware_check))))
     else:
         return 0
+
+
+
+malware_hashes = list(open("Files for tests\\virushash.txt","r").read().split('\n'))
+
+virusinfo = list(open("Files for tests\\virusinfo.txt","r").read().split('\n'))
     
 
-print(malware_checker("Files for tests\\virusinfo.txt"))
+#malware detection by hash    
+def malware_checker(PathOfFile):
+    global malware_hashes
+    global virusinfo
+    
+    hash_malware_check = sha256_hash(PathOfFile)
+    counter = 0
+
+    
+    for i in malware_hashes:
+        if i == hash_malware_check:
+            return virusinfo[counter]
+        counter += 1
+
+    return 0
+        
+    
+#print(malware_checker("Images\\784p9o.webp"))
+
+
+
+#malware detection in folder
+virusname = []
+def folderscanner():
+    path=""
+    dir_list = os.listdir(path)
+    fileN=""
+    for i in dir_list:
+        fileN = path+"\\"+i
+        if malware_checker(fileN) != 0:
+            virusname.append(malware_checker(fileN)+" :: File :: "+i)
