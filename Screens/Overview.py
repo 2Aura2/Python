@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
+from ComputerScan import Computer_Scan_Screen
 
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -23,3 +24,7 @@ class Overview_Screen(tkinter.Toplevel):
         self.btn_settings = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
+    def open_Computer_screen(self):
+        window = Computer_Scan_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
