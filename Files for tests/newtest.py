@@ -21,10 +21,13 @@ def malware_checker(PathOfFile):
     malware_hashes_read = malware_hashes.read()
     malware_hashes.close()
     
+    virusinfo = open("Files for tests\\virusinfo.txt","r").readlines()
+    
     if malware_hashes_read.find(hash_malware_check) != -1:
-        return 1
+        #return virusinfo[malware_hashes_read.index(hash_malware_check)]
+        print(virusinfo.index(str(malware_hashes_read.index(hash_malware_check))))
     else:
         return 0
     
 
-print(malware_checker("Images\\784p9o.webp"))
+print(malware_checker("Files for tests\\virusinfo.txt"))
