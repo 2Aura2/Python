@@ -18,7 +18,7 @@ class Register_Screen(tkinter.Toplevel):
         self.title("Register")
         self.UserDB = UserDB.users()
         self.img = Image.open('Images\Anti_Virus_BG.jpg')
-        self.resized = self.img.resize((1920,1080), Image.ANTIALIAS)
+        self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)

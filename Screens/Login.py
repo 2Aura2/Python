@@ -14,7 +14,7 @@ class Login_Screen(tkinter.Tk):
         self.geometry("960x540")
         self.title("Login")
         self.img = Image.open('Images\\thumb-1920-77840.jpg')
-        self.resized = self.img.resize((1920,1080), Image.ANTIALIAS)
+        self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
