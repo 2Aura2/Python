@@ -17,8 +17,8 @@ def sha256_hash(filename):
 #print(md5_hash("Images\\thumb-1920-77840.jpg"))
 
 
-#def malware_checker(PathOfFile):
-    hash_malware_check = md5_hash(PathOfFile)
+def malware_checker(PathOfFile):
+    hash_malware_check = sha256_hash(PathOfFile)
     
     malware_hashes = open("Files for tests\\virushash.txt","r")
     malware_hashes_read = malware_hashes.read()
@@ -27,8 +27,8 @@ def sha256_hash(filename):
     virusinfo = open("Files for tests\\virusinfo.txt","r").readlines()
     
     if malware_hashes_read.find(hash_malware_check) != -1:
-        #return virusinfo[malware_hashes_read.index(hash_malware_check)]
-        print(virusinfo.index(str(malware_hashes_read.index(hash_malware_check))))
+        return virusinfo[malware_hashes_read.index(hash_malware_check)]
+        #print(virusinfo.index(str(malware_hashes_read.index(hash_malware_check))))
     else:
         return 0
 
@@ -63,10 +63,14 @@ def malware_checker(PathOfFile):
 #malware detection in folder
 virusname = []
 def folderscanner():
-    path=""
+    path="C:\\Users\\dato0\\OneDrive\\שולחן העבודה\\New folder (2)"
     dir_list = os.listdir(path)
     fileN=""
     for i in dir_list:
         fileN = path+"\\"+i
+        print(fileN)
         if malware_checker(fileN) != 0:
             virusname.append(malware_checker(fileN)+" :: File :: "+i)
+
+folderscanner()
+print(virusname)
