@@ -6,7 +6,7 @@ def scan_file(file_path):
     return result.stdout.decode()
 
 def main():
-    file_path = input("Enter the file path: ")
+    file_path = "Files for tests\\virushash.txt"
     if not os.path.exists(file_path):
         print(f"{file_path} does not exist.")
         return
