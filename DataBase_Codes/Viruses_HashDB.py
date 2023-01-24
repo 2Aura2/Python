@@ -1,5 +1,4 @@
 import sqlite3
-import numpy as np
 class hashes:
     def __init__(self,tablename="Hashes",HashId="HashId",Hash="Hash"):
         self.tablename = tablename
