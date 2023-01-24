@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-from ComputerScan1 import Computer_Scan_Screen
+from ComputerScan import Computer_Scan_Screen
 
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent):

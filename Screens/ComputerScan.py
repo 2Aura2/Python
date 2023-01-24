@@ -3,8 +3,6 @@ from tkinter import *
 import socket
 from tkinter import ttk, messagebox
 import threading
-from Register import Register_Screen
-from Overview import Overview_Screen
 from PIL import ImageTk, Image
 
 class Computer_Scan_Screen(tkinter.Toplevel):

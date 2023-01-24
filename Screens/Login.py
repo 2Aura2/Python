@@ -4,7 +4,7 @@ import socket
 from tkinter import ttk, messagebox
 import threading
 from Register import Register_Screen
-from Overview1 import Overview_Screen
+from Overview import Overview_Screen
 from PIL import ImageTk, Image
 
 
