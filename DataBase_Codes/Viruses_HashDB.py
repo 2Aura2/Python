@@ -23,6 +23,7 @@ class hashes:
         conn = sqlite3.connect(self.Location)
         for i in range(len(Hash_list)):
             Hash = Hash_list[i]
+            print(Hash)
             str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{Hash}')"
             conn.execute(str_insert)
             conn.commit()
@@ -33,4 +34,4 @@ class hashes:
 
 
 VH = hashes()
-#VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\1.txt")
+VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
