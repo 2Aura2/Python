@@ -34,4 +34,4 @@ class hashes:
 
 
 VH = hashes()
-VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
+#VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
