@@ -1,17 +1,20 @@
-#Import the required libraries
-import tkinter
-from tkinter import *
+import hashlib
 
-#Create an instance of Tkinter Frame
-win = Tk()
+def md5_hash(filename):
+    with open(filename,"rb")as f:
+        bytes = f.read()
+        md5hash = hashlib.md5(bytes).hexdigest()
+        f.close()
+    return md5hash
 
-#Set the geometry
-win.geometry("700x250")
+#print(md5_hash("Images\\784p9o.webp"))
 
-#Adding transparent background property
-win.wm_attributes('-transparentcolor', '#ab23ff')
 
-#Create a Label
-Label(win, text= "This is a New line Text", font= ('Helvetica 18'), bg= '#ab23ff').pack(ipadx= 50, ipady=50, padx= 20)
+def malware_checker(PathOfFile):
+    hash_malware_check = md5_hash(PathOfFile)
+    malware_hashes = open("virushash.txt")
+    malware_hashes_read = malware_hashes.read()
+    malware_hashes.close()
+    print(malware_hashes_read)
 
-win.mainloop()
+malware_checker("Images\\784p9o.webp")
