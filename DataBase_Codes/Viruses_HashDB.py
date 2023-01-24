@@ -21,7 +21,7 @@ class hashes:
         with open(path, 'r') as f:
             Hash_list = [line.strip() for line in f]
         conn = sqlite3.connect(self.Location)
-        for i in range(200):
+        for i in range(201,1000):
             Hash = Hash_list[i]
             print(Hash)
             str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{Hash}')"
