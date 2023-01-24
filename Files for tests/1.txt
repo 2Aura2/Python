@@ -1,0 +1,6 @@
+apple
+pen
+phone
+house
+key
+screen
