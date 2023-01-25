@@ -34,7 +34,7 @@ class Login_Screen(tkinter.Tk):
         self.enr_Username.place(relx=0.5,rely=0.6,anchor='center')
         self.enr_Username.insert(0,"Username")
         self.enr_Username.bind('<FocusIn>',  self.Username_enter)
-        self.enr_Username.bind('<FocusOut>', self.UserName_leave)
+        self.enr_Username.bind('<FocusOut>', self.Username_leave)
 
         #self.lbl_Password = Label(self, text="Password:",font=('',16),bg='light green').place(relx=0.3, rely=0.7,anchor='center')
         self.enr_Password = Entry(self,font=('',16))
@@ -49,7 +49,7 @@ class Login_Screen(tkinter.Tk):
         self.enr_Username.delete(0,END)
         
         
-    def UserName_leave(self,event):
+    def Username_leave(self,event):
         current_Username = self.enr_Username.get()
         if current_Username == '':
             self.enr_Username.insert(0,"Username")
