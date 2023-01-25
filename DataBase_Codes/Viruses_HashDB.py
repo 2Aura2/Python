@@ -29,8 +29,23 @@ class hashes:
         conn.close()
         return "Record inserted successfully"
 
-
+    def select_all_hashes(self):
+        try:
+            conn = sqlite3.connect(self.Location)
+            str1 = "select*from " + self.tablename
+            print(str1)
+            cursor = conn.execute(str1)
+            rows = cursor.fetchall()
+            arr_hashes = []
+            for row in rows:
+                str_rows = row[1]
+                arr_hashes.append(str_rows)
+            print(arr_hashes)
+            return arr_hashes
+        except:
+            return False
 
 
 VH = hashes()
 #VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
+VH.select_all_hashes()

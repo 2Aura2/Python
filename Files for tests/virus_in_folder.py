@@ -34,4 +34,5 @@ def check_folder_virus(folder_path):
                 print(f"Virus detected in file: {file_path}")
     print("Scan complete. No more virus detected.")
 
-check_folder_virus("C:\\Users\\dato0\\OneDrive\\שולחן העבודה\\New folder (2)")
+#check_folder_virus("C:\\Users\\dato0\\OneDrive\\שולחן העבודה\\New folder (2)")
+check_folder_virus("C:\\Users\\jmv77\\Desktop\\New folder")

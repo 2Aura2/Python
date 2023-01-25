@@ -29,16 +29,40 @@ class Login_Screen(tkinter.Tk):
         self.btn_register = Button(self,text="Register",bg='light green',font=('',8),command=self.open_Register_screen)
         self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
-        self.lbl_Username = Label(self, text="Username:",font=('',16),bg='light green').place(relx=0.3, rely=0.6,anchor='center')
+        #self.lbl_Username = Label(self, text="Username:",font=('',16),bg='light green').place(relx=0.3, rely=0.6,anchor='center')
         self.enr_Username = Entry(self,font=('',16))
         self.enr_Username.place(relx=0.5,rely=0.6,anchor='center')
+        self.enr_Username.insert(0,"Username")
+        self.enr_Username.bind('<FocusIn>',  self.Username_enter)
+        self.enr_Username.bind('<FocusOut>', self.UserName_leave)
 
-        self.lbl_Password = Label(self, text="Password:",font=('',16),bg='light green').place(relx=0.3, rely=0.7,anchor='center')
-        self.enr_Password = Entry(self,font=('',16),show="*")
+        #self.lbl_Password = Label(self, text="Password:",font=('',16),bg='light green').place(relx=0.3, rely=0.7,anchor='center')
+        self.enr_Password = Entry(self,font=('',16))
         self.enr_Password.place(relx=0.5,rely=0.7,anchor='center')
+        self.enr_Password.insert(0,"Password")
+        self.enr_Password.bind('<FocusIn>',  self.Password_enter)
+        self.enr_Password.bind('<FocusOut>', self.Password_leave)
 
         
+    
+    def Username_enter(self,event):
+        self.enr_Username.delete(0,END)
         
+        
+    def UserName_leave(self,event):
+        current_Username = self.enr_Username.get()
+        if current_Username == '':
+            self.enr_Username.insert(0,"Username")
+            
+    def Password_enter(self,event):
+        self.enr_Password.delete(0,END)
+        self.enr_Password.config(show="*")
+        
+    def Password_leave(self,event):
+        current_Password = self.enr_Password.get()
+        if current_Password == '':
+            self.enr_Password.config(show="")
+            self.enr_Password.insert(0,"Password")
 
 
     def open_Overview_screen(self):
