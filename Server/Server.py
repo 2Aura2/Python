@@ -5,6 +5,7 @@ str_path = "D://School Project//Python//DataBase_Codes//"
 str_path1 = "C://School Project//Python//DataBase_Codes//"
 sys.path.insert(1,str_path1)
 import UserDB
+from DataBase_Codes import Viruses_HashDB
 
 
 class server(object):
@@ -62,6 +63,11 @@ class server(object):
                             client_socket.send("User created successfully".encode())
                     else:
                         server_data = "False"
+                    
+                    server_data_scan = client_socket.recv(1024).decode('utf-8')
+                    if server_data_scan == "Scan":
+                        arr_hashes = Viruses_HashDB.hashes().select_all_hashes()
+
                 except Exception as e:
                     print("Error",e)
                     not_crash = False

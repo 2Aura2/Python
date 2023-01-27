@@ -3,10 +3,10 @@ import tkinter
 from tkinter import *
 from tkinter import ttk, messagebox
 import sys
-str_path = "D://School Project//Python//DataBase_Codes//"
-str_path1 = "C://School Project//Python//DataBase_Codes//"
-sys.path.insert(1,str_path1)
-import UserDB
+#str_path = "D://School Project//Python//DataBase_Codes//"
+#str_path1 = "C://School Project//Python//DataBase_Codes//"
+#sys.path.insert(1,str_path1)
+#import UserDB
 from PIL import ImageTk, Image
 
 
@@ -16,7 +16,7 @@ class Register_Screen(tkinter.Toplevel):
         self.parent = parent
         self.geometry("960x540")
         self.title("Register")
-        self.UserDB = UserDB.users()
+        #self.UserDB = UserDB.users()
         self.img = Image.open('Images\Anti_Virus_BG.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)

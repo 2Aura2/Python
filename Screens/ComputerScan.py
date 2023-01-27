@@ -30,3 +30,10 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_ADVScan = Button(self,text="Advanced Scanning",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
 
 
+    def Scan(self):
+        self.parent.client_socket.send("Scan".encode())
+
+
+        
+
+
