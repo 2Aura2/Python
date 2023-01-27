@@ -32,7 +32,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def Scan(self):
         self.parent.client_socket.send("Scan".encode())
-        
+        import os
+
+        root_dir = "E:\\Battle.net" # change this to the drive letter you want to search
+
+        for dir_name, subdir_list, file_list in os.walk(root_dir):
+            print(dir_name)
+            for file_name in file_list:
+                print(f"\t{file_name}")
+                file_path = file_name
+                length = str(len(file_path)).zfill(10)
+                data = length+file_name
+                self.parent.client_socket.send(data.encode())
 
 
 

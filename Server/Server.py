@@ -6,6 +6,8 @@ str_path1 = "C://School Project//Python//DataBase_Codes//"
 sys.path.insert(1,str_path1)
 import UserDB
 from DataBase_Codes import Viruses_HashDB
+import os
+import hashlib
 
 
 class server(object):
@@ -66,18 +68,16 @@ class server(object):
                     
                     server_data_scan = client_socket.recv(1024).decode('utf-8')
                     if server_data_scan == "Scan":
-                        def Scan(self):
-                            self.parent.client_socket.send("Scan".encode())
-                            for dirpath, dirnames, filenames in os.walk("C:/"):
-                                for file in filenames:
-                                    file_path = os.path.join(dirpath, file)
-                                    try:
-                                        with open(file_path, 'rb') as fp:
-                                            file_hash = hashlib.md5(fp.read()).hexdigest()
-                                            if file_hash in virus_db:
-                                                print(f'Virus found: {virus_db[file_hash]} in {file_path}')
-                                    except Exception as e:
-                                        print(f'Error: {e}')
+                        for dirpath, dirnames, filenames in os.walk("E:/"):
+                            for file in filenames:
+                                file_path = os.path.join(dirpath, file)
+                                try:
+                                    with open(file_path, 'rb') as fp:
+                                        file_hash = hashlib.md5(fp.read()).hexdigest()
+                                        if file_hash in virus_db:
+                                            print(f'Virus found: {virus_db[file_hash]} in {file_path}')
+                                except Exception as e:
+                                    print(f'Error: {e}')
                     else:
                         server_data = "False"
 
