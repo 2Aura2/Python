@@ -32,6 +32,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def Scan(self):
         self.parent.client_socket.send("Scan".encode())
+        
+
 
 
         

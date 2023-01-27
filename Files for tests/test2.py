@@ -1,14 +1,11 @@
-#import numpy as np
-#datafromfile=np.loadtxt("D:\\School Project\\Python\\Files for tests\\1.txt",dtype="str")
 
 
+import os
 
-with open('D:\\School Project\\Python\\Files for tests\\1.txt', 'r') as f:
-    myNames = [line.strip() for line in f]
+root_dir = "E:/" # change this to the drive letter you want to search
 
-#print(myNames)
-#print(type(myNames))
-
-for i in range(len(myNames)):
-    print(myNames[i])
+for dir_name, subdir_list, file_list in os.walk(root_dir):
+    print(dir_name)
+    for file_name in file_list:
+        print(f"\t{file_name}")
 
