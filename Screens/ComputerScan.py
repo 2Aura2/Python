@@ -1,9 +1,9 @@
 import tkinter
 from tkinter import *
-import socket
 from tkinter import ttk, messagebox
-import threading
 from PIL import ImageTk, Image
+import os
+import hashlib
 
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
