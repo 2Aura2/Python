@@ -32,10 +32,40 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def Scan(self):
         self.parent.client_socket.send("Scan".encode())
-        import os
+        def generate_md5_hash(file_path):
+            with open(file_path, 'rb') as f:
+                return hashlib.md5(f.read()).hexdigest()
+
+        def get_all_hashes(root_dir):
+            arr_hashes = []
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    md5_hash = generate_md5_hash(file_path)
+                    arr_hashes.append(md5_hash)
+                    str_hashes = ",".join(arr_hashes)
+                    length = str(len(str_hashes)).zfill(10)
+                    data = length+str_hashes
+                    self.parent.client_socket.send(data.encode())
+                    #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
+            length_data = self.parent.client_socket.recv(10).decode()
+            virus_hashes_data = self.parent.client.socket.recv(length_data).decode()
+            arr_virus_hashes = virus_hashes_data.split(",")
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    with open(file_path, 'rb') as f:
+                        file_hash = hashlib.md5(f.read()).hexdigest()
+                        for virus_hash in arr_virus_hashes:
+                            if file_hash == virus_hash:
+                                return file_path
+            return None
+
+
+
+
 
         root_dir = "E:\\Battle.net" # change this to the drive letter you want to search
-
         for dir_name, subdir_list, file_list in os.walk(root_dir):
             print(dir_name)
             for file_name in file_list:

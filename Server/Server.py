@@ -68,16 +68,18 @@ class server(object):
                     
                     server_data_scan = client_socket.recv(1024).decode('utf-8')
                     if server_data_scan == "Scan":
-                        for dirpath, dirnames, filenames in os.walk("E:/"):
-                            for file in filenames:
-                                file_path = os.path.join(dirpath, file)
-                                try:
-                                    with open(file_path, 'rb') as fp:
-                                        file_hash = hashlib.md5(fp.read()).hexdigest()
-                                        if file_hash in virus_db:
-                                            print(f'Virus found: {virus_db[file_hash]} in {file_path}')
-                                except Exception as e:
-                                    print(f'Error: {e}')
+                        server_data_length = client_socket.recv(10).decode()
+                        server_data_hashes = client_socket.recv(server_data_length).decode()
+                        arr_hashes = server_data_hashes.split(",")
+                        arr_virus_hashes=[]
+                        for hash in arr_hashes:
+                            file_hash = hash
+                            if file_hash in Viruses_HashDB.hashes():
+                                arr_virus_hashes.append(file_hash)
+                        length = str(len(arr_virus_hashes)).zfill(10)
+                        str_virus_hashes = ",".join(arr_virus_hashes)
+                        data = length+str_virus_hashes
+                        client_socket.send(data.encode())
                     else:
                         server_data = "False"
 
