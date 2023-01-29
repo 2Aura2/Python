@@ -31,7 +31,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
     def Scan(self):
-        self.parent.client_socket.send("Scan".encode())
+        self.parent.client_socket.send(b"Scan")
         
         def generate_md5_hash(file_path):
             with open(file_path, 'rb') as f:
