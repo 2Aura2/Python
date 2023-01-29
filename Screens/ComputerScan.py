@@ -32,6 +32,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def Scan(self):
         self.parent.client_socket.send("Scan".encode())
+        
         def generate_md5_hash(file_path):
             with open(file_path, 'rb') as f:
                 return hashlib.md5(f.read()).hexdigest()
@@ -43,11 +44,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     file_path = os.path.join(root, file)
                     md5_hash = generate_md5_hash(file_path)
                     arr_hashes.append(md5_hash)
-                    str_hashes = ",".join(arr_hashes)
-                    length = str(len(str_hashes)).zfill(10)
-                    data = length+str_hashes
-                    self.parent.client_socket.send(data.encode())
-                    #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
+            str_hashes = ",".join(arr_hashes)
+            length = str(len(str_hashes)).zfill(10)
+            data = length+str_hashes
+            self.parent.client_socket.send(data.encode())
+            #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
             length_data = self.parent.client_socket.recv(10).decode()
             virus_hashes_data = self.parent.client.socket.recv(length_data).decode()
             arr_virus_hashes = virus_hashes_data.split(",")
