@@ -4,12 +4,18 @@ from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
 import os
 import hashlib
-
+import Overview
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
         self.parent = parent
-        self.geometry("960x540")
+        self.app_width = 960
+        self.app_height = 540
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+        self.x = (self.screen_width / 2)-(self.app_width / 2)
+        self.y = (self.screen_height / 2)-(self.app_height / 2)
+        self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Computer Scan")
         self.img = Image.open('Images\Anti_Virus_BG.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
@@ -20,10 +26,10 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.create_gui()
 
     def create_gui(self):
-        self.btn_settings = Button(self,text="Overview",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.2,anchor='center')
-        self.btn_settings = Button(self,text="Computer Scan",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.35,anchor='center')
-        self.btn_settings = Button(self,text="Junk Files Remover",font=("",18),bg="orange").place(relx=0.2,rely=0.5,anchor='center')
-        self.btn_settings = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
+        self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="orange",command=self.open_overview_screen).place(relx=0.2,rely=0.2,anchor='center')
+        self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="light green").place(relx=0.2,rely=0.35,anchor='center')
+        self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange").place(relx=0.2,rely=0.5,anchor='center')
+        self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
         self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
@@ -67,15 +73,25 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
 
-        root_dir = "E:\\Battle.net" # change this to the drive letter you want to search
-        for dir_name, subdir_list, file_list in os.walk(root_dir):
-            print(dir_name)
-            for file_name in file_list:
-                print(f"\t{file_name}")
-                file_path = file_name
-                length = str(len(file_path)).zfill(10)
-                data = length+file_name
-                self.parent.client_socket.send(data.encode())
+        #root_dir = "E:\\Battle.net" # change this to the drive letter you want to search
+        #for dir_name, subdir_list, file_list in os.walk(root_dir):
+            #print(dir_name)
+            #for file_name in file_list:
+                #print(f"\t{file_name}")
+                #file_path = file_name
+                #length = str(len(file_path)).zfill(10)
+                #data = length+file_name
+                #self.parent.client_socket.send(data.encode())
+                
+
+
+    def open_overview_screen(self):
+        window = Overview.Overview_Screen(self)
+        window.grab_set()
+        self.withdraw()
+
+    
+
 
 
 

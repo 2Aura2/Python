@@ -14,7 +14,13 @@ class Register_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
         self.parent = parent
-        self.geometry("960x540")
+        self.app_width = 960
+        self.app_height = 540
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+        self.x = (self.screen_width / 2)-(self.app_width / 2)
+        self.y = (self.screen_height / 2)-(self.app_height / 2)
+        self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Register")
         #self.UserDB = UserDB.users()
         self.img = Image.open('Images\Anti_Virus_BG.jpg')
