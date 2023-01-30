@@ -5,6 +5,7 @@ from PIL import ImageTk, Image
 import os
 import hashlib
 import Overview
+from tkinter import filedialog
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
@@ -33,7 +34,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
         self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_ADVScan = Button(self,text="Advanced Scanning",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light green",command=self.Adv_Scan).place(relx=0.8,rely=0.4,anchor='center')
 
 
     def Scan(self):
@@ -69,6 +70,66 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
                 return "Viruses Removed"
             return "The computer is clear"
+
+
+    def Adv_Scan(root):
+        
+        def choose_path(root):
+            root.withdraw()
+            path = filedialog.askdirectory(initialdir = '/')
+            print("Selected disk path: ", path)
+            
+
+        
+        def select_path():
+            root = Tk()
+            root.title("Virus Scanner")
+            root.configure(background="grey")
+            root.app_width = 500
+            root.app_height = 100
+            root.screen_width = root.winfo_screenwidth()
+            root.screen_height = root.winfo_screenheight()
+            root.x = (root.screen_width / 2)-(root.app_width / 2)
+            root.y = (root.screen_height / 2)-(root.app_height / 2)
+            root.geometry(f"{root.app_width}x{root.app_height}+{int(root.x)}+{int(root.y)}")
+            path_button = Button(root, text="Select Disk Path",bg="orange", command=lambda: choose_path(root))
+            path_button.pack()
+            root.mainloop()
+
+        #self.parent.client_socket.send(b"Scan")
+
+        def generate_md5_hash(file_path):
+            with open(file_path, 'rb') as f:
+                return hashlib.md5(f.read()).hexdigest()
+
+        def get_all_hashes(root_dir):
+            arr_hashes = []
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    md5_hash = generate_md5_hash(file_path)
+                    arr_hashes.append(md5_hash)
+            str_hashes = ",".join(arr_hashes)
+            length = str(len(str_hashes)).zfill(10)
+            data = length+str_hashes
+            root.parent.client_socket.send(data.encode())
+            #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
+            length_data = root.parent.client_socket.recv(10).decode()
+            virus_hashes_data = root.parent.client.socket.recv(length_data).decode()
+            arr_virus_hashes = virus_hashes_data.split(",")
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    with open(file_path, 'rb') as f:
+                        file_hash = hashlib.md5(f.read()).hexdigest()
+                        for virus_hash in arr_virus_hashes:
+                            if file_hash == virus_hash:
+                                os.remove(file_path)
+                messagebox.showinfo(title="Viruses", message="All virus have been removed")
+                return "Viruses Removed"
+            return "The computer is clear"
+
+        select_path()
 
 
 
