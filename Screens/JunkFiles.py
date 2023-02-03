@@ -3,8 +3,9 @@ from tkinter import *
 from PIL import ImageTk, Image
 import Overview
 import ComputerScan
-
-
+import os
+import shutil
+import sys
 
 
 
@@ -35,7 +36,19 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
-        
+
+    def BasicClean(self):
+        folder_path = sys.argv[1]
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                if os.path.getsize(file_path) == 0:
+                    os.remove(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+
+
+
     def open_overview_screen(self):
         window = Overview.Overview_Screen(self)
         window.grab_set()
