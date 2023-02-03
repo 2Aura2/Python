@@ -1,8 +1,8 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-from ComputerScan import Computer_Scan_Screen
-
+import ComputerScan
+import JunkFiles
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
@@ -31,6 +31,11 @@ class Overview_Screen(tkinter.Toplevel):
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
     def open_Computer_Scan_screen(self):
-        window = Computer_Scan_Screen(self.parent)
+        window = ComputerScan.Computer_Scan_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+
+    def open_JunkFiles_screen(self):
+        window = JunkFiles.Junk_Files_Screen(self.parent)
         window.grab_set()
         self.withdraw()

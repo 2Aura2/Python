@@ -5,6 +5,7 @@ from PIL import ImageTk, Image
 import os
 import hashlib
 import Overview
+import JunkFiles
 from tkinter import filedialog
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -148,6 +149,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def open_overview_screen(self):
         window = Overview.Overview_Screen(self)
+        window.grab_set()
+        self.withdraw()
+
+    def open_JunkFiles_screen(self):
+        window = JunkFiles.Junk_Files_Screen(self)
         window.grab_set()
         self.withdraw()
 
