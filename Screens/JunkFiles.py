@@ -35,6 +35,10 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="light blue").place(relx=0.2,rely=0.5,anchor='center')
         self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
+
+        self.btn_startScan = Button(self,text="Clean",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_ADVScan = Button(self,text="Clean 2",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.4,anchor='center')
+
         
 
     def BasicClean(self):
