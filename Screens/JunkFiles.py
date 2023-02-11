@@ -6,7 +6,7 @@ import ComputerScan
 import os
 import shutil
 import sys
-
+import subprocess
 
 
 class Junk_Files_Screen(tkinter.Toplevel):
@@ -72,7 +72,15 @@ class Junk_Files_Screen(tkinter.Toplevel):
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
 
+    def disk_cleanup():
+        subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
 
+    #/dWER: Windows error reports
+    #/dThumbnails: Thumbnails
+    #/dDownloadedProgramFiles: Downloaded program files
+    #/dTemporaryInternetFiles: Temporary internet files
+    #/dSystemArchive: System archived Windows Error Reporting Files
+    #/dSystem: System error memory dump files
 
     def open_overview_screen(self):
         window = Overview.Overview_Screen(self)
