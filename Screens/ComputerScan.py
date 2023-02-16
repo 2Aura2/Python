@@ -7,6 +7,9 @@ import hashlib
 import Overview
 import JunkFiles
 from tkinter import filedialog
+import History
+
+
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
         super().__init__(parent)
@@ -31,7 +34,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="orange",command=self.open_overview_screen).place(relx=0.2,rely=0.2,anchor='center')
         self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.35,anchor='center')
         self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
-        self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.65,anchor='center')
+        self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange").place(relx=0.2,rely=0.8,anchor='center')
         
         self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
@@ -157,7 +160,10 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         window.grab_set()
         self.withdraw()
 
-    
+    def open_history_screen(self):
+        window = History.History_Screen(self)
+        window.grab_set()
+        self.withdraw()
 
 
 
