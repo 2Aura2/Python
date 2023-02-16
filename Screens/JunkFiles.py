@@ -3,6 +3,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import Overview
 import ComputerScan
+import History
 import os
 import shutil
 import sys
@@ -89,5 +90,10 @@ class Junk_Files_Screen(tkinter.Toplevel):
 
     def open_Computer_Scan_screen(self):
         window = ComputerScan.Computer_Scan_Screen(self)
+        window.grab_set()
+        self.withdraw()
+        
+    def open_history_screen(self):
+        window = History.History_Screen(self)
         window.grab_set()
         self.withdraw()
