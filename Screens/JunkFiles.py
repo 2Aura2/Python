@@ -8,7 +8,7 @@ import os
 import shutil
 import sys
 import subprocess
-
+import settings
 
 class Junk_Files_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -84,16 +84,21 @@ class Junk_Files_Screen(tkinter.Toplevel):
     #/dSystem: System error memory dump files
 
     def open_overview_screen(self):
-        window = Overview.Overview_Screen(self)
+        window = Overview.Overview_Screen(self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_Computer_Scan_screen(self):
-        window = ComputerScan.Computer_Scan_Screen(self)
+        window = ComputerScan.Computer_Scan_Screen(self.parent)
         window.grab_set()
         self.withdraw()
         
     def open_history_screen(self):
-        window = History.History_Screen(self)
+        window = History.History_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+
+    def open_settings_screen(self):
+        window = settings.Settigns_Screen(self.parent)
         window.grab_set()
         self.withdraw()

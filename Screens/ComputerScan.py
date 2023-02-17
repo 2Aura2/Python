@@ -8,7 +8,7 @@ import Overview
 import JunkFiles
 from tkinter import filedialog
 import History
-
+import settings
 
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -151,17 +151,22 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
     def open_overview_screen(self):
-        window = Overview.Overview_Screen(self)
+        window = Overview.Overview_Screen(self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_JunkFiles_screen(self):
-        window = JunkFiles.Junk_Files_Screen(self)
+        window = JunkFiles.Junk_Files_Screen(self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_history_screen(self):
-        window = History.History_Screen(self)
+        window = History.History_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+    
+    def open_settings_screen(self):
+        window = settings.Settigns_Screen(self.parent)
         window.grab_set()
         self.withdraw()
 

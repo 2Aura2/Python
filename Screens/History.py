@@ -8,7 +8,7 @@ import os
 import shutil
 import sys
 import subprocess
-
+import settings
 
 
 class History_Screen(tkinter.Toplevel):
@@ -43,16 +43,21 @@ class History_Screen(tkinter.Toplevel):
         
         
     def open_overview_screen(self):
-        window = Overview.Overview_Screen(self)
+        window = Overview.Overview_Screen(self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_Computer_Scan_screen(self):
-        window = ComputerScan.Computer_Scan_Screen(self)
+        window = ComputerScan.Computer_Scan_Screen(self.parent)
         window.grab_set()
         self.withdraw()
         
     def open_JunkFiles_screen(self):
         window = JunkFiles.Junk_Files_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+
+    def open_settings_screen(self):
+        window = settings.Settigns_Screen(self.parent)
         window.grab_set()
         self.withdraw()

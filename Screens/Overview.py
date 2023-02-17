@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 import ComputerScan
 import JunkFiles
 import History
+import settings
 
 
 class Overview_Screen(tkinter.Toplevel):
@@ -44,6 +45,11 @@ class Overview_Screen(tkinter.Toplevel):
         self.withdraw()
         
     def open_history_screen(self):
-        window = History.History_Screen(self)
+        window = History.History_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+
+    def open_settings_screen(self):
+        window = settings.Settigns_Screen(self.parent)
         window.grab_set()
         self.withdraw()
