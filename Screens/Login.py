@@ -4,13 +4,14 @@ import socket
 from tkinter import ttk, messagebox
 import threading
 from Register import Register_Screen
-from Overview import Overview_Screen
+import Overview
 from PIL import ImageTk, Image
 
 
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
+        self.IsLogin = False
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -75,7 +76,7 @@ class Login_Screen(tkinter.Tk):
     
 
     def open_Overview_screen(self):
-        window = Overview_Screen(self)
+        window = Overview.Overview_Screen(self)
         window.grab_set()
         self.withdraw()
     
@@ -115,6 +116,7 @@ class Login_Screen(tkinter.Tk):
                 self.client_socket.send(str_arr.encode())
                 data = self.client_socket.recv(1024).decode()
                 if data == f"Welcome {self.enr_Username.get()}":
+                    self.IsLogin = True
                     self.open_Overview_screen()
                 else:
                     messagebox.showerror("Error",data)

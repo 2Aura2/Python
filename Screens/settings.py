@@ -3,12 +3,9 @@ from tkinter import *
 from PIL import ImageTk, Image
 import Overview
 import ComputerScan
-import os
-import shutil
-import sys
-import subprocess
 import JunkFiles
 import History
+import Login
 
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent):
@@ -37,9 +34,11 @@ class Settigns_Screen(tkinter.Toplevel):
         self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.8,anchor='center')
         
-        self.btn_Logout = Button(self,text="Logout",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_Logout = Button(self,text="Logout",font=("",18),width=16,bg="light green",command=self.open_Login_screen).place(relx=0.8,rely=0.2,anchor='center')
 
-
+    
+    
+    
     def open_overview_screen(self):
         window = Overview.Overview_Screen(self.parent)
         window.grab_set()
@@ -57,5 +56,10 @@ class Settigns_Screen(tkinter.Toplevel):
 
     def open_history_screen(self):
         window = History.History_Screen(self.parent)
+        window.grab_set()
+        self.withdraw()
+        
+    def open_Login_screen(self):
+        window = Login.Login_Screen(self)
         window.grab_set()
         self.withdraw()
