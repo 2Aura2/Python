@@ -11,7 +11,7 @@ import JunkFiles
 import History
 
 class Settigns_Screen(tkinter.Toplevel):
-    def __init__(self,server,parent):
+    def __init__(self,parent,server):
         super().__init__(parent)
         self.parent = parent
         self.server = server
