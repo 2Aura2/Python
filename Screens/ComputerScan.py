@@ -133,7 +133,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return "Viruses Removed"
             return "The computer is clear"
 
-        select_path()
+        #select_path()
 
 
 
