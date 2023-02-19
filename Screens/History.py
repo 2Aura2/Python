@@ -1,14 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-import Overview
-import ComputerScan
-import JunkFiles
-import os
-import shutil
-import sys
-import subprocess
-import settings
+
 
 
 class History_Screen(tkinter.Toplevel):

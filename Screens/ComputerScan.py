@@ -4,11 +4,8 @@ from tkinter import ttk, messagebox
 from PIL import ImageTk, Image
 import os
 import hashlib
-import Overview
-import JunkFiles
 from tkinter import filedialog
-import History
-import settings
+
 
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):

@@ -1,14 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-import Overview
-import ComputerScan
-import os
-import shutil
-import sys
-import subprocess
-import JunkFiles
-import History
+import Login
 
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
@@ -39,8 +32,8 @@ class Settigns_Screen(tkinter.Toplevel):
         #self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.8,anchor='center')
 
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light blue",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
+        self.btn_LogOut = Button(self,text="Logout",font=("",18),bg="light blue",command=self.previous_window).place(relx=0.8,rely=0.2,anchor='center')
 
     def previous_window(self):
         self.destroy()  # close the second window
-        self.parent.deiconify()  # show the main window again
-    
+        self.server.deiconify()  # show the main window again

@@ -1,14 +1,11 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-import Overview
-import ComputerScan
-import History
 import os
 import shutil
 import sys
 import subprocess
-import settings
+
 
 class Junk_Files_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
