@@ -33,23 +33,27 @@ class Overview_Screen(tkinter.Toplevel):
         self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
         self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
         self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
-        
+
+        self.lbl_welcome = Label(self,text="Welcome User",font=("ariel",18))
+        self.lbl_welcome.config(width=20,length=4)
+        self.lbl_welcome.place(relx=0.6,rely=0.2,anchor='center')   
+
     def open_Computer_Scan_screen(self):
-        window = ComputerScan.Computer_Scan_Screen(self.parent)
+        window = ComputerScan.Computer_Scan_Screen(self,self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_JunkFiles_screen(self):
-        window = JunkFiles.Junk_Files_Screen(self.parent)
+        window = JunkFiles.Junk_Files_Screen(self,self.parent)
         window.grab_set()
         self.withdraw()
         
     def open_history_screen(self):
-        window = History.History_Screen(self.parent)
+        window = History.History_Screen(self,self.parent)
         window.grab_set()
         self.withdraw()
 
     def open_settings_screen(self):
-        window = settings.Settigns_Screen(self.parent)
+        window = settings.Settigns_Screen(self,self.parent)
         window.grab_set()
         self.withdraw()

@@ -11,9 +11,10 @@ import History
 import settings
 
 class Computer_Scan_Screen(tkinter.Toplevel):
-    def __init__(self,parent):
+    def __init__(self,parent,server):
         super().__init__(parent)
         self.parent = parent
+        self.server = server
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -31,15 +32,19 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.create_gui()
 
     def create_gui(self):
-        self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="orange",command=self.open_overview_screen).place(relx=0.2,rely=0.2,anchor='center')
-        self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.35,anchor='center')
-        self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
-        self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
-        self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
+        #self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="orange",command=self.open_overview_screen).place(relx=0.2,rely=0.2,anchor='center')
+        #self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.35,anchor='center')
+        #self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
+        #self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
+        #self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
         
         self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light green").place(relx=0.8,rely=0.2,anchor='center')
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light green",command=self.Adv_Scan).place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light blue",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
 
+    def previous_window(self):
+        self.destroy()  # close the second window
+        self.parent.deiconify()  # show the main window again
 
     def Scan(self):
         self.parent.client_socket.send(b"Scan")
@@ -150,25 +155,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 
 
 
-    def open_overview_screen(self):
-        window = Overview.Overview_Screen(self.parent)
-        window.grab_set()
-        self.withdraw()
-
-    def open_JunkFiles_screen(self):
-        window = JunkFiles.Junk_Files_Screen(self.parent)
-        window.grab_set()
-        self.withdraw()
-
-    def open_history_screen(self):
-        window = History.History_Screen(self.parent)
-        window.grab_set()
-        self.withdraw()
     
-    def open_settings_screen(self):
-        window = settings.Settigns_Screen(self.parent)
-        window.grab_set()
-        self.withdraw()
 
 
 
