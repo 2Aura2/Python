@@ -19,16 +19,30 @@ class Overview_Screen(tkinter.Toplevel):
         self.y = (self.screen_height / 2)-(self.app_height / 2)
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Overview")
-        self.img = Image.open('Images\Anti_Virus_BG.jpg')
+        self.canvas = Canvas(self, width=100, height=100)
+        self.canvas.pack()
+        self.img = Image.open('Images\\solid3.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
+        self.canvas.lift()
         
         self.create_gui()
     
     def create_gui(self):
-        self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.2,anchor='center')
+        
+
+
+        #text="Overview",font=("",18),width=16,bg="light blue"
+        #self.Overview_btn = PhotoImage(file="Images\\button2.png") 
+
+        self.button_image = PhotoImage(file="Images\\button2.png")
+        self.button_image_item = self.canvas.create_image(960, 540, image=self.button_image)
+        self.canvas.tag_bind(self.button_image_item, "<Button-1>")
+
+
+        #self.btn_Overview = Button(self).place(relx=0.2,rely=0.2,anchor='center')
         self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="orange",command=self.open_Computer_Scan_screen).place(relx=0.2,rely=0.35,anchor='center')
         self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
         self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
