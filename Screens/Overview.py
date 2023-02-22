@@ -37,7 +37,6 @@ class Overview_Screen(tkinter.Toplevel):
         
         self.create_gui()
     def create_gui(self):
-        self.transparent_color = "#ffffff"
 
         #text="Overview",font=("",18),width=16,bg="light blue"
         #self.Overview_btn = PhotoImage(file="Images\\button2.png") 
@@ -47,14 +46,30 @@ class Overview_Screen(tkinter.Toplevel):
         #self.canvas.tag_bind(self.button_image_item, "<Button-1>",lambda event: self.open_Computer_Scan_screen(self.parent))
 
 
-        self.button_img = Image.open('Images\\button2.1-removebg-preview.png')
-        self.button = ImageTk.PhotoImage(self.button_img)
+        self.ov_img = Image.open('Images\\button2.1.png')
+        self.resized = self.ov_img.resize((210,60), Image.Resampling.LANCZOS)
+        self.ov = ImageTk.PhotoImage(self.resized)
+        self.btn_Overview = Button(self,image=self.ov, bd=0, highlightthickness=0,bg="light blue").place(relx=0.2,rely=0.2,anchor='center')
 
-        self.btn_Overview = Button(self,image=self.button,bg=self.transparent_color, bd=0, highlightthickness=0).place(relx=0.2,rely=0.2,anchor='center')
-        self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="orange",command=self.open_Computer_Scan_screen).place(relx=0.2,rely=0.35,anchor='center')
-        self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
-        self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
-        self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
+        self.cs_img = Image.open('Images\\CS.png')
+        self.resized1 = self.cs_img.resize((210,60), Image.Resampling.LANCZOS)
+        self.cs = ImageTk.PhotoImage(self.resized1)
+        self.btn_Computer_Scan = Button(self,image=self.cs, bd=0, highlightthickness=0,bg="light blue",command=self.open_Computer_Scan_screen).place(relx=0.2,rely=0.35,anchor='center')
+        
+        self.jfr_img = Image.open('Images\\JFR.png')
+        self.resized2 = self.jfr_img.resize((210,60), Image.Resampling.LANCZOS)
+        self.jfr = ImageTk.PhotoImage(self.resized2)
+        self.btn_Junk_Files_Remover = Button(self,image=self.jfr, bd=0, highlightthickness=0,bg="light blue",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
+        
+        self.h_img = Image.open('Images\\H.png')
+        self.resized3 = self.h_img.resize((210,60), Image.Resampling.LANCZOS)
+        self.h = ImageTk.PhotoImage(self.resized3)
+        self.btn_History = Button(self,image=self.h, bd=0, highlightthickness=0,bg="light blue",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
+       
+        self.s_img = Image.open('Images\\S.png')
+        self.resized4 = self.s_img.resize((210,60), Image.Resampling.LANCZOS)
+        self.s = ImageTk.PhotoImage(self.resized4)
+        self.btn_settings = Button(self,image=self.s, bd=0, highlightthickness=0,bg="light blue",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
 
         self.lbl_welcome = Label(self,text="Welcome User",font=("ariel",18),bg="white")
         self.lbl_welcome.config(width=30,height=5)
@@ -65,8 +80,8 @@ class Overview_Screen(tkinter.Toplevel):
         self.button_image_item = self.canvas.create_image(self.canvas_width, self.canvas_height, image=self.button_image, anchor='center')
         self.canvas.tag_bind(self.button_image_item, "<Button-1>", lambda event: self.open_Computer_Scan_screen(self.parent))
 
-    def open_Computer_Scan_screen(self,parent):
-        window = ComputerScan.Computer_Scan_Screen(self, parent)
+    def open_Computer_Scan_screen(self):
+        window = ComputerScan.Computer_Scan_Screen(self, self.parent)
         window.grab_set()
         self.withdraw()
 
@@ -85,13 +100,4 @@ class Overview_Screen(tkinter.Toplevel):
         window.grab_set()
         self.withdraw()
 
-    def button_clicked(self,event):
-        items = self.canvas.find_withtag("current")
-        if self.button_image_item in items:
-            print("Button clicked!")
 
-    def update_canvas_dimensions(self, event):
-        self.canvas_width = event.width
-        self.canvas_height = event.height
-        print(self.canvas_width)
-        print(self.canvas_height)
