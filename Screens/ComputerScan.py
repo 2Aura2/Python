@@ -56,8 +56,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 for file in files:
                     print("starting")
                     file_path = os.path.join(root, file)
-                    md5_hash = generate_md5_hash(file_path)
-                    arr_hashes.append(md5_hash)
+                    try:
+                        md5_hash = generate_md5_hash(file_path)
+                        arr_hashes.append(md5_hash)
+                    except PermissionError:
+                        continue
             str_hashes = ",".join(arr_hashes)
             length = str(len(str_hashes)).zfill(10)
             data = length+str_hashes
@@ -69,12 +72,15 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    with open(file_path, 'rb') as f:
-                        file_hash = hashlib.md5(f.read()).hexdigest()
-                        for virus_hash in arr_virus_hashes:
-                            if file_hash == virus_hash:
-                                os.remove(file_path)
-                                print("Removed")
+                    try:
+                        with open(file_path, 'rb') as f:
+                            file_hash = hashlib.md5(f.read()).hexdigest()
+                            for virus_hash in arr_virus_hashes:
+                                if file_hash == virus_hash:
+                                    os.remove(file_path)
+                                    print("Removed")
+                    except PermissionError:
+                        continue
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
                 return "Viruses Removed"
             print("Scan Done")

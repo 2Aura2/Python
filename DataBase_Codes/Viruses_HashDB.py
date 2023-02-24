@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-
+import os
 
 class hashes:
     def __init__(self,tablename="Hashes_test",HashId="HashId",Hash="Hash"):
@@ -20,8 +20,11 @@ class hashes:
         conn.close()
 
     def md5_hash(self,file_path):
-        with open(file_path,'rb') as f:
-            return hashlib.md5(f.read()).hexdigest()
+        if os.path.isfile(file_path):
+            with open(file_path, 'rb') as f:
+                return hashlib.md5(f.read()).hexdigest()
+        else:
+            return None
 
 
     def insert_noraml_hash(self,file_path):
