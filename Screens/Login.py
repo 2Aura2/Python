@@ -6,7 +6,7 @@ import threading
 from Register import Register_Screen
 import Overview
 from PIL import ImageTk, Image
-
+import traceback
 
 class Login_Screen(tkinter.Tk):
     def __init__(self):
@@ -31,7 +31,7 @@ class Login_Screen(tkinter.Tk):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light green').place(relx=0.5,rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login",command=self.open_Overview_screen,font=('',16),bg='light green').place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="login",command=self.login_user,font=('',16),bg='light green').place(relx=0.5,rely=0.8,anchor='center')
         
         self.lbl_Register = Label(self, text="Don't have an account, register here:",bg='light green',font=('',10)).place(relx=0.49, rely=0.9,anchor='center')
         self.btn_register = Button(self,text="Register",bg='light green',font=('',8),command=self.open_Register_screen)
@@ -74,7 +74,7 @@ class Login_Screen(tkinter.Tk):
 
 
     def open_Overview_screen(self):
-        window = Overview.Overview_Screen(self)
+        window = Overview.Overview_Screen(self,self.enr_Username.get())
         window.grab_set()
         self.withdraw()
     
@@ -99,28 +99,34 @@ class Login_Screen(tkinter.Tk):
     
     def login_user(self):
         try:
-            if len(self.enr_Username.get())==0 and len(self.enr_Password.get())==0:
+            if (self.enr_Username.get() == "Username" or len(self.enr_Username.get()) == 0) and (self.enr_Password.get() == "Password" or len(self.enr_Password.get()) == 0):
                 messagebox.showerror("Error","Please write Username and password")
-                return
-            elif len(self.enr_Username.get())==0:
+                return "Error"
+            elif len(self.enr_Password.get())>0 and (self.enr_Username.get()=="Username" or len(self.enr_Username.get())==0):
                 messagebox.showerror("Error","Please write Username")
-                return
-            elif len(self.enr_Password.get())==0:
+                return "Error"
+            elif len(self.enr_Username.get())>0 and (self.enr_Password.get()=="Password" or len(self.enr_Password.get())==0):
                 messagebox.showerror("Error","Please write password")
-                return
+                return "Error"
             else:
                 arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
                 str_arr = ",".join(arr)
                 self.client_socket.send(str_arr.encode())
+                #print(str_arr)
+                #length = str(len(str_arr)).zfill(10)
+                #data = length+str_arr
+                #self.client_socket.send(data.encode())
                 data = self.client_socket.recv(1024).decode()
                 if data == f"Welcome {self.enr_Username.get()}":
                     self.IsLogin = True
                     self.open_Overview_screen()
                 else:
                     messagebox.showerror("Error",data)
-                    return
+                    return "Error"
         except Exception as e:
-            print("Error", e)
+            print("Error:", e)
+            traceback.print_exc()
+
 
 
 if __name__ == "__main__":

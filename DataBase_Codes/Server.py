@@ -6,9 +6,9 @@ import sys
 
 #sys.path.insert(1,str_path)
 sys.path.append("E://School Project//Python//")
-from DataBase_Codes import UserDB
-from DataBase_Codes import Viruses_HashDB
-import DataBase_Codes
+#from DataBase_Codes import UserDB
+#from DataBase_Codes import Viruses_HashDB
+#import DataBase_Codes
 
 #sys.path.insert(1,str_path1)
 #sys.path.append("E:\School Project\Python")
@@ -54,6 +54,10 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
+                    #data_length = client_socket.recv(10).decode('utf-8')
+                    #print(data_length)
+                    #server_data = client_socket.recv(data_length).decode()
+                    #print(server_data)
                     arr = server_data.split(",")
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
