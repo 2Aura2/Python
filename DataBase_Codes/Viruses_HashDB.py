@@ -48,4 +48,4 @@ class hashes:
 
 VH = hashes()
 #VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
-VH.select_all_hashes()
+#VH.select_all_hashes()
