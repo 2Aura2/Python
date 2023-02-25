@@ -47,8 +47,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.server.client_socket.send(b"Scan")
         
         def generate_md5_hash(file_path):
-            with open(file_path, 'rb') as f:
-                return hashlib.md5(f.read()).hexdigest()
+             with open(file_path, 'rb') as f:
+                file_hash = hashlib.md5()
+                while chunk := f.read(8192):
+                    file_hash.update(chunk)
+                return file_hash.hexdigest()
 
         def get_all_hashes(root_dir):
             arr_hashes = []
