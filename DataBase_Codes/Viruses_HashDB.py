@@ -73,9 +73,6 @@ class hashes:
 
 VH = hashes()
 #VH.insert_Hash("D:\\School Project\\Python\\Files for tests\\virushash.txt")
-<<<<<<< HEAD
 #VH.select_all_hashes()
-=======
 #VH.select_all_hashes()
 #VH.insert_noraml_hash("C:\\Users\\dato0\\OneDrive\\Pictures\\2013_f.jpg")
->>>>>>> 4e6bc76904bbe110b2d16cc65409d60d6f9614b6
