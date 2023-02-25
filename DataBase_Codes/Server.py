@@ -3,11 +3,18 @@ import threading
 import sys
 #str_path = "D://School Project//Python//DataBase_Codes//"
 #str_path1 = "C://School Project//Python//DataBase_Codes//"
+<<<<<<< HEAD:Server/Server.py
 #sys.path.insert(1,str_path)
 sys.path.append("D://School Project//Python//")
 from DataBase_Codes import UserDB
 from DataBase_Codes import Viruses_HashDB
 import DataBase_Codes
+=======
+#sys.path.insert(1,str_path1)
+#sys.path.append("E:\School Project\Python")
+import UserDB
+import Viruses_HashDB
+>>>>>>> 4e6bc76904bbe110b2d16cc65409d60d6f9614b6:DataBase_Codes/Server.py
 import os
 import hashlib
 
