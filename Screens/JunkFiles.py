@@ -61,19 +61,22 @@ class Junk_Files_Screen(tkinter.Toplevel):
                 for file in files:
                     try:
                         os.remove(os.path.join(root, file))
+                        print("Removed")
                     except PermissionError:
                         pass
 
 
     def remove_browser_cache():
         cache_dirs = [
-            os.path.expanduser(r"~\AppData\Local\Google\Chrome\User Data\Default\Cache"),
-            os.path.expanduser(r"~\AppData\Local\Mozilla\Firefox\Profiles"),
-            os.path.expanduser(r"~\AppData\Local\Microsoft\Edge\User Data\Default\Cache")
+            os.path.expanduser(r"~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"),
+            os.path.expanduser(r"~\\AppData\\Local\\Mozilla\\Firefox\\Profiles"),
+            os.path.expanduser(r"~\\AppData\\Local\\Microsoft\\Edge\\User Data\Default\\Cache")
         ]
         for cache_dir in cache_dirs:
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
+                print("removed")
+            
 
     def disk_cleanup():
         subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
