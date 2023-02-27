@@ -35,18 +35,18 @@ class Overview_Screen(tkinter.Toplevel):
         #self.btn_Overview = Button(self,,bg="light blue").place(relx=0.2,rely=0.2,anchor='center')
 
         
-        self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("ariel",20),width=19,bg="light blue",command=self.open_Computer_Scan_screen).place(relx=0.2,rely=0.2,anchor='center')
+        self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("ariel",20),width=19,bg="light gray",command=self.open_Computer_Scan_screen).place(relx=0.2,rely=0.2,anchor='center')
         
         
-        self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("ariel",20),width=19,bg="light blue",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.35,anchor='center')
+        self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("ariel",20),width=19,bg="light gray",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.35,anchor='center')
         
         
-        self.btn_History = Button(self,text="History",font=("ariel",20),width=19,bg="light blue",command=self.open_history_screen).place(relx=0.2,rely=0.5,anchor='center')
+        self.btn_History = Button(self,text="History",font=("ariel",20),width=19,bg="light gray",command=self.open_history_screen).place(relx=0.2,rely=0.5,anchor='center')
        
         
-        self.btn_settings = Button(self,text="Settings",font=("ariel",20),width=19,bg="light blue",command=self.open_settings_screen).place(relx=0.2,rely=0.65,anchor='center')
+        self.btn_settings = Button(self,text="Settings",font=("ariel",20),width=19,bg="light gray",command=self.open_settings_screen).place(relx=0.2,rely=0.65,anchor='center')
 
-        self.lbl_welcome = Label(self,text=f"Welcome {self.UserName}",font=("ariel",18),bg="white")
+        self.lbl_welcome = Label(self,text=f"Welcome {self.UserName}",font=("ariel",18),bg="light gray")
         self.lbl_welcome.config(width=30,height=5)
         self.lbl_welcome.place(relx=0.7,rely=0.2,anchor='center')   
 

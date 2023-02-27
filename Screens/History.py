@@ -32,7 +32,7 @@ class History_Screen(tkinter.Toplevel):
         #self.btn_History = Button(self,text="History",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.65,anchor='center')
         #self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
         
-        self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light blue",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
+        self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
 
     def previous_window(self):
         self.destroy()  # close the second window

@@ -29,8 +29,11 @@ class Register_Screen(tkinter.Toplevel):
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
 
+
+
+
         self.create_gui()
-        Button(self,text="Login Page",command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
+        Button(self,text="Login Page",font=("ariel",14),width=10,command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
 
 
     def create_gui(self):
@@ -49,9 +52,9 @@ class Register_Screen(tkinter.Toplevel):
         self.enr_Password = Entry(self,font=("ariel",14),width=14)
         self.enr_Password.place(relx=0.85,rely=0.5,anchor='center')
 
-        self.btn_Register = Button(self, text="Register",command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
+        self.btn_Register = Button(self, text="Register",font=("ariel",14),width=10,command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light gray').place(relx=0.5,rely=0.2,anchor='center')
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('ariel',14),bg='light gray').place(relx=0.5,rely=0.1,anchor='center')
 
     def register_user(self):
         if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:
