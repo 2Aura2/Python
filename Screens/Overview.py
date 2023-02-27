@@ -50,10 +50,10 @@ class Overview_Screen(tkinter.Toplevel):
         self.lbl_welcome.config(width=30,height=5)
         self.lbl_welcome.place(relx=0.7,rely=0.2,anchor='center')   
 
-    def create_button_image(self):
-        self.button_image = PhotoImage(file="Images\\button2.1.png")
-        self.button_image_item = self.canvas.create_image(self.canvas_width, self.canvas_height, image=self.button_image, anchor='center')
-        self.canvas.tag_bind(self.button_image_item, "<Button-1>", lambda event: self.open_Computer_Scan_screen(self.parent))
+    #def create_button_image(self):
+    #    self.button_image = PhotoImage(file="Images\\button2.1.png")
+    #    self.button_image_item = self.canvas.create_image(self.canvas_width, self.canvas_height, image=self.button_image, anchor='center')
+    #    self.canvas.tag_bind(self.button_image_item, "<Button-1>", lambda event: self.open_Computer_Scan_screen(self.parent))
 
     def open_Computer_Scan_screen(self):
         window = ComputerScan.Computer_Scan_Screen(self, self.parent)
