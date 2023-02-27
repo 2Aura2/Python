@@ -25,17 +25,9 @@ class Overview_Screen(tkinter.Toplevel):
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
 
-        #self.canvas = Canvas(self, width=1920, height=1080, highlightthickness=0)
-        #self.canvas.create_image(960, 540, image=self.bg, anchor="center")
-        #self.canvas.pack()
-
-        #self.canvas.bind("<Configure>", self.update_canvas_dimensions)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
-        #self.canvas.lift()
-        #self.canvas_width = self.canvas.winfo_width()
-        #self.canvas_height = self.canvas.winfo_height()
-        
+
         self.create_gui()
     def create_gui(self):
 
