@@ -79,8 +79,7 @@ class server(object):
                     else:
                         server_data = "False"
                     
-                    server_data_scan = client_socket.recv(1024).decode('utf-8')
-                    if server_data_scan == "Scan":
+                    if server_data == "Scan":
                         server_data_length = client_socket.recv(10).decode()
                         server_data_hashes = client_socket.recv(server_data_length).decode()
                         arr_hashes = server_data_hashes.split(",")

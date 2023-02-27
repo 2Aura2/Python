@@ -110,9 +110,11 @@ class Login_Screen(tkinter.Tk):
                 return "Error"
             else:
                 arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
+                print(arr)
                 str_arr = ",".join(arr)
+                print(str_arr)
                 self.client_socket.send(str_arr.encode())
-                #print(str_arr)
+                
                 #length = str(len(str_arr)).zfill(10)
                 #data = length+str_arr
                 #self.client_socket.send(data.encode())
