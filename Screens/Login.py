@@ -20,7 +20,7 @@ class Login_Screen(tkinter.Tk):
         self.y = (self.screen_height / 2)-(self.app_height / 2)
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Login")
-        self.img = Image.open('Images\\thumb-1920-77840.jpg')
+        self.img = Image.open('Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
@@ -29,12 +29,12 @@ class Login_Screen(tkinter.Tk):
 
         self.handle_thread_socket()
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light green').place(relx=0.5,rely=0.2,anchor='center')
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light gray').place(relx=0.5,rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login",command=self.login_user,font=('',16),bg='light green').place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="login",command=self.login_user,font=('',16),bg='light gray').place(relx=0.5,rely=0.8,anchor='center')
         
-        self.lbl_Register = Label(self, text="Don't have an account, register here:",bg='light green',font=('',10)).place(relx=0.49, rely=0.9,anchor='center')
-        self.btn_register = Button(self,text="Register",bg='light green',font=('',8),command=self.open_Register_screen)
+        self.lbl_Register = Label(self, text="Don't have an account, register here:",bg='light gray',font=('',10)).place(relx=0.49, rely=0.9,anchor='center')
+        self.btn_register = Button(self,text="Register",bg='light gray',font=('',8),command=self.open_Register_screen)
         self.btn_register.place(relx=0.63,rely=0.9,anchor='center')
 
         #self.lbl_Username = Label(self, text="Username:",font=('',16),bg='light green').place(relx=0.3, rely=0.6,anchor='center')
@@ -111,10 +111,10 @@ class Login_Screen(tkinter.Tk):
             else:
                 arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
                 str_arr = ",".join(arr)
-                #self.client_socket.send(str_arr.encode())
-                length = str(len(str_arr)).zfill(10)
-                data = length+str_arr
-                self.client_socket.send(data.encode())
+                self.client_socket.send(str_arr.encode())
+                #length = str(len(str_arr)).zfill(10)
+                #data = length+str_arr
+                #self.client_socket.send(data.encode())
                 data = self.client_socket.recv(1024).decode()
                 if data == f"Welcome {self.enr_Username.get()}":
                     self.IsLogin = True

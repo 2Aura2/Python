@@ -53,9 +53,9 @@ class server(object):
         while self.running:
             while not_crash:
                 try:
-                    #server_data = client_socket.recv(1024).decode('utf-8')
-                    data_length = client_socket.recv(10).decode('utf-8')
-                    server_data = client_socket.recv(data_length).decode()
+                    server_data = client_socket.recv(1024).decode('utf-8')
+                    #data_length = client_socket.recv(10).decode('utf-8')
+                    #server_data = client_socket.recv(data_length).decode()
                     arr = server_data.split(",")
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
@@ -96,6 +96,7 @@ class server(object):
                 except Exception as e:
                     print("Error",e)
                     not_crash = False
+                    print(not_crash)
                     break
 
 
