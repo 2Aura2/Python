@@ -1,15 +1,28 @@
+import tkinter as tk
+from PIL import Image, ImageTk
 
+class Example(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.pack(fill='both', expand=True)
+        
+        # Load and set the background image for the window
+        self.bg_image = Image.open('Images\\solid3.jpg')
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        self.bg_label = tk.Label(self, image=self.bg_photo)
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-import os
+        # Create a transparent button
+        self.button_image = Image.open('Images\\button2.1.png')
+        self.button_image = self.button_image.convert('RGBA')
+        self.button_photo = ImageTk.PhotoImage(self.button_image)
+        self.button = tk.Button(self, image=self.button_photo, bd=0, highlightthickness=0, command=self.on_button_click)
+        self.button.place(x=100, y=100)
 
-root_dir = "E:\\SteamLibrary" # change this to the drive letter you want to search
+    def on_button_click(self):
+        print('Button clicked')
 
-for dir_name, subdir_list, file_list in os.walk(root_dir):
-    print(dir_name)
-    for file_name in file_list:
-        print(f"\t{file_name}")
-        file_path = file_name
-        length = str(len(file_path)).zfill(10)
-        data = length+file_name
-        print(data)
-
+root = tk.Tk()
+app = Example(root)
+app.mainloop()

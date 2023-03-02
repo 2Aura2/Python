@@ -23,32 +23,38 @@ class Register_Screen(tkinter.Toplevel):
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Register")
         #self.UserDB = UserDB.users()
-        self.img = Image.open('Images\Anti_Virus_BG.jpg')
+        self.img = Image.open('Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
 
+
+
+
         self.create_gui()
-        Button(self,text="Login Page",command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
+        Button(self,text="Login Page",font=("ariel",14),width=10,command=self.return_to_Login_page).place(relx=0.75,rely=0.8,anchor='center')
 
 
     def create_gui(self):
-        self.lbl_Fullname = Label(self,text="Fullname:").place(relx=0.7,rely=0.3,anchor='center')
-        self.enr_Fullname = Entry(self)
-        self.enr_Fullname.place(relx=0.8,rely=0.3,anchor='center')
 
-        self.lbl_Username = Label(self,text="Username:").place(relx=0.7,rely=0.4,anchor='center')
-        self.enr_Username = Entry(self)
-        self.enr_Username.place(relx=0.8,rely=0.4,anchor='center')
+        self.lbl_background = Label(self,bg="light gray",width=45,height=30).place(relx=0.8,rely=0.5,anchor='center')
 
-        self.lbl_Password = Label(self,text="Password:").place(relx=0.7,rely=0.5,anchor='center')
-        self.enr_Password = Entry(self)
-        self.enr_Password.place(relx=0.8,rely=0.5,anchor='center')
+        self.lbl_Fullname = Label(self,text="Fullname:",font=("ariel",14),width=10,bg="light gray").place(relx=0.7,rely=0.3,anchor='center')
+        self.enr_Fullname = Entry(self,font=("ariel",14),width=14)
+        self.enr_Fullname.place(relx=0.85,rely=0.3,anchor='center')
 
-        self.btn_Register = Button(self, text="Register",command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
+        self.lbl_Username = Label(self,text="Username:",font=("ariel",14),width=10,bg="light gray").place(relx=0.7,rely=0.4,anchor='center')
+        self.enr_Username = Entry(self,font=("ariel",14),width=14)
+        self.enr_Username.place(relx=0.85,rely=0.4,anchor='center')
 
-        self.lbl_Anti_Virus = Label(self, text="Anti Virus").place(relx=0.5, rely=0.2,anchor='center')
+        self.lbl_Password = Label(self,text="Password:",font=("ariel",14),width=10,bg="light gray").place(relx=0.7,rely=0.5,anchor='center')
+        self.enr_Password = Entry(self,font=("ariel",14),width=14)
+        self.enr_Password.place(relx=0.85,rely=0.5,anchor='center')
+
+        self.btn_Register = Button(self, text="Register",font=("ariel",14),width=10,command=self.register_user).place(relx=0.77,rely=0.6,anchor='center')
+
+        self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('ariel',14),bg='light gray').place(relx=0.5,rely=0.1,anchor='center')
 
     def register_user(self):
         if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:

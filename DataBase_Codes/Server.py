@@ -1,11 +1,20 @@
 import socket
 import threading
 import sys
-str_path = "D://School Project//Python//DataBase_Codes//"
-str_path1 = "C://School Project//Python//DataBase_Codes//"
-sys.path.insert(1,str_path1)
+#str_path = "D://School Project//Python//DataBase_Codes//"
+#str_path1 = "C://School Project//Python//DataBase_Codes//"
+
+#sys.path.insert(1,str_path)
+sys.path.append("E://School Project//Python//")
+#from DataBase_Codes import UserDB
+#from DataBase_Codes import Viruses_HashDB
+#import DataBase_Codes
+
+#sys.path.insert(1,str_path1)
+#sys.path.append("E:\School Project\Python")
 import UserDB
-from DataBase_Codes import Viruses_HashDB
+import Viruses_HashDB
+
 import os
 import hashlib
 
@@ -45,6 +54,8 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
+                    #data_length = client_socket.recv(10).decode('utf-8')
+                    #server_data = client_socket.recv(data_length).decode()
                     arr = server_data.split(",")
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
@@ -66,8 +77,7 @@ class server(object):
                     else:
                         server_data = "False"
                     
-                    server_data_scan = client_socket.recv(1024).decode('utf-8')
-                    if server_data_scan == "Scan":
+                    if server_data == "Scan":
                         server_data_length = client_socket.recv(10).decode()
                         server_data_hashes = client_socket.recv(server_data_length).decode()
                         arr_hashes = server_data_hashes.split(",")
@@ -86,6 +96,7 @@ class server(object):
                 except Exception as e:
                     print("Error",e)
                     not_crash = False
+                    print(not_crash)
                     break
 
 
