@@ -71,7 +71,7 @@ class Overview_Screen(tkinter.Toplevel):
         self.withdraw()
 
     def open_settings_screen(self):
-        window = settings.Settigns_Screen(self,self.parent)
+        window = settings.Settigns_Screen(self,self.parent,self.UserName)
         window.grab_set()
         self.withdraw()
 

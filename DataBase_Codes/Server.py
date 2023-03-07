@@ -5,7 +5,7 @@ import sys
 #str_path1 = "C://School Project//Python//DataBase_Codes//"
 
 #sys.path.insert(1,str_path)
-sys.path.append("E://School Project//Python//")
+#sys.path.append("E://School Project//Python//")
 #from DataBase_Codes import UserDB
 #from DataBase_Codes import Viruses_HashDB
 #import DataBase_Codes
@@ -92,6 +92,15 @@ class server(object):
                         client_socket.send(data.encode())
                     else:
                         server_data = "False"
+
+                    if server_data == "AddEmail":
+                        length = client_socket.recv(10).decode()
+                        Email_data = client_socket.recv(length).decode()
+
+                        length_UserName = client_socket.recv(10).decode()
+                        UserName_data = client_socket.recv(length_UserName).decode()
+                        UserDB.Users().UpdateEmailByUserName(Email_data,UserName_data)
+
 
                 except Exception as e:
                     print("Error",e)

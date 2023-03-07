@@ -1,12 +1,13 @@
 import sqlite3
 
 class users:
-    def __init__(self,tablename="Users",UserId="UserId",Fullname="FullName",UserName="UserName",Password="Password"):
+    def __init__(self,tablename="Users",UserId="UserId",Fullname="FullName",UserName="UserName",Password="Password",Email="Email"):
         self.tablename = tablename
         self.UserId = UserId
         self.FullName = Fullname
         self.UserName = UserName
         self.Password = Password
+        self.Email = Email
         self.Location = "DataBase\\UserDB.db"
         
         
@@ -15,7 +16,8 @@ class users:
         str = "CREATE TABLE IF NOT EXISTS " + self.tablename + "(" + self.UserId + " " + "INTEGER PRIMARY KEY AUTOINCREMENT ,"
         str += " " + self.FullName + " TEXT    NOT NULL ,"
         str += " " + self.UserName + " TEXT    NOT NULL ,"
-        str += " " + self.Password + " TEXT    NOT NULL)"
+        str += " " + self.Password + " TEXT    NOT NULL ,"
+        str += " " + self.Email + " TEXT)"
         conn.execute(str)
         conn.commit()
         conn.close()
@@ -65,7 +67,18 @@ class users:
         except:
             return "Failed to delete user"
 
-
+    def UpdateEmailByUserName(self,Email,UserName):
+        try:
+            conn = sqlite3.connect(self.Location)
+            str_update = f"UPDATE {self.tablename} Set {self.Email} = '{Email}' WHERE {self.UserName} = '{UserName}'"
+            print(str_update)
+            conn.execute(str_update)
+            conn.commit()
+            conn.close()
+            print("User updated successfully")
+            return "Success"
+        except:
+            return "Failed to update user"
 
 
 if __name__ == "__main__":
