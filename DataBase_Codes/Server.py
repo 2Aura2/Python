@@ -14,7 +14,7 @@ import sys
 #sys.path.append("E:\School Project\Python")
 import UserDB
 import Viruses_HashDB
-
+import traceback
 import os
 import hashlib
 
@@ -74,10 +74,7 @@ class server(object):
                             answer = UserDB.users().insert_user(arr[1],arr[2],arr[3])
                             print(answer)
                             client_socket.send("User created successfully".encode())
-                    else:
-                        server_data = "False"
-                    
-                    if server_data == "Scan":
+                    elif server_data == "Scan":
                         server_data_length = client_socket.recv(10).decode()
                         server_data_hashes = client_socket.recv(server_data_length).decode()
                         arr_hashes = server_data_hashes.split(",")
@@ -90,22 +87,23 @@ class server(object):
                         str_virus_hashes = ",".join(arr_virus_hashes)
                         data = length+str_virus_hashes
                         client_socket.send(data.encode())
-                    else:
-                        server_data = "False"
-
-                    if server_data == "AddEmail":
+                    elif server_data == "AddEmail":
                         length = client_socket.recv(10).decode()
-                        Email_data = client_socket.recv(length).decode()
+                        Email_data = client_socket.recv(int(length)).decode()
 
                         length_UserName = client_socket.recv(10).decode()
-                        UserName_data = client_socket.recv(length_UserName).decode()
-                        UserDB.Users().UpdateEmailByUserName(Email_data,UserName_data)
+                        UserName_data = client_socket.recv(int(length_UserName)).decode()
+                        UserDB.users().UpdateEmailByUserName(Email_data,UserName_data)
+                        print("Success")
 
+                    else:
+                        server_data = "False"
 
                 except Exception as e:
                     print("Error",e)
                     not_crash = False
                     print(not_crash)
+                    traceback.print_exc()
                     break
 
 
