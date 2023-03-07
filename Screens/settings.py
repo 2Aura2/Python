@@ -34,27 +34,27 @@ class Settigns_Screen(tkinter.Toplevel):
         
         
     def AddEmail(self):
-        popup_window = Toplevel(self)
-        popup_window.title("AddEmail")
-        popup_window.config(bg="light grey")
-        Label(popup_window,text="Enter an Email:",font=("ariel",14)).pack()
-        popup_entry = Entry(popup_window,font=("ariel",14))
+        self.popup_window = Toplevel(self)
+        self.popup_window.title("AddEmail")
+        self.popup_window.config(bg="light grey")
+        Label(self.popup_window,text="Enter an Email:",font=("ariel",14)).pack()
+        popup_entry = Entry(self.popup_window,font=("ariel",14))
         popup_entry.pack()
-        Button(popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get(),self.UserName)).pack()
+        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get(),self.UserName)).pack()
 
 
     def Submit_AddEmail(self,Email,UserName):
         try:
-            self.server.client_socket.send("AddEmail".encode())
-            length = str(len(Email)).zfill(10)
-            data = length+Email
-            self.server.client_socket.send(data.encode())
-            
-            length_UserName = str(len(UserName)).zfill(10)
-            data_UserName = length_UserName+UserName
-            self.server.client_socket.send(data_UserName.encode())
-            print("successful submitted")
-            return "Submited"
+            if len(Email) > 0:
+                self.server.client_socket.send("AddEmail".encode())
+                length = str(len(Email)).zfill(10)
+                data = length+Email
+                self.server.client_socket.send(data.encode())
+                
+                length_UserName = str(len(UserName)).zfill(10)
+                data_UserName = length_UserName+UserName
+                self.server.client_socket.send(data_UserName.encode())
+            self.popup_window.destroy()
         except Exception as e:
             print(e)
             traceback.print_exc()
