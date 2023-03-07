@@ -46,7 +46,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def Scan(self):
         self.server.client_socket.send(b"Scan")
         
-        def generate_md5_hash(file_path):
+        def generate_md5_hash(file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
              with open(file_path, 'rb') as f:
                 file_hash = hashlib.md5()
                 while chunk := f.read(8192):
@@ -89,7 +89,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Scan Done")
             return "The computer is clear"
 
-        get_all_hashes("C:\\")
+        #get_all_hashes("C:\\")
 
 
     def Adv_Scan(root):
