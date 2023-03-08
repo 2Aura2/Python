@@ -95,6 +95,15 @@ class server(object):
                         UserName_data = client_socket.recv(int(length_UserName)).decode()
                         UserDB.users().UpdateEmailByUserName(Email_data,UserName_data)
                         print("Success")
+                    elif server_data == "EmailExists":
+                        length = client_socket.recv(10).decode()
+                        data = client_socket.recv(int(length)).decode()
+                        answer = UserDB.users().GetEmailByUserName(data)
+                        print(answer)
+                        if answer == "Exists":
+                            client_socket.send(b"Exists")
+                        elif answer == "None":
+                            client_socket.send(b"None")
 
                     else:
                         server_data = "False"

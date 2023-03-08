@@ -29,8 +29,13 @@ class Settigns_Screen(tkinter.Toplevel):
     def create_gui(self):
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         self.btn_Logout = Button(self,text="Logout",font=("",18),bg="light gray",command=self.Login_window).place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_AddEmail = Button(self,text="AddEmail",font=("",18),bg="light gray",command=self.AddEmail).place(relx=0.6,rely=0.2,anchor='center')
         
+        
+        
+        self.btn_AddEmail = Button(self,textvariable=None,font=("",18),bg="light gray",command=self.AddEmail)
+        self.btn_AddEmail.place(relx=0.6,rely=0.2,anchor='center')
+        self.textvar = None
+        self.EmailExists()
         
         
     def AddEmail(self):
@@ -59,6 +64,19 @@ class Settigns_Screen(tkinter.Toplevel):
             print(e)
             traceback.print_exc()
             return "canceled"
+        
+    def EmailExists(self):
+        self.server.client_socket.send(b'EmailExists')
+        length = str(len(self.UserName)).zfill(10)
+        data = length+self.UserName
+        self.server.client_socket.send(data.encode())
+        answer = self.server.client_socket.recv(50).decode()
+        if answer == "Exists":
+            self.textvar = StringVar(self,"Change Email")
+            self.btn_AddEmail.config(textvariable=self.textvar)
+        elif answer == "None":
+            self.textvar = StringVar(self,"Add Email")
+            self.btn_AddEmail.config(textvariable=self.textvar)
 
 
 
