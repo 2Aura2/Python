@@ -1,17 +1,5 @@
 import socket
 import threading
-import sys
-#str_path = "D://School Project//Python//DataBase_Codes//"
-#str_path1 = "C://School Project//Python//DataBase_Codes//"
-
-#sys.path.insert(1,str_path)
-#sys.path.append("E://School Project//Python//")
-#from DataBase_Codes import UserDB
-#from DataBase_Codes import Viruses_HashDB
-#import DataBase_Codes
-
-#sys.path.insert(1,str_path1)
-#sys.path.append("E:\School Project\Python")
 import UserDB
 import Viruses_HashDB
 import traceback
@@ -99,12 +87,16 @@ class server(object):
                         length = client_socket.recv(10).decode()
                         data = client_socket.recv(int(length)).decode()
                         answer = UserDB.users().GetEmailByUserName(data)
-                        print(answer)
                         if answer == "Exists":
                             client_socket.send(b"Exists")
                         elif answer == "None":
                             client_socket.send(b"None")
-
+                    elif server_data == "ChangePassword":
+                        length = client_socket.recv(10).decode()
+                        data = client_socket.recv(int(length)).decode()
+                        length = client_socket.recv(10).decode()
+                        UserName = client_socket.recv(int(length)).decode()
+                        answer = UserDB.users().ChangePassword(data,UserName)
                     else:
                         server_data = "False"
 

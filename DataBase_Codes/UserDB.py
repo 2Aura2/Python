@@ -97,7 +97,18 @@ class users:
                 return "None"
         except Exception as e:
             print(e)
-
+    
+    def ChangePassword(self,Password,UserName):
+        try:
+            conn = sqlite3.connect(self.Location)
+            str_update = f"UPDATE {self.tablename} Set {self.Password} = '{Password}' WHERE {self.UserName} = '{UserName}'"
+            conn.execute(str_update)
+            conn.commit()
+            conn.close()
+            print("Password changed successfully")
+            return "Success"
+        except:
+            return "Failed to change password"
 
 if __name__ == "__main__":
     u = users()
