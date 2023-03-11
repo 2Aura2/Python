@@ -31,12 +31,22 @@ class Settigns_Screen(tkinter.Toplevel):
         self.btn_Logout = Button(self,text="Logout",font=("",18),bg="light gray",command=self.Login_window).place(relx=0.8,rely=0.2,anchor='center')
         
         
-        
-        self.btn_AddEmail = Button(self,textvariable=None,font=("",18),bg="light gray",command=self.AddEmail)
+        self.btn_AddEmail = Button(self,textvariable=None,font=("",18),width=15,bg="light gray",command=self.AddEmail)
         self.btn_AddEmail.place(relx=0.6,rely=0.2,anchor='center')
         self.textvar = None
         self.EmailExists()
         
+        
+        self.btn_ChangePassword = Button(self,text="Change Password",font=("ariel",18),bg="light gray")
+        self.btn_ChangePassword.place(relx=0.6,rely=0.35,anchor='center')
+        
+     
+    def ChangePassword(self):
+        self.server.client_socket.send(b'ChangePassword')
+        length = str(len(self.UserName)).zfill(10)
+        data = length+self.UserName
+        self.server.client_socket.send(data.encode())
+         
         
     def AddEmail(self):
         self.popup_window = Toplevel(self)
@@ -47,7 +57,24 @@ class Settigns_Screen(tkinter.Toplevel):
         popup_entry.pack()
         Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get(),self.UserName)).pack()
 
-
+    def Submit_AddEmail(self,Password,UserName):
+        try:
+            if len(Password) > 0:
+                self.server.client_socket.send(b'ChangePassword')
+                length = str(len(Password)).zfill(10)
+                data = length+Password
+                self.server.client_socket.send(data.encode())
+                
+                length_UserName = str(len(UserName)).zfill(10)
+                data_UserName = length_UserName+UserName
+                self.server.client_socket.send(data_UserName.encode())
+            self.popup_window.destroy()
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+            return "canceled"
+        
+          
     def Submit_AddEmail(self,Email,UserName):
         try:
             if len(Email) > 0:
