@@ -105,8 +105,7 @@ class users:
             conn.execute(str_update)
             conn.commit()
             conn.close()
-            print("Password changed successfully")
-            return "Success"
+            return "Password changed successfully"
         except:
             return "Failed to change password"
 

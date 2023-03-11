@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import Login
 import traceback
-
+from tkinter import messagebox
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName):
         super().__init__(parent)
@@ -23,6 +23,7 @@ class Settigns_Screen(tkinter.Toplevel):
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
+        self.data = None
 
         self.create_gui()
 
@@ -40,14 +41,40 @@ class Settigns_Screen(tkinter.Toplevel):
         self.btn_ChangePassword = Button(self,text="Change Password",font=("ariel",18),bg="light gray")
         self.btn_ChangePassword.place(relx=0.6,rely=0.35,anchor='center')
         
-     
-    def ChangePassword(self):
-        self.server.client_socket.send(b'ChangePassword')
-        length = str(len(self.UserName)).zfill(10)
-        data = length+self.UserName
+    def send_message(self,message):
+        length = str(len(message)).zfill(10)
+        data = length+message
         self.server.client_socket.send(data.encode())
+    
+    def recv_message(self):
+        length = self.server.client_socket.recv(10).decode()
+        self.data = self.server.client_socket.recv(int(length)).decode()
+
+    def ChangePassword(self):
+        self.popup_window = Toplevel(self)
+        self.popup_window.title("Change Password")
+        self.popup_window.config(bg="light grey")
+        Label(self.popup_window,text="Enter a new password:",font=("ariel",14)).pack()
+        popup_entry = Entry(self.popup_window,font=("ariel",14))
+        popup_entry.pack()
+        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_Passwor(popup_entry.get(),self.UserName)).pack()
+
          
+    def Submit_Password(self,Password,UserName):
+        try:
+            if len(Password) > 0:
+                self.server.client_socket.send(b'ChangePassword')
+                self.send_message(Password)
+                self.send_message(UserName)
+                self.recv_message()
+                messagebox.showinfo("Message Box", self.data)
+            self.popup_window.destroy()
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+            return "canceled"
         
+
     def AddEmail(self):
         self.popup_window = Toplevel(self)
         self.popup_window.title("AddEmail")
@@ -57,22 +84,7 @@ class Settigns_Screen(tkinter.Toplevel):
         popup_entry.pack()
         Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get(),self.UserName)).pack()
 
-    def Submit_AddEmail(self,Password,UserName):
-        try:
-            if len(Password) > 0:
-                self.server.client_socket.send(b'ChangePassword')
-                length = str(len(Password)).zfill(10)
-                data = length+Password
-                self.server.client_socket.send(data.encode())
-                
-                length_UserName = str(len(UserName)).zfill(10)
-                data_UserName = length_UserName+UserName
-                self.server.client_socket.send(data_UserName.encode())
-            self.popup_window.destroy()
-        except Exception as e:
-            print(e)
-            traceback.print_exc()
-            return "canceled"
+    
         
           
     def Submit_AddEmail(self,Email,UserName):
