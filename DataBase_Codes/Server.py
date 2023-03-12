@@ -39,6 +39,16 @@ class server(object):
     
 
     def handle_client_connection(self, client_socket, current):
+        
+        def send_message(message):
+            length = str(len(message)).zfill(10)
+            data = length+message
+            client_socket.send(data.encode())
+        
+        def recv_message():
+            length = client_socket.recv(10).decode()
+            return client_socket.recv(int(length)).decode()
+
         not_crash = True
         while self.running:
             while not_crash:
@@ -94,11 +104,14 @@ class server(object):
                         elif answer == "None":
                             client_socket.send(b"None")
                     elif server_data == "ChangePassword":
-                        length = client_socket.recv(10).decode()
-                        password = client_socket.recv(int(length)).decode()
-                        length = client_socket.recv(10).decode()
-                        UserName = client_socket.recv(int(length)).decode()
+                        password = recv_message()
+                        UserName = recv_message()
                         answer = UserDB.users().ChangePassword(password,UserName)
+                        send_message(answer)
+                    elif server_data == "ChangeUserName":
+                        NewUserName = recv_message()
+                        UserName = recv_message()
+                        answer = UserDB.users().ChangeUserName(NewUserName,UserName)
                         send_message(answer)
                     else:
                         server_data = "False"
@@ -110,10 +123,7 @@ class server(object):
                     traceback.print_exc()
                     break
         
-        def send_message(message):
-            length = str(len(message)).zfill(10)
-            data = length+message
-            client_socket.send(data.encode())
+        
 
 if __name__ == "__main__":
     ip = "0.0.0.0"

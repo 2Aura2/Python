@@ -38,8 +38,12 @@ class Settigns_Screen(tkinter.Toplevel):
         self.EmailExists()
         
         
-        self.btn_ChangePassword = Button(self,text="Change Password",font=("ariel",18),bg="light gray")
+        self.btn_ChangePassword = Button(self,text="Change Password",font=("ariel",18),command=self.ChangePassword,bg="light gray")
         self.btn_ChangePassword.place(relx=0.6,rely=0.35,anchor='center')
+        
+        self.btn_ChangeUserName = Button(self,text="Change UserName",font=("ariel",18),command=self.ChangeUserName,bg="light gray")
+        self.btn_ChangeUserName.place(relx=0.6,rely=0.5,anchor='center')
+
         
     def send_message(self,message):
         length = str(len(message)).zfill(10)
@@ -48,8 +52,32 @@ class Settigns_Screen(tkinter.Toplevel):
     
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()
-        self.data = self.server.client_socket.recv(int(length)).decode()
+        return self.server.client_socket.recv(int(length)).decode()
+        
+    def ChangeUserName(self):
+        self.popup_window = Toplevel(self)
+        self.popup_window.title("Change UserName")
+        self.popup_window.config(bg="light grey")
+        Label(self.popup_window,text="Enter a new UserName:",font=("ariel",14)).pack()
+        popup_entry = Entry(self.popup_window,font=("ariel",14))
+        popup_entry.pack()
+        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_UserName(popup_entry.get(),self.UserName)).pack()
 
+    def Submit_UserName(self,NewUserName,UserName):
+        try:
+            if len(NewUserName) > 0:
+                self.server.client_socket.send(b'ChangeUserName')
+                self.send_message(NewUserName)
+                self.send_message(UserName)
+                self.data = self.recv_message()
+                messagebox.showinfo("Message Box", self.data)
+            self.popup_window.destroy()
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+            return "canceled"
+    
+    
     def ChangePassword(self):
         self.popup_window = Toplevel(self)
         self.popup_window.title("Change Password")
@@ -57,7 +85,7 @@ class Settigns_Screen(tkinter.Toplevel):
         Label(self.popup_window,text="Enter a new password:",font=("ariel",14)).pack()
         popup_entry = Entry(self.popup_window,font=("ariel",14))
         popup_entry.pack()
-        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_Passwor(popup_entry.get(),self.UserName)).pack()
+        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_Password(popup_entry.get(),self.UserName)).pack()
 
          
     def Submit_Password(self,Password,UserName):

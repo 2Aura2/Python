@@ -108,6 +108,17 @@ class users:
             return "Password changed successfully"
         except:
             return "Failed to change password"
+        
+    def ChangeUserName(self,NewUserName,UserName):
+        try:
+            conn = sqlite3.connect(self.Location)
+            str_update = f"UPDATE {self.tablename} Set {self.UserName} = '{NewUserName}' WHERE {self.UserName} = '{UserName}'"
+            conn.execute(str_update)
+            conn.commit()
+            conn.close()
+            return "UserName changed successfully"
+        except:
+            return "Failed to change UserName"
 
 if __name__ == "__main__":
     u = users()
