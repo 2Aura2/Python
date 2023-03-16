@@ -54,9 +54,8 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
-                    #data_length = client_socket.recv(10).decode('utf-8')
-                    #server_data = client_socket.recv(data_length).decode()
                     arr = server_data.split(",")
+                    print(arr)  
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
                         print("server data:", server_data)
@@ -88,11 +87,8 @@ class server(object):
                         data = length+str_virus_hashes
                         client_socket.send(data.encode())
                     elif server_data == "AddEmail":
-                        length = client_socket.recv(10).decode()
-                        Email_data = client_socket.recv(int(length)).decode()
-
-                        length_UserName = client_socket.recv(10).decode()
-                        UserName_data = client_socket.recv(int(length_UserName)).decode()
+                        Email_data = recv_message()
+                        UserName_data = recv_message()
                         UserDB.users().UpdateEmailByUserName(Email_data,UserName_data)
                         print("Success")
                     elif server_data == "EmailExists":
@@ -100,9 +96,9 @@ class server(object):
                         data = client_socket.recv(int(length)).decode()
                         answer = UserDB.users().GetEmailByUserName(data)
                         if answer == "Exists":
-                            client_socket.send(b"Exists")
+                            send_message("Exists")
                         elif answer == "None":
-                            client_socket.send(b"None")
+                            send_message("None")    
                     elif server_data == "ChangePassword":
                         password = recv_message()
                         UserName = recv_message()

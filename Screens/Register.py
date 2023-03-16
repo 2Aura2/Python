@@ -56,10 +56,21 @@ class Register_Screen(tkinter.Toplevel):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('ariel',14),bg='light gray').place(relx=0.5,rely=0.1,anchor='center')
 
+
+    def send_message(self,message):
+        length = str(len(message)).zfill(10)
+        data = length+message
+        self.server.client_socket.send(data.encode())
+    
+    def recv_message(self):
+        length = self.server.client_socket.recv(10).decode()
+        return self.server.client_socket.recv(int(length)).decode()
+        
+
     def register_user(self):
         if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:
             messagebox.showerror("Error","Please write everything")
-            return
+            return "Error"
         else:
             arr = ["Register", self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
             str_arr = ",".join(arr)
@@ -67,7 +78,7 @@ class Register_Screen(tkinter.Toplevel):
             data = self.parent.client_socket.recv(1024).decode()
             if data == "The user already exists":
                 messagebox.showerror("Error",data)
-                return
+                return "Error"
             else:
                 messagebox.showinfo(title="Register", message=data)
                 self.return_to_Login_page()

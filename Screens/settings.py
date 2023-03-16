@@ -62,10 +62,10 @@ class Settigns_Screen(tkinter.Toplevel):
         popup_entry = Entry(self.popup_window,font=("ariel",14))
         popup_entry.pack()
         Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_UserName(popup_entry.get(),self.UserName)).pack()
-
+        
     def Submit_UserName(self,NewUserName,UserName):
         try:
-            if len(NewUserName) > 0:
+            if len(NewUserName) > 0 and NewUserName != UserName:
                 self.server.client_socket.send(b'ChangeUserName')
                 self.send_message(NewUserName)
                 self.send_message(UserName)
@@ -110,22 +110,17 @@ class Settigns_Screen(tkinter.Toplevel):
         Label(self.popup_window,text="Enter an Email:",font=("ariel",14)).pack()
         popup_entry = Entry(self.popup_window,font=("ariel",14))
         popup_entry.pack()
-        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get(),self.UserName)).pack()
+        Button(self.popup_window, text="Submit",font=("ariel",14),command=lambda:self.Submit_AddEmail(popup_entry.get())).pack()
 
     
         
           
-    def Submit_AddEmail(self,Email,UserName):
+    def Submit_AddEmail(self,Email):
         try:
             if len(Email) > 0:
                 self.server.client_socket.send("AddEmail".encode())
-                length = str(len(Email)).zfill(10)
-                data = length+Email
-                self.server.client_socket.send(data.encode())
-                
-                length_UserName = str(len(UserName)).zfill(10)
-                data_UserName = length_UserName+UserName
-                self.server.client_socket.send(data_UserName.encode())
+                self.send_message(Email)
+                self.send_message(self.UserName)
             self.popup_window.destroy()
         except Exception as e:
             print(e)
@@ -134,10 +129,8 @@ class Settigns_Screen(tkinter.Toplevel):
         
     def EmailExists(self):
         self.server.client_socket.send(b'EmailExists')
-        length = str(len(self.UserName)).zfill(10)
-        data = length+self.UserName
-        self.server.client_socket.send(data.encode())
-        answer = self.server.client_socket.recv(50).decode()
+        self.send_message(self.UserName)
+        answer = self.recv_message()
         if answer == "Exists":
             self.textvar = StringVar(self,"Change Email")
             self.btn_AddEmail.config(textvariable=self.textvar)
