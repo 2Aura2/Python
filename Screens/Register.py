@@ -37,7 +37,7 @@ class Register_Screen(tkinter.Toplevel):
 
 
     def create_gui(self):
-
+        self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_background = Label(self,bg="light gray",width=45,height=30).place(relx=0.8,rely=0.5,anchor='center')
 
         self.lbl_Fullname = Label(self,text="Fullname:",font=("ariel",14),width=10,bg="light gray").place(relx=0.7,rely=0.3,anchor='center')

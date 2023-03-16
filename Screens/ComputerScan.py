@@ -29,12 +29,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.create_gui()
 
     def create_gui(self):
-        #self.btn_Overview = Button(self,text="Overview",font=("",18),width=16,bg="orange",command=self.open_overview_screen).place(relx=0.2,rely=0.2,anchor='center')
-        #self.btn_Computer_Scan = Button(self,text="Computer Scan",font=("",18),width=16,bg="light blue").place(relx=0.2,rely=0.35,anchor='center')
-        #self.btn_Junk_Files_Remover = Button(self,text="Junk Files Remover",font=("",18),bg="orange",command=self.open_JunkFiles_screen).place(relx=0.2,rely=0.5,anchor='center')
-        #self.btn_History = Button(self,text="History",font=("",18),width=16,bg="orange",command=self.open_history_screen).place(relx=0.2,rely=0.65,anchor='center')
-        #self.btn_settings = Button(self,text="Settings",font=("",18),width=16,bg="orange",command=self.open_settings_screen).place(relx=0.2,rely=0.8,anchor='center')
-        
+        self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.Scan).place(relx=0.8,rely=0.2,anchor='center')
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.Adv_Scan).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
