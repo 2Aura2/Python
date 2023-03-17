@@ -1,7 +1,6 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-import Login
 import traceback
 from tkinter import messagebox
 class Settigns_Screen(tkinter.Toplevel):

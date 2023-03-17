@@ -3,8 +3,6 @@ import threading
 import UserDB
 import Viruses_HashDB
 import traceback
-import os
-import hashlib
 
 
 class server(object):
