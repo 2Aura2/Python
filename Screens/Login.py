@@ -97,6 +97,14 @@ class Login_Screen(tkinter.Tk):
         data = self.client_socket.recv(1024).decode()
         print("hi", self.client_socket)
     
+    def send_message(self,message):
+        length = str(len(message)).zfill(10)
+        data = length+message
+        self.client_socket.send(data.encode())
+    
+    def recv_message(self):
+        length = self.client_socket.recv(10).decode()
+        return self.client_socket.recv(int(length)).decode()
     
     def login_user(self):
         try:
