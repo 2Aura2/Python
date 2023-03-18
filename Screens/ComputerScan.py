@@ -92,12 +92,13 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         #get_all_hashes("C:\\")
 
 
-    def Adv_Scan(root):
+    def Adv_Scan(self):
         
         def choose_path(root):
             root.withdraw()
             path = filedialog.askdirectory(initialdir = '/')
             print("Selected disk path: ", path)
+            get_all_hashes(path)
             
 
         
@@ -116,13 +117,13 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             path_button.pack()
             root.mainloop()
 
-        #self.parent.client_socket.send(b"Scan")
 
         def generate_md5_hash(file_path):
             with open(file_path, 'rb') as f:
                 return hashlib.md5(f.read()).hexdigest()
 
         def get_all_hashes(root_dir):
+            self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
@@ -130,13 +131,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     md5_hash = generate_md5_hash(file_path)
                     arr_hashes.append(md5_hash)
             str_hashes = ",".join(arr_hashes)
-            length = str(len(str_hashes)).zfill(10)
-            data = length+str_hashes
-            root.parent.client_socket.send(data.encode())
-            #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
-            length_data = root.parent.client_socket.recv(10).decode()
-            virus_hashes_data = root.parent.client.socket.recv(length_data).decode()
+            self.send_message(str_hashes)
+            virus_hashes_data = self.recv_message()
+            print(virus_hashes_data)
             arr_virus_hashes = virus_hashes_data.split(",")
+            print(arr_virus_hashes)
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -154,7 +153,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return "Viruses Removed"
             return "The computer is clear"
 
-        #select_path()
+        select_path()
 
 
 
