@@ -149,8 +149,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                             print(file_hash)
                             print(virus_hash)
                             if file_hash == virus_hash:
-                                print(file_path)
-                                os.remove(file_path)
+                                try:
+                                    print(file_path)
+                                    os.remove(file_path)
+                                except PermissionError:
+                                    os.unlink(file_path)
                     return "Viruses Removed"
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
             return "The computer is clear"
