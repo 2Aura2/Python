@@ -73,15 +73,22 @@ class server(object):
                             client_socket.send("User created successfully".encode())
                     elif server_data == "Scan":
                         server_data_length = client_socket.recv(10).decode()
-                        server_data_hashes = client_socket.recv(server_data_length).decode()
+                        server_data_hashes = client_socket.recv(int(server_data_length)).decode()
+                        print(server_data_hashes)
                         arr_hashes = server_data_hashes.split(",")
+                        print(arr_hashes)
                         arr_virus_hashes=[]
                         for hash in arr_hashes:
                             file_hash = hash
-                            if file_hash in Viruses_HashDB.hashes():
+                            print(hash)
+                            print(file_hash)
+                            all_existing_viruses = Viruses_HashDB.hashes().select_all_hashes()
+                            if file_hash in all_existing_viruses:
                                 arr_virus_hashes.append(file_hash)
-                        length = str(len(arr_virus_hashes)).zfill(10)
+                        print(arr_virus_hashes)
                         str_virus_hashes = ",".join(arr_virus_hashes)
+                        print(str_virus_hashes)
+                        length = str(len(str_virus_hashes)).zfill(10)
                         data = length+str_virus_hashes
                         client_socket.send(data.encode())
                     elif server_data == "AddEmail":

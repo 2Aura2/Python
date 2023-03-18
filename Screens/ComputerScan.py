@@ -87,12 +87,13 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         #get_all_hashes("C:\\")
 
 
-    def Adv_Scan(root):
+    def Adv_Scan(self):
         
         def choose_path(root):
             root.withdraw()
             path = filedialog.askdirectory(initialdir = '/')
             print("Selected disk path: ", path)
+            get_all_hashes(path)
             
 
         
@@ -118,33 +119,43 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return hashlib.md5(f.read()).hexdigest()
 
         def get_all_hashes(root_dir):
+            self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
                     md5_hash = generate_md5_hash(file_path)
+                    print(md5_hash)
                     arr_hashes.append(md5_hash)
+            print(arr_hashes)
             str_hashes = ",".join(arr_hashes)
+            print(str_hashes)
             length = str(len(str_hashes)).zfill(10)
             data = length+str_hashes
-            root.parent.client_socket.send(data.encode())
+            self.server.client_socket.send(data.encode())
             #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
-            length_data = root.parent.client_socket.recv(10).decode()
-            virus_hashes_data = root.parent.client.socket.recv(length_data).decode()
+            length_data = self.server.client_socket.recv(10).decode()
+            virus_hashes_data = self.server.client_socket.recv(int(length_data)).decode()
+            print(virus_hashes_data)
             arr_virus_hashes = virus_hashes_data.split(",")
+            print(arr_virus_hashes)
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
+                    print(file_path)
                     with open(file_path, 'rb') as f:
                         file_hash = hashlib.md5(f.read()).hexdigest()
                         for virus_hash in arr_virus_hashes:
+                            print(file_hash)
+                            print(virus_hash)
                             if file_hash == virus_hash:
+                                print(file_path)
                                 os.remove(file_path)
+                    return "Viruses Removed"
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
-                return "Viruses Removed"
             return "The computer is clear"
 
-        #select_path()
+        select_path()
 
 
 
