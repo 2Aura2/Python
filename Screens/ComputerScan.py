@@ -34,13 +34,21 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.Adv_Scan).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
 
+    def send_message(self,message):
+        length = str(len(message)).zfill(10)
+        data = length+message
+        self.server.client_socket.send(data.encode())
+    
+    def recv_message(self):
+        length = self.server.client_socket.recv(10).decode()
+        return self.server.client_socket.recv(int(length)).decode()
+        
+
     def previous_window(self):
         self.destroy()  # close the second window
         self.parent.deiconify()  # show the main window again
 
     def Scan(self):
-        self.server.client_socket.send(b"Scan")
-        
         def generate_md5_hash(file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
              with open(file_path, 'rb') as f:
                 file_hash = hashlib.md5()
@@ -49,6 +57,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return file_hash.hexdigest()
 
         def get_all_hashes(root_dir):
+            self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
@@ -60,12 +69,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     except PermissionError:
                         continue
             str_hashes = ",".join(arr_hashes)
-            length = str(len(str_hashes)).zfill(10)
-            data = length+str_hashes
-            self.server.client_socket.send(data.encode())
-            #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
-            length_data = self.server.client_socket.recv(10).decode()
-            virus_hashes_data = self.server.client.socket.recv(length_data).decode()
+            self.send_message(str_hashes)
+            virus_hashes_data = self.recv_message()
             arr_virus_hashes = virus_hashes_data.split(",")
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
@@ -87,13 +92,12 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         #get_all_hashes("C:\\")
 
 
-    def Adv_Scan(self):
+    def Adv_Scan(root):
         
         def choose_path(root):
             root.withdraw()
             path = filedialog.askdirectory(initialdir = '/')
             print("Selected disk path: ", path)
-            get_all_hashes(path)
             
 
         
@@ -119,36 +123,28 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return hashlib.md5(f.read()).hexdigest()
 
         def get_all_hashes(root_dir):
-            self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
                     md5_hash = generate_md5_hash(file_path)
-                    print(md5_hash)
                     arr_hashes.append(md5_hash)
-            print(arr_hashes)
             str_hashes = ",".join(arr_hashes)
-            print(str_hashes)
             length = str(len(str_hashes)).zfill(10)
             data = length+str_hashes
-            self.server.client_socket.send(data.encode())
+            root.parent.client_socket.send(data.encode())
             #print(f"File: {file_path} \n MD5 Hash: {md5_hash}")
-            length_data = self.server.client_socket.recv(10).decode()
-            virus_hashes_data = self.server.client_socket.recv(int(length_data)).decode()
-            print(virus_hashes_data)
+            length_data = root.parent.client_socket.recv(10).decode()
+            virus_hashes_data = root.parent.client.socket.recv(length_data).decode()
             arr_virus_hashes = virus_hashes_data.split(",")
-            print(arr_virus_hashes)
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    print(file_path)
                     with open(file_path, 'rb') as f:
                         file_hash = hashlib.md5(f.read()).hexdigest()
                         for virus_hash in arr_virus_hashes:
-                            print(file_hash)
-                            print(virus_hash)
                             if file_hash == virus_hash:
+<<<<<<< HEAD
                                 try:
                                     print(file_path)
                                     os.remove(file_path)
@@ -156,10 +152,14 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                                     os.unlink(file_path)
                                     #hi
                     return "Viruses Removed"
+=======
+                                os.remove(file_path)
+>>>>>>> 6d02d1e6cfc78eb06e1b278bfc2cefe9d1d32fbb
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
+                return "Viruses Removed"
             return "The computer is clear"
 
-        select_path()
+        #select_path()
 
 
 
