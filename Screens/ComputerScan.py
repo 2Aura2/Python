@@ -144,17 +144,12 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         file_hash = hashlib.md5(f.read()).hexdigest()
                         for virus_hash in arr_virus_hashes:
                             if file_hash == virus_hash:
-<<<<<<< HEAD
                                 try:
                                     print(file_path)
                                     os.remove(file_path)
                                 except PermissionError:
                                     os.unlink(file_path)
-                                    #hi
                     return "Viruses Removed"
-=======
-                                os.remove(file_path)
->>>>>>> 6d02d1e6cfc78eb06e1b278bfc2cefe9d1d32fbb
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
                 return "Viruses Removed"
             return "The computer is clear"
