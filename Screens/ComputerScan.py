@@ -154,6 +154,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                                     os.remove(file_path)
                                 except PermissionError:
                                     os.unlink(file_path)
+                                    #hi
                     return "Viruses Removed"
                 messagebox.showinfo(title="Viruses", message="All virus have been removed")
             return "The computer is clear"
