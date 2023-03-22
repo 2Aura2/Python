@@ -149,6 +149,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 #return "Viruses Removed"
             #return "All viruses found"
             #return "The computer is clear"
+            #hi
             for virues in self.arr_viruses_to_remove:
                 os.remove(virues)
             print("Viruses removed")
