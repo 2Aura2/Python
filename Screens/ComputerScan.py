@@ -26,6 +26,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
 
+
         self.create_gui()
 
     def create_gui(self):
@@ -93,7 +94,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
     def Adv_Scan(self):
-        
+        self.arr_viruses_to_remove = []
         def choose_path(root):
             root.withdraw()
             path = filedialog.askdirectory(initialdir = '/')
@@ -143,16 +144,16 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         file_hash = hashlib.md5(f.read()).hexdigest()
                         for virus_hash in arr_virus_hashes:
                             if file_hash == virus_hash:
-                                try:
-                                    print(file_path)
-                                    os.remove(file_path)
-                                except PermissionError:
-                                    os.unlink(file_path)
-                    return "Viruses Removed"
-                messagebox.showinfo(title="Viruses", message="All virus have been removed")
-                return "Viruses Removed"
-            return "The computer is clear"
-
+                                self.arr_viruses_to_remove.append(file_path)
+                #messagebox.showinfo(title="Viruses", message="All virus have been removed")
+                #return "Viruses Removed"
+            #return "All viruses found"
+            #return "The computer is clear"
+            for virues in self.arr_viruses_to_remove:
+                os.remove(virues)
+            print("Viruses removed")
+            return "Viruses Removed"
+        
         select_path()
 
 
