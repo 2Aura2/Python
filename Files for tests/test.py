@@ -1,6 +1,6 @@
 import os
-
-folder_path = "C:\\Users\\dato0\\AppData\\Local\\Temp"
+path ="AppData\\Local\\Temp"
+folder_path = os.path.join(os.path.expanduser("~"), path)
 
 # loop over all the files and directories in the folder
 for filename in os.listdir(folder_path):
