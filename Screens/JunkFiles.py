@@ -30,8 +30,8 @@ class Junk_Files_Screen(tkinter.Toplevel):
 
     def create_gui(self):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
-        self.btn_startScan = Button(self,text="Clean",font=("",18),width=16,bg="light gray").place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_ADVScan = Button(self,text="Clean 2",font=("",18),width=16,bg="light gray").place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_Clean1 = Button(self,text="Clean",font=("",18),width=16,bg="light gray",command=self.remove_temp_files).place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_Clean2 = Button(self,text="Clean 2",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
 
     def previous_window(self):
@@ -61,11 +61,11 @@ class Junk_Files_Screen(tkinter.Toplevel):
                         pass
 
 
-    def remove_browser_cache():
+    def remove_browser_cache(self):
         cache_dirs = [
             os.path.expanduser(r"~\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache"),
             os.path.expanduser(r"~\\AppData\\Local\\Mozilla\\Firefox\\Profiles"),
-            os.path.expanduser(r"~\\AppData\\Local\\Microsoft\\Edge\\User Data\Default\\Cache")
+            os.path.expanduser(r"~\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Cache")
         ]
         for cache_dir in cache_dirs:
             if os.path.exists(cache_dir):
