@@ -5,7 +5,7 @@ import ComputerScan
 import JunkFiles
 import History
 import settings
-
+import time
 
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent,UserName):
@@ -50,11 +50,16 @@ class Overview_Screen(tkinter.Toplevel):
         self.lbl_welcome.config(width=30,height=5)
         self.lbl_welcome.place(relx=0.7,rely=0.2,anchor='center')   
 
-    #def create_button_image(self):
-    #    self.button_image = PhotoImage(file="Images\\button2.1.png")
-    #    self.button_image_item = self.canvas.create_image(self.canvas_width, self.canvas_height, image=self.button_image, anchor='center')
-    #    self.canvas.tag_bind(self.button_image_item, "<Button-1>", lambda event: self.open_Computer_Scan_screen(self.parent))
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
 
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
+        
     def open_Computer_Scan_screen(self):
         window = ComputerScan.Computer_Scan_Screen(self, self.parent)
         window.grab_set()

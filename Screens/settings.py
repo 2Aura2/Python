@@ -3,6 +3,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import traceback
 from tkinter import messagebox
+import time
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName):
         super().__init__(parent)
@@ -45,6 +46,15 @@ class Settigns_Screen(tkinter.Toplevel):
         self.btn_ChangeUserName = Button(self,text="Change UserName",font=("ariel",18),command=self.ChangeUserName,bg="light gray")
         self.btn_ChangeUserName.place(relx=0.6,rely=0.5,anchor='center')
 
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
+
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
         
     def send_message(self,message):
         length = str(len(message)).zfill(10)

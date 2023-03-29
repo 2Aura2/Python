@@ -1,28 +1,23 @@
 import tkinter as tk
-from PIL import Image, ImageTk
+from tkinter import *
+import time
 
-class Example(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack(fill='both', expand=True)
-        
-        # Load and set the background image for the window
-        self.bg_image = Image.open('Images\\solid3.jpg')
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
-        self.bg_label = tk.Label(self, image=self.bg_photo)
-        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+def update_label():
+    current_time = time.strftime("%H:%M:%S")
+    current_date = time.strftime("%Y-%m-%d")
+    label.config(text=f"{current_date} {current_time}")
+    label.after(1000, update_label)
 
-        # Create a transparent button
-        self.button_image = Image.open('Images\\button2.1.png')
-        self.button_image = self.button_image.convert('RGBA')
-        self.button_photo = ImageTk.PhotoImage(self.button_image)
-        self.button = tk.Button(self, image=self.button_photo, bd=0, highlightthickness=0, command=self.on_button_click)
-        self.button.place(x=100, y=100)
-
-    def on_button_click(self):
-        print('Button clicked')
-
+# Create the main window
 root = tk.Tk()
-app = Example(root)
-app.mainloop()
+root.title("Real Time and Date")
+
+# Create a label to display the current time and date
+label = tk.Label(root, font=("Arial", 18), justify="center")
+label.pack(padx=50, pady=50)
+
+# Call the update_label function every second to update the label with the current time and date
+update_label()
+
+# Run the main loop
+root.mainloop()

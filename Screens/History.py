@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
-
+import time
 
 
 class History_Screen(tkinter.Toplevel):
@@ -29,6 +29,16 @@ class History_Screen(tkinter.Toplevel):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_text = Label(self,text="History screen allows\n you to see all your\n scans information",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
+
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
+
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
 
     def previous_window(self):
         self.destroy()  # close the second window

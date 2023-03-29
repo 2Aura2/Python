@@ -3,10 +3,7 @@ import tkinter
 from tkinter import *
 from tkinter import ttk, messagebox
 import sys
-#str_path = "D://School Project//Python//DataBase_Codes//"
-#str_path1 = "C://School Project//Python//DataBase_Codes//"
-#sys.path.insert(1,str_path1)
-#import UserDB
+import time
 from PIL import ImageTk, Image
 
 
@@ -56,6 +53,15 @@ class Register_Screen(tkinter.Toplevel):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('ariel',14),bg='light gray').place(relx=0.5,rely=0.1,anchor='center')
 
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
+
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
 
     def send_message(self,message):
         length = str(len(message)).zfill(10)

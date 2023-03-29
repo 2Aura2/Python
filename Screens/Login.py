@@ -7,7 +7,7 @@ from Register import Register_Screen
 import Overview
 from PIL import ImageTk, Image
 import traceback
-
+import time
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
@@ -50,7 +50,16 @@ class Login_Screen(tkinter.Tk):
         self.enr_Password.insert(0,"Password")
         self.enr_Password.bind('<FocusIn>',  self.Password_enter)
         self.enr_Password.bind('<FocusOut>', self.Password_leave)
+        
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
 
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
         
     
     def Username_enter(self,event):

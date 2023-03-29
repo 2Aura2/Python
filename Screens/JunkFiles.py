@@ -5,7 +5,7 @@ import os
 import shutil
 import sys
 import subprocess
-
+import time
 
 class Junk_Files_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
@@ -33,6 +33,15 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.btn_Clean1 = Button(self,text="Clean",font=("",18),width=16,bg="light gray",command=self.remove_temp_files).place(relx=0.8,rely=0.2,anchor='center')
         self.btn_Clean2 = Button(self,text="Clean 2",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
+        self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
+        self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
+        self.update_label()
+
+    def update_label(self):
+        current_time = time.strftime("%H:%M:%S")
+        current_date = time.strftime("%Y-%m-%d")
+        self.lbl_time.config(text=f"{current_date} {current_time}")
+        self.lbl_time.after(1000, self.update_label)
 
     def previous_window(self):
         self.destroy()  # close the second window
