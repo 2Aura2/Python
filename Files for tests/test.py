@@ -1,19 +1,20 @@
-import os
-path ="AppData\\Local\\Temp"
-folder_path = os.path.join(os.path.expanduser("~"), path)
+import subprocess
 
-# loop over all the files and directories in the folder
-for filename in os.listdir(folder_path):
-    file_path = os.path.join(folder_path, filename)
-    try:
-        if os.path.isfile(file_path):
-            # remove the file
-            os.unlink(file_path)
-        elif os.path.isdir(file_path):
-            # remove the directory and all its contents
-            os.rmdir(file_path)
-    except Exception as e:
-        print(f"Failed to delete {file_path} with error {e}")
+def detect_installed_programs():
+    """
+    This function detects which programs are installed on a Windows system using the 'wmic' command.
+    """
+    command = 'wmic product get name'
+    output = subprocess.check_output(command, shell=True)
+    installed_programs = []
+    for line in output.splitlines():
+        line = line.decode().strip()
+        if line:
+            installed_programs.append(line)
+    return installed_programs
 
+
+x = detect_installed_programs()
+print(x)
 
 
