@@ -62,6 +62,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.destroy()  # close the second window
         self.parent.deiconify()  # show the main window again
 
+#_____________________________________________________________________________________________________________________________________
     def Scan(self):
         def generate_md5_hash(file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
              with open(file_path, 'rb') as f:
@@ -91,23 +92,21 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    try:
-                        with open(file_path, 'rb') as f:
-                            file_hash = hashlib.md5(f.read()).hexdigest()
-                            for virus_hash in arr_virus_hashes:
-                                if file_hash == virus_hash:
-                                    os.remove(file_path)
-                                    print("Removed")
-                    except PermissionError:
-                        continue
-                messagebox.showinfo(title="Viruses", message="All virus have been removed")
-                return "Viruses Removed"
-            print("Scan Done")
-            return "The computer is clear"
+                    with open(file_path, 'rb') as f:
+                        file_hash = hashlib.md5(f.read()).hexdigest()
+                        for virus_hash in arr_virus_hashes:
+                            if file_hash == virus_hash:
+                                self.arr_viruses_to_remove.append(file_path)
+
+            for virues in self.arr_viruses_to_remove:
+                os.remove(virues)
+            print("Viruses removed")
+            return "Viruses Removed"
+        
 
         get_all_hashes("C:\\")
 
-
+#_________________________________________________________________________________________________________________________
     def Adv_Scan(self):
         self.arr_viruses_to_remove = []
         def choose_path(root):
