@@ -6,6 +6,7 @@ import os
 import hashlib
 from tkinter import filedialog
 import time
+import shutil
 
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
@@ -81,6 +82,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         arr_hashes.append(md5_hash)
                     except PermissionError:
                         continue
+                    except OSError:
+                        continue
             str_hashes = ",".join(arr_hashes)
             self.send_message(str_hashes)
             virus_hashes_data = self.recv_message()
@@ -102,7 +105,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Scan Done")
             return "The computer is clear"
 
-        #get_all_hashes("C:\\")
+        get_all_hashes("C:\\")
 
 
     def Adv_Scan(self):
