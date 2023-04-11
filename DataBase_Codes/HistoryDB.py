@@ -1,4 +1,5 @@
 import sqlite3
+import numpy
 
 class history:
     def __init__(self,tablename="History",HistoryId="HistoryId",Start="Start",End="End",FindorNot="FindorNot", Solution="Solution", UserId="UserId"):
@@ -55,10 +56,14 @@ class history:
             str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}='{str(UserId)}' ORDER BY UserId DESC LIMIT 5"
             cursor = conn.execute(str_info)
             row = cursor.fetchall()
-            print(row)
+            arr = ','.join(map(str, row))
+            letters_to_remove = "()'"
+            for char in letters_to_remove:
+                arr = arr.replace(char, "")
+            arr = arr.split(",")
             conn.commit()
             conn.close()
-            return row
+            return arr
         except:
             print("Failed to find Scan")
             return False
@@ -78,3 +83,4 @@ class history:
         
 h = history()
 #h.AddScan("1","1","1","1","8")
+h.get_scan_by_UserId(8)

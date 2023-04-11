@@ -53,12 +53,13 @@ class History_Screen(tkinter.Toplevel):
     def Show_Scans(self):
         self.server.client_socket.send(b"Show Scans")
         self.send_message(self.UserName)
-        arr_scans = self.recv_message_arr()
-        print(arr_scans)
-        for row_idx, row_data in enumerate(arr_scans):
-            for col_idx, col_data in enumerate(row_data):
-                label = Label(self, text=col_data)
-                label.grid(row=row_idx, column=col_idx)
+        arr_Scans = self.recv_message_arr()
+        print(arr_Scans)
+        Scans = ",".join(arr_Scans)
+        print(Scans)
+        #for row_data in enumerate(Scans):
+        label = Label(self, text=Scans,bg="light gray")
+        label.place(relx=0.5,rely=0.5,anchor='center')
 
     def update_label(self):
         current_time = time.strftime("%H:%M:%S")

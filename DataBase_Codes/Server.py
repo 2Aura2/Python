@@ -47,7 +47,7 @@ class server(object):
             str_arr = ",".join(arr)
             length = str(len(str_arr)).zfill(10)
             data = length+str_arr
-            self.server.client_socket.send(data.encode())
+            client_socket.send(data.encode())
 
         def recv_message():
             length = client_socket.recv(10).decode()
