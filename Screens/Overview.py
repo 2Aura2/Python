@@ -61,7 +61,7 @@ class Overview_Screen(tkinter.Toplevel):
         self.lbl_time.after(1000, self.update_label)
         
     def open_Computer_Scan_screen(self):
-        window = ComputerScan.Computer_Scan_Screen(self, self.parent)
+        window = ComputerScan.Computer_Scan_Screen(self, self.parent, self.UserName)
         window.grab_set()
         self.withdraw()
 

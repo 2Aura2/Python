@@ -6,13 +6,15 @@ import os
 import hashlib
 from tkinter import filedialog
 import time
+import datetime
 import shutil
 
 class Computer_Scan_Screen(tkinter.Toplevel):
-    def __init__(self,parent,server):
+    def __init__(self,parent,server,UserName):
         super().__init__(parent)
         self.parent = parent
         self.server = server
+        self.UserName = UserName
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -53,6 +55,12 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         data = length+message
         self.server.client_socket.send(data.encode())
     
+    def send_message_arr(self,arr):
+        str_arr = ",".join(arr)
+        length = str(len(str_arr)).zfill(10)
+        data = length+str_arr
+        self.server.client_socket.send(data.encode()) 
+
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()
         return self.server.client_socket.recv(int(length)).decode()
@@ -72,6 +80,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return file_hash.hexdigest()
 
         def get_all_hashes(root_dir):
+            
             self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
@@ -101,6 +110,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             for virues in self.arr_viruses_to_remove:
                 os.remove(virues)
             print("Viruses removed")
+            
             return "Viruses Removed"
         
 
@@ -138,6 +148,9 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 return hashlib.md5(f.read()).hexdigest()
 
         def get_all_hashes(root_dir):
+            FindOrNot = ""
+            start_time = datetime.datetime.now()
+            print(start_time)
             self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
@@ -151,6 +164,12 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print(virus_hashes_data)
             arr_virus_hashes = virus_hashes_data.split(",")
             print(arr_virus_hashes)
+            if len(arr_virus_hashes) == 0:
+                FindOrNot = "No"
+                Solution = "Not Removed"
+            else:
+                FindOrNot = "Yes"
+                Solution = "Removed"
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -159,30 +178,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         for virus_hash in arr_virus_hashes:
                             if file_hash == virus_hash:
                                 self.arr_viruses_to_remove.append(file_path)
-                #messagebox.showinfo(title="Viruses", message="All virus have been removed")
-                #return "Viruses Removed"
-            #return "All viruses found"
-            #return "The computer is clear"
-            #hi
             for virues in self.arr_viruses_to_remove:
                 os.remove(virues)
             print("Viruses removed")
+            end_time = datetime.datetime.now()
+            print(end_time)
+            arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+            self.send_message_arr(arr_history)
             return "Viruses Removed"
         
         select_path()
 
 
-
-
-        #root_dir = "E:\\Battle.net" # change this to the drive letter you want to search
-        #for dir_name, subdir_list, file_list in os.walk(root_dir):
-            #print(dir_name)
-            #for file_name in file_list:
-                #print(f"\t{file_name}")
-                #file_path = file_name
-                #length = str(len(file_path)).zfill(10)
-                #data = length+file_name
-                #self.parent.client_socket.send(data.encode())
                 
 
 

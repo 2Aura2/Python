@@ -65,7 +65,7 @@ class history:
             return False
         
         
-    def delete_by_UserName(self, Start):
+    def delete_by_start(self, Start):
         try:
             conn = sqlite3.connect(self.Location)
             str_delete = "DELETE from " + self.tablename + " where " + self.Start + "=" + "'" + str(Start) + "'"

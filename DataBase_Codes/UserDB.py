@@ -97,6 +97,21 @@ class users:
                 return "None"
         except Exception as e:
             print(e)
+
+    def GetUserIdByUserName(self,UserName):
+        try:
+            conn=sqlite3.connect(self.Location)
+            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
+            cursor = conn.execute(strsql)
+            row=cursor.fetchone()
+            conn.commit()
+            conn.close()
+            if row[0]:
+                return row[0]
+            else:
+                return "None"
+        except Exception as e:
+            print(e)
     
     def ChangePassword(self,Password,UserName):
         try:

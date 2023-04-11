@@ -3,7 +3,7 @@ import threading
 import UserDB
 import Viruses_HashDB
 import traceback
-
+import HistoryDB
 
 class server(object):
     def __init__(self,ip,port):
@@ -46,6 +46,12 @@ class server(object):
         def recv_message():
             length = client_socket.recv(10).decode()
             return client_socket.recv(int(length)).decode()
+        
+        def recv_message_arr():
+            length = client_socket.recv(10).decode()
+            str_arr = client_socket.recv(int(length)).decode()
+            return str_arr.split(",")
+
 
         not_crash = True
         while self.running:
@@ -82,6 +88,10 @@ class server(object):
                                 arr_virus_hashes.append(file_hash)
                         str_virus_hashes = ",".join(arr_virus_hashes)
                         send_message(str_virus_hashes)
+                        arr_history = recv_message_arr()
+                        UserId = UserDB.users().GetUserIdByUserName(arr_history[4])
+                        HistoryDB.history().AddScan(arr_history[0],arr_history[1],arr_history[2],arr_history[3], UserId)
+
                     elif server_data == "AddEmail":
                         Email_data = recv_message()
                         UserName_data = recv_message()
