@@ -71,7 +71,7 @@ class Overview_Screen(tkinter.Toplevel):
         self.withdraw()
         
     def open_history_screen(self):
-        window = History.History_Screen(self,self.parent)
+        window = History.History_Screen(self,self.parent,self.UserName)
         window.grab_set()
         self.withdraw()
 

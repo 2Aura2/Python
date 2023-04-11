@@ -52,14 +52,13 @@ class history:
     def get_scan_by_UserId(self,UserId):
         try:
             conn = sqlite3.connect(self.Location)
-            strsql = f"SELECT * from {self.tablename} where {self.UserId} = '{str(UserId)}'"
-            cursor = conn.execute(strsql)
-            row = cursor.fetchone()
-            scan_data = str(row[1],row[2],row[3],row[4])
-            print("Scan data: " + str(scan_data))
+            str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}='{str(UserId)}' ORDER BY UserId DESC LIMIT 5"
+            cursor = conn.execute(str_info)
+            row = cursor.fetchall()
+            print(row)
             conn.commit()
             conn.close()
-            return scan_data
+            return row
         except:
             print("Failed to find Scan")
             return False
@@ -75,7 +74,7 @@ class history:
             print("Scan Deleted successfully")
             return "Success"
         except:
-            return "Failed to delete Scan"
-        
+            return "Failed to delete Scan" 
         
 h = history()
+#h.AddScan("1","1","1","1","8")

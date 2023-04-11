@@ -43,6 +43,12 @@ class server(object):
             data = length+message
             client_socket.send(data.encode())
         
+        def send_message_arr(self,arr):
+            str_arr = ",".join(arr)
+            length = str(len(str_arr)).zfill(10)
+            data = length+str_arr
+            self.server.client_socket.send(data.encode())
+
         def recv_message():
             length = client_socket.recv(10).decode()
             return client_socket.recv(int(length)).decode()
@@ -91,7 +97,11 @@ class server(object):
                         arr_history = recv_message_arr()
                         UserId = UserDB.users().GetUserIdByUserName(arr_history[4])
                         HistoryDB.history().AddScan(arr_history[0],arr_history[1],arr_history[2],arr_history[3], UserId)
-
+                    elif server_data == "Show Scans":
+                        UserName = recv_message()
+                        UserId = UserDB.users().GetUserIdByUserName(UserName)
+                        Scans = HistoryDB.history().get_scan_by_UserId(UserId)
+                        send_message_arr(Scans)
                     elif server_data == "AddEmail":
                         Email_data = recv_message()
                         UserName_data = recv_message()
