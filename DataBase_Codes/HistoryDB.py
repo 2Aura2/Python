@@ -1,13 +1,14 @@
 import sqlite3
 
 class history:
-    def __init__(self,tablename="History",HistoryId="HistoryId",Start="Start",End="End",FindorNot="FindorNot", Solution="Solution"):
+    def __init__(self,tablename="History",HistoryId="HistoryId",Start="Start",End="End",FindorNot="FindorNot", Solution="Solution", UserId="UserId"):
         self.tablename = tablename
         self.HistoryId = HistoryId 
         self.Start = Start 
         self.End = End
         self.FindorNot = FindorNot
         self.Solution = Solution
+        self.UserId = UserId
         self.Location = 'DataBase\\HistoryDB.db'
         
         conn=sqlite3.connect(self.Location)
@@ -16,16 +17,17 @@ class history:
         str += " " + self.Start + " TEXT    NOT NULL ,"
         str += " " + self.End + " TEXT    NOT NULL ,"
         str += " " + self.FindorNot + " TEXT    NOT NULL ,"
-        str += " " + self.Solution + " TEXT    NOT NULL)"
+        str += " " + self.Solution + " TEXT    NOT NULL ,"
+        str += " " + self.UserId + " INTEGER    NOT NULL)"
         conn.execute(str)
         conn.commit()
         conn.close()
         
         
         
-    def AddScan(self, Start, End, FindorNot, Solution):
+    def AddScan(self, Start, End, FindorNot, Solution, UserId):
         conn = sqlite3.connect(self.Location)
-        str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution})VALUES('{Start}','{End}','{FindorNot}','{Solution}')"
+        str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES('{Start}','{End}','{FindorNot}','{Solution}','{UserId}')"
         conn.execute(str_insert)
         conn.commit()
         conn.close()
@@ -35,6 +37,22 @@ class history:
         try:
             conn = sqlite3.connect(self.Location)
             strsql = f"SELECT * from {self.tablename} where {self.Start} = '{str(Start)}' And {self.End} = '{str(End)}'"
+            cursor = conn.execute(strsql)
+            row = cursor.fetchone()
+            scan_data = str(row[1],row[2],row[3],row[4])
+            print("Scan data: " + str(scan_data))
+            conn.commit()
+            conn.close()
+            return scan_data
+        except:
+            print("Failed to find Scan")
+            return False
+        
+
+    def get_scan_by_UserId(self,UserId):
+        try:
+            conn = sqlite3.connect(self.Location)
+            strsql = f"SELECT * from {self.tablename} where {self.UserId} = '{str(UserId)}'"
             cursor = conn.execute(strsql)
             row = cursor.fetchone()
             scan_data = str(row[1],row[2],row[3],row[4])
