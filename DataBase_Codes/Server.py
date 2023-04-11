@@ -43,7 +43,7 @@ class server(object):
             data = length+message
             client_socket.send(data.encode())
         
-        def send_message_arr(self,arr):
+        def send_message_arr(arr):
             str_arr = ",".join(arr)
             length = str(len(str_arr)).zfill(10)
             data = length+str_arr
