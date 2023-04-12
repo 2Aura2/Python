@@ -50,16 +50,21 @@ class History_Screen(tkinter.Toplevel):
         str_arr = self.server.client_socket.recv(int(length)).decode()
         return str_arr.split(",")
 
-    def Show_Scans(self):
+    def Show_Scans(self):        
         self.server.client_socket.send(b"Show Scans")
         self.send_message(self.UserName)
         arr_Scans = self.recv_message_arr()
-        print(arr_Scans)
         Scans = ",".join(arr_Scans)
-        print(Scans)
-        #for row_data in enumerate(Scans):
-        label = Label(self, text=Scans,bg="light gray")
-        label.place(relx=0.5,rely=0.5,anchor='center')
+        arr = Scans.split(',')
+        result = [','.join(arr[i:i+6]) for i in range(0, len(arr), 6)]
+        y = 0.3
+        for i in range(len(result)):
+            label = Label(self, text=result[i],bg="light gray")
+            label.place(relx=0.5,rely=y,anchor='center')
+            y += 0.1
+
+
+        
 
     def update_label(self):
         current_time = time.strftime("%H:%M:%S")
