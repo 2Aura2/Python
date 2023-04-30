@@ -56,9 +56,12 @@ class History_Screen(tkinter.Toplevel):
         arr_Scans = self.recv_message_arr()
         Scans = ",".join(arr_Scans)
         arr = Scans.split(',')
-        result = [','.join(arr[i:i+6]) for i in range(0, len(arr), 6)]
+        result = [','.join(arr[i+1:i+5]) for i in range(0, len(arr), 6)]
         y = 0.3
+        label2 = Label(self, text="Start/End/FindOrNot/Solution",bg="light blue",font=("",18))
+        label2.place(relx=0.55,rely=0.2,anchor='center')
         for i in range(len(result)):
+            print(result)
             label = Label(self, text=result[i],bg="light gray",font=("",18))
             label.place(relx=0.5,rely=y,anchor='center')
             y += 0.1
