@@ -102,7 +102,7 @@ class Login_Screen(tkinter.Tk):
     
     def creat_socket(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect(("127.0.0.1",6060))
+        self.client_socket.connect(("10.81.207.134",6060))
         data = self.client_socket.recv(1024).decode()
         print("hi", self.client_socket)
     
