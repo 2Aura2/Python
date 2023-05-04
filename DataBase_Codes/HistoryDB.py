@@ -90,6 +90,6 @@ class history:
             return "Failed to delete Scan" 
         
 h = history()
-#h.AddScan("2","2","2","2","8")
+#h.AddScan("3","3","3","3","8")
 #x = h.get_scan_by_UserId(8)
 #print(x)
