@@ -1,5 +1,5 @@
 import sqlite3
-import numpy
+
 
 class history:
     def __init__(self,tablename="History",HistoryId="HistoryId",Start="Start",End="End",FindorNot="FindorNot", Solution="Solution", UserId="UserId"):
