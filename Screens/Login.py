@@ -8,6 +8,11 @@ import Overview
 from PIL import ImageTk, Image
 import traceback
 import time
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
+
+
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
@@ -94,6 +99,20 @@ class Login_Screen(tkinter.Tk):
         window.grab_set()
         self.withdraw()
 
+    def send_message(self,message):
+        cipher = PKCS1_OAEP.new(self.public_key)
+        encrypted_message = cipher.encrypt(message.encode())
+        print(encrypted_message)
+        encoded_message = base64.b64encode(encrypted_message).decode()
+        length = str(len(encoded_message)).zfill(10)
+        data = length+encoded_message
+        self.client_socket.send(data.encode())
+    
+    def recv_message(self):
+        length = self.client_socket.recv(10).decode()
+        return self.client_socket.recv(int(length)).decode()
+
+
     def handle_thread_socket(self):
         client_handler = threading.Thread(target=self.creat_socket, args=())
         client_handler.daemon = True
@@ -102,20 +121,14 @@ class Login_Screen(tkinter.Tk):
     
     def creat_socket(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect(("10.81.207.134",6060))
+        self.client_socket.connect(("127.0.0.1",6060))
         data = self.client_socket.recv(1024).decode()
         print(data, self.client_socket)
-        public_key = self.client_socket.recv(2048).decode()
-        print(public_key)
+        self.public_key_bytes = self.client_socket.recv(2048)
+        self.public_key = RSA.import_key(self.public_key_bytes)
+        self.send_message("Hello my name is David")
     
-    def send_message(self,message):
-        length = str(len(message)).zfill(10)
-        data = length+message
-        self.client_socket.send(data.encode())
     
-    def recv_message(self):
-        length = self.client_socket.recv(10).decode()
-        return self.client_socket.recv(int(length)).decode()
     
     def login_user(self):
         try:

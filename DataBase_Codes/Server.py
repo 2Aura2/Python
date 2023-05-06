@@ -6,7 +6,9 @@ import traceback
 import HistoryDB
 from Crypto.PublicKey import RSA
 import os
-
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
 
 class server(object):
     def __init__(self,ip,port):
@@ -25,41 +27,43 @@ class server(object):
             while True:
                 filename1 = "receiver.pem"
                 filename2 = "private.pem"
+                self.key = RSA.generate(2048)
                 if os.path.isfile(filename1) and os.path.isfile(filename2):
-                    pass
+                    file1 = open("receiver.pem","r")
+                    self.public_key_bytes = file1.read().encode()
+                    file2 = open("private.pem","r")
+                    self.private_key_bytes = file2.read().encode()
                 else:
-                    key = RSA.generate(2048)
-                    private_key = key.export_key()
+                    self.private_key_bytes = self.key.export_key()
                     file_out = open("private.pem", "wb")
-                    file_out.write(private_key)
+                    file_out.write(self.private_key)
                     file_out.close()
 
-                    public_key = key.publickey().export_key()
+                    self.public_key_bytes = self.key.publickey().export_key()
                     file_out = open("receiver.pem", "wb")
-                    file_out.write(public_key)
+                    file_out.write(self.public_key)
                     file_out.close()
 
+                self.public_key = RSA.import_key(self.public_key_bytes)
+                self.private_key = RSA.import_key(self.private_key_bytes)
                 print("Watinig for a new client")
                 clientSocket, client_addresses = self.sock.accept()
                 print("new client entered")
                 clientSocket.send("Hello, this is server".encode())
-                file = open("receiver.pem", "r")
-                public_key = file.read()
-                print(public_key)
-                clientSocket.send(public_key.encode())
+                clientSocket.send(self.public_key_bytes)
                 self.count += 1
                 print(self.count)
-                self.handleClient(clientSocket, self.count)
+                self.handleClient(clientSocket, self.count,self.public_key,self.private_key)
         except socket.error as e:
             print(e)
 
-    def handleClient(self,clientSock,current):
-        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, current,))
+    def handleClient(self,clientSock,current,public_key,private_key):
+        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, current, public_key, private_key,))
         client_handler.start()
 
     
 
-    def handle_client_connection(self, client_socket, current):
+    def handle_client_connection(self, client_socket, current, public_key, private_key):
         
         def send_message(message):
             length = str(len(message)).zfill(10)
@@ -74,7 +78,12 @@ class server(object):
 
         def recv_message():
             length = client_socket.recv(10).decode()
-            return client_socket.recv(int(length)).decode()
+            encoded_data = client_socket.recv(int(length)).decode()
+            decoded_data = base64.b64decode(encoded_data.encode())
+            cipher = PKCS1_OAEP.new(self.private_key)
+            decrypted_data = cipher.decrypt(decoded_data)
+            print(decrypted_data.decode())
+            return decrypted_data
         
         def recv_message_arr():
             length = client_socket.recv(10).decode()
@@ -86,6 +95,7 @@ class server(object):
         while self.running:
             while not_crash:
                 try:
+                    info = recv_message()
                     server_data = client_socket.recv(1024).decode('utf-8')
                     arr = server_data.split(",")
                     print(arr)  
