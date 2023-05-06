@@ -4,6 +4,9 @@ import UserDB
 import Viruses_HashDB
 import traceback
 import HistoryDB
+from Crypto.PublicKey import RSA
+import os
+
 
 class server(object):
     def __init__(self,ip,port):
@@ -20,10 +23,30 @@ class server(object):
             self.sock.listen(3)
 
             while True:
+                filename1 = "receiver.pem"
+                filename2 = "private.pem"
+                if os.path.isfile(filename1) and os.path.isfile(filename2):
+                    pass
+                else:
+                    key = RSA.generate(2048)
+                    private_key = key.export_key()
+                    file_out = open("private.pem", "wb")
+                    file_out.write(private_key)
+                    file_out.close()
+
+                    public_key = key.publickey().export_key()
+                    file_out = open("receiver.pem", "wb")
+                    file_out.write(public_key)
+                    file_out.close()
+
                 print("Watinig for a new client")
                 clientSocket, client_addresses = self.sock.accept()
                 print("new client entered")
                 clientSocket.send("Hello, this is server".encode())
+                file = open("receiver.pem", "r")
+                public_key = file.read()
+                print(public_key)
+                clientSocket.send(public_key.encode())
                 self.count += 1
                 print(self.count)
                 self.handleClient(clientSocket, self.count)

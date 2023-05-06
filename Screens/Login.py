@@ -20,7 +20,7 @@ class Login_Screen(tkinter.Tk):
         self.y = (self.screen_height / 2)-(self.app_height / 2)
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Login")
-        self.img = Image.open('..\\Images\\White.jpg')
+        self.img = Image.open('Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
@@ -104,7 +104,9 @@ class Login_Screen(tkinter.Tk):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect(("10.81.207.134",6060))
         data = self.client_socket.recv(1024).decode()
-        print("hi", self.client_socket)
+        print(data, self.client_socket)
+        public_key = self.client_socket.recv(2048).decode()
+        print(public_key)
     
     def send_message(self,message):
         length = str(len(message)).zfill(10)

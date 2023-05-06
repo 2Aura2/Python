@@ -1,5 +1,5 @@
 from Crypto.PublicKey import RSA
-
+import os
 # secret_code = "Unguessable"
 # key = RSA.generate(2048)
 # encrypted_key = key.export_key(passphrase=secret_code, pkcs=8,protection="scryptAndAES128-CBC")
@@ -26,4 +26,9 @@ from Crypto.PublicKey import RSA
 # file_out.write(public_key)
 # file_out.close()
 
+# filename = "rsa_key.bin"
 
+# if os.path.isfile(filename):
+#     print(f"The file {filename} exists.")
+# else:
+#     print(f"The file {filename} does not exist.")
