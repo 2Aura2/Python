@@ -46,7 +46,7 @@ class History_Screen(tkinter.Toplevel):
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
-        self.parent.client_socket.send(data.encode())
+        self.server.client_socket.send(data.encode())
 
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()

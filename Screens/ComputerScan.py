@@ -60,7 +60,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
-        self.parent.client_socket.send(data.encode())
+        self.server.client_socket.send(data.encode())
     
     def send_message_arr(self,arr):
         str_arr = ",".join(arr)
