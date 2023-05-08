@@ -7,14 +7,17 @@ import hashlib
 from tkinter import filedialog
 import time
 import datetime
-import shutil
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
 
 class Computer_Scan_Screen(tkinter.Toplevel):
-    def __init__(self,parent,server,UserName):
+    def __init__(self,parent,server,UserName,public_key):
         super().__init__(parent)
         self.parent = parent
         self.server = server
         self.UserName = UserName
+        self.public_key = public_key
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -51,9 +54,13 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
     def send_message(self,message):
-        length = str(len(message)).zfill(10)
-        data = length+message
-        self.server.client_socket.send(data.encode())
+        cipher = PKCS1_OAEP.new(self.public_key)
+        encrypted_message = cipher.encrypt(message.encode())
+        print(encrypted_message)
+        encoded_message = base64.b64encode(encrypted_message).decode()
+        length = str(len(encoded_message)).zfill(10)
+        data = length+encoded_message
+        self.client_socket.send(data.encode())
     
     def send_message_arr(self,arr):
         str_arr = ",".join(arr)

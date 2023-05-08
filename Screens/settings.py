@@ -4,6 +4,10 @@ from PIL import ImageTk, Image
 import traceback
 from tkinter import messagebox
 import time
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
+
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName):
         super().__init__(parent)

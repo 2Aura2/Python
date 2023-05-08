@@ -8,10 +8,11 @@ import settings
 import time
 
 class Overview_Screen(tkinter.Toplevel):
-    def __init__(self,parent,UserName):
+    def __init__(self,parent,UserName,public_key):
         super().__init__(parent)
         self.parent = parent
         self.UserName = UserName
+        self.public_key = public_key
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()

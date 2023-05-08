@@ -2,7 +2,9 @@ import tkinter
 from tkinter import *
 from PIL import ImageTk, Image
 import time
-
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
 
 class History_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName):

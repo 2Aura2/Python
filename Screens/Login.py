@@ -88,7 +88,7 @@ class Login_Screen(tkinter.Tk):
 
 
     def open_Overview_screen(self):
-        window = Overview.Overview_Screen(self,self.enr_Username.get())
+        window = Overview.Overview_Screen(self,self.enr_Username.get(),self.public_key)
         window.grab_set()
         window.focus_set()
         self.withdraw()

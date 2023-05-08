@@ -5,7 +5,9 @@ from tkinter import ttk, messagebox
 import sys
 import time
 from PIL import ImageTk, Image
-
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
 
 class Register_Screen(tkinter.Toplevel):
     def __init__(self,parent):
