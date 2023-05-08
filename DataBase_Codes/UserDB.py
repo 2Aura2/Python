@@ -86,12 +86,12 @@ class users:
     def GetEmailByUserName(self,UserName):
         try:
             conn=sqlite3.connect(self.Location)
+            print(UserName)
             strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
             cursor = conn.execute(strsql)
             row=cursor.fetchone()
             conn.commit()
             conn.close()
-            print(row)
             try:
                 if row[4]:
                     return "Exists"

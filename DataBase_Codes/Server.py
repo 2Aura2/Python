@@ -82,7 +82,6 @@ class server(object):
             decoded_data = base64.b64decode(encoded_data.encode())
             cipher = PKCS1_OAEP.new(self.private_key)
             decrypted_data = cipher.decrypt(decoded_data)
-            print(decrypted_data.decode())
             return decrypted_data.decode()
         
         def recv_message_arr():
@@ -140,10 +139,9 @@ class server(object):
                         UserDB.users().UpdateEmailByUserName(Email_data,UserName_data)
                         print("Success")
                     elif server_data == "EmailExists":
-                        length = client_socket.recv(10).decode()
-                        data = client_socket.recv(int(length)).decode()
-                        print(type(data))
-                        answer = UserDB.users().GetEmailByUserName(data)
+                        UserName = recv_message()
+                        print(UserName)
+                        answer = UserDB.users().GetEmailByUserName(UserName)
                         if answer == "Exists":
                             send_message("Exists")
                         elif answer == "None":
