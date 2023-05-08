@@ -95,7 +95,7 @@ class Login_Screen(tkinter.Tk):
     
     
     def open_Register_screen(self):
-        window = Register_Screen(self)
+        window = Register_Screen(self,self.public_key)
         window.grab_set()
         self.withdraw()
 

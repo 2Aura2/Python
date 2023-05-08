@@ -7,11 +7,12 @@ from Crypto.Cipher import PKCS1_OAEP
 import base64
 
 class History_Screen(tkinter.Toplevel):
-    def __init__(self,parent,server,UserName):
+    def __init__(self,parent,server,UserName,public_key):
         super().__init__(parent)
         self.parent = parent
         self.server = server
         self.UserName = UserName
+        self.public_key = public_key
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -39,9 +40,13 @@ class History_Screen(tkinter.Toplevel):
         self.update_label()
 
     def send_message(self,message):
-        length = str(len(message)).zfill(10)
-        data = length+message
-        self.server.client_socket.send(data.encode())
+        cipher = PKCS1_OAEP.new(self.public_key)
+        encrypted_message = cipher.encrypt(message.encode())
+        print(encrypted_message)
+        encoded_message = base64.b64encode(encrypted_message).decode()
+        length = str(len(encoded_message)).zfill(10)
+        data = length+encoded_message
+        self.parent.client_socket.send(data.encode())
 
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()

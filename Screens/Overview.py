@@ -62,7 +62,7 @@ class Overview_Screen(tkinter.Toplevel):
         self.lbl_time.after(1000, self.update_label)
         
     def open_Computer_Scan_screen(self):
-        window = ComputerScan.Computer_Scan_Screen(self, self.parent, self.UserName)
+        window = ComputerScan.Computer_Scan_Screen(self, self.parent, self.UserName,self.public_key)
         window.grab_set()
         self.withdraw()
 
@@ -72,12 +72,12 @@ class Overview_Screen(tkinter.Toplevel):
         self.withdraw()
         
     def open_history_screen(self):
-        window = History.History_Screen(self,self.parent,self.UserName)
+        window = History.History_Screen(self,self.parent,self.UserName,self.public_key)
         window.grab_set()
         self.withdraw()
 
     def open_settings_screen(self):
-        window = settings.Settigns_Screen(self,self.parent,self.UserName)
+        window = settings.Settigns_Screen(self,self.parent,self.UserName,self.public_key)
         window.grab_set()
         self.withdraw()
 
