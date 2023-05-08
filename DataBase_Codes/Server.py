@@ -83,7 +83,7 @@ class server(object):
             cipher = PKCS1_OAEP.new(self.private_key)
             decrypted_data = cipher.decrypt(decoded_data)
             print(decrypted_data.decode())
-            return decrypted_data
+            return decrypted_data.decode()
         
         def recv_message_arr():
             length = client_socket.recv(10).decode()
@@ -95,7 +95,6 @@ class server(object):
         while self.running:
             while not_crash:
                 try:
-                    info = recv_message()
                     server_data = client_socket.recv(1024).decode('utf-8')
                     arr = server_data.split(",")
                     print(arr)  
@@ -143,6 +142,7 @@ class server(object):
                     elif server_data == "EmailExists":
                         length = client_socket.recv(10).decode()
                         data = client_socket.recv(int(length)).decode()
+                        print(type(data))
                         answer = UserDB.users().GetEmailByUserName(data)
                         if answer == "Exists":
                             send_message("Exists")

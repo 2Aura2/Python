@@ -126,7 +126,6 @@ class Login_Screen(tkinter.Tk):
         print(data, self.client_socket)
         self.public_key_bytes = self.client_socket.recv(2048)
         self.public_key = RSA.import_key(self.public_key_bytes)
-        self.send_message("Hello my name is David")
     
     
     

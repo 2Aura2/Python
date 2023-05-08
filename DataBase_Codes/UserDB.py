@@ -1,5 +1,5 @@
 import sqlite3
-
+import traceback
 class users:
     def __init__(self,tablename="Users",UserId="UserId",Fullname="FullName",UserName="UserName",Password="Password",Email="Email"):
         self.tablename = tablename
@@ -91,12 +91,18 @@ class users:
             row=cursor.fetchone()
             conn.commit()
             conn.close()
-            if row[4]:
-                return "Exists"
-            else:
+            print(row)
+            try:
+                if row[4]:
+                    return "Exists"
+                else:
+                    return "None"
+            except:
                 return "None"
+            
         except Exception as e:
             print(e)
+            traceback.print_exc()
 
     def GetUserIdByUserName(self,UserName):
         try:
