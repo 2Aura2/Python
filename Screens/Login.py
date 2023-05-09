@@ -60,10 +60,14 @@ class Login_Screen(tkinter.Tk):
         self.update_label()
 
     def update_label(self):
-        current_time = time.strftime("%H:%M:%S")
-        current_date = time.strftime("%Y-%m-%d")
-        self.lbl_time.config(text=f"{current_date} {current_time}")
-        self.lbl_time.after(1000, self.update_label)
+        try:
+            current_time = time.strftime("%H:%M:%S")
+            current_date = time.strftime("%Y-%m-%d")
+            self.lbl_time.config(text=f"{current_date} {current_time}")
+            self.lbl_time.after(1000, self.update_label)
+        except Exception as e:
+            print("Error:",e)
+            return "Error with getting current time"
         
     
     def Username_enter(self,event):
@@ -99,12 +103,16 @@ class Login_Screen(tkinter.Tk):
         self.withdraw()
 
     def send_message(self,message):
-        cipher = PKCS1_OAEP.new(self.public_key)
-        encrypted_message = cipher.encrypt(message.encode())
-        encoded_message = base64.b64encode(encrypted_message).decode()
-        length = str(len(encoded_message)).zfill(10)
-        data = length+encoded_message
-        self.client_socket.send(data.encode())
+        try:
+            cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_message = cipher.encrypt(message.encode())
+            encoded_message = base64.b64encode(encrypted_message).decode()
+            length = str(len(encoded_message)).zfill(10)
+            data = length+encoded_message
+            self.client_socket.send(data.encode())
+        except Exception as e:
+            print("Error:",e)
+            return "Error while sending message"
 
     def send_message_arr(self,arr):
         try:

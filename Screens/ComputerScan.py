@@ -94,46 +94,61 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 #_____________________________________________________________________________________________________________________________________
     def Scan(self):
+
+
         def generate_md5_hash(file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
-             with open(file_path, 'rb') as f:
-                file_hash = hashlib.md5()
-                while chunk := f.read(8192):
-                    file_hash.update(chunk)
-                return file_hash.hexdigest()
+            try:
+                with open(file_path, 'rb') as f:
+                    file_hash = hashlib.md5()
+                    while chunk := f.read(8192):
+                        file_hash.update(chunk)
+                    return file_hash.hexdigest()
+            except Exception as e:
+                print("Error:",e)
+                return "Error while getting MD5 Hash"
 
         def get_all_hashes(root_dir):
-            
-            self.server.client_socket.send(b"Scan")
-            arr_hashes = []
-            for root, dirs, files in os.walk(root_dir):
-                for file in files:
-                    print("starting")
-                    file_path = os.path.join(root, file)
-                    try:
-                        md5_hash = generate_md5_hash(file_path)
-                        arr_hashes.append(md5_hash)
-                    except PermissionError:
-                        continue
-                    except OSError:
-                        continue
+            try:
+                self.server.client_socket.send(b"Scan")
+                arr_hashes = []
+                for root, dirs, files in os.walk(root_dir):
+                    for file in files:
+                        print("starting")
+                        file_path = os.path.join(root, file)
+                        try:
+                            md5_hash = generate_md5_hash(file_path)
+                            arr_hashes.append(md5_hash)
+                        except PermissionError:
+                            continue
+                        except OSError:
+                            continue
+            except Exception as e:
+                print("Error:",e)
+                return "Error while getting array of file hashes"
             str_hashes = ",".join(arr_hashes)
             self.send_message(str_hashes)
             virus_hashes_data = self.recv_message()
             arr_virus_hashes = virus_hashes_data.split(",")
-            for root, dirs, files in os.walk(root_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    with open(file_path, 'rb') as f:
-                        file_hash = hashlib.md5(f.read()).hexdigest()
-                        for virus_hash in arr_virus_hashes:
-                            if file_hash == virus_hash:
-                                self.arr_viruses_to_remove.append(file_path)
-
-            for virues in self.arr_viruses_to_remove:
-                os.remove(virues)
-            print("Viruses removed")
-            
-            return "Viruses Removed"
+            try:
+                for root, dirs, files in os.walk(root_dir):
+                    for file in files:
+                        file_path = os.path.join(root, file)
+                        with open(file_path, 'rb') as f:
+                            file_hash = hashlib.md5(f.read()).hexdigest()
+                            for virus_hash in arr_virus_hashes:
+                                if file_hash == virus_hash:
+                                    self.arr_viruses_to_remove.append(file_path)
+            except Exception as e:
+                print("Error:",e)
+                return "Error while finding viruses"
+            try:
+                for virues in self.arr_viruses_to_remove:
+                    os.remove(virues)
+                print("Viruses removed")
+                return "Viruses Removed"
+            except Exception as e:
+                print("Error:",e)
+                return "Error while removing viruses"
         
 
         get_all_hashes("C:\\")
@@ -166,8 +181,15 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
 
         def generate_md5_hash(file_path):
-            with open(file_path, 'rb') as f:
-                return hashlib.md5(f.read()).hexdigest()
+            try:
+                with open(file_path, 'rb') as f:
+                    file_hash = hashlib.md5()
+                    while chunk := f.read(8192):
+                        file_hash.update(chunk)
+                    return file_hash.hexdigest()
+            except Exception as e:
+                print("Error:",e)
+                return "Error while getting MD5 Hash"
 
         def get_all_hashes(root_dir):
             FindOrNot = ""

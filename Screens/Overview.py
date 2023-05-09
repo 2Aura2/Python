@@ -56,10 +56,14 @@ class Overview_Screen(tkinter.Toplevel):
         self.update_label()
 
     def update_label(self):
-        current_time = time.strftime("%H:%M:%S")
-        current_date = time.strftime("%Y-%m-%d")
-        self.lbl_time.config(text=f"{current_date} {current_time}")
-        self.lbl_time.after(1000, self.update_label)
+        try:
+            current_time = time.strftime("%H:%M:%S")
+            current_date = time.strftime("%Y-%m-%d")
+            self.lbl_time.config(text=f"{current_date} {current_time}")
+            self.lbl_time.after(1000, self.update_label)
+        except Exception as e:
+            print("Error:",e)
+            return "Error with getting current time"
         
     def open_Computer_Scan_screen(self):
         window = ComputerScan.Computer_Scan_Screen(self, self.parent, self.UserName,self.public_key)

@@ -77,10 +77,14 @@ class History_Screen(tkinter.Toplevel):
         
 
     def update_label(self):
-        current_time = time.strftime("%H:%M:%S")
-        current_date = time.strftime("%Y-%m-%d")
-        self.lbl_time.config(text=f"{current_date} {current_time}")
-        self.lbl_time.after(1000, self.update_label)
+        try:
+            current_time = time.strftime("%H:%M:%S")
+            current_date = time.strftime("%Y-%m-%d")
+            self.lbl_time.config(text=f"{current_date} {current_time}")
+            self.lbl_time.after(1000, self.update_label)
+        except Exception as e:
+            print("Error:",e)
+            return "Error with getting current time"
 
     def previous_window(self):
         self.destroy()  # close the second window
