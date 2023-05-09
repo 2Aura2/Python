@@ -27,12 +27,16 @@ class history:
         
         
     def AddScan(self, Start, End, FindorNot, Solution, UserId):
-        conn = sqlite3.connect(self.Location)
-        str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES('{Start}','{End}','{FindorNot}','{Solution}','{UserId}')"
-        conn.execute(str_insert)
-        conn.commit()
-        conn.close()
-        return "Scan added successfully"
+        try:
+            conn = sqlite3.connect(self.Location)
+            str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES('{Start}','{End}','{FindorNot}','{Solution}','{UserId}')"
+            conn.execute(str_insert)
+            conn.commit()
+            conn.close()
+            return "Scan added successfully"
+        except Exception as e:
+            print("Error:",e)
+            return "Error while adding scan"
     
     def get_scan_by_start_end(self,Start,End):
         try:
@@ -45,9 +49,9 @@ class history:
             conn.commit()
             conn.close()
             return scan_data
-        except:
-            print("Failed to find Scan")
-            return False
+        except Exception as e:
+            print("Error:",e)
+            return "Error while getting scan"
         
 
     def get_scan_by_UserId(self,UserId):
@@ -64,9 +68,9 @@ class history:
             conn.commit()
             conn.close()
             return arr
-        except:
-            print("Failed to find Scan")
-            return False
+        except Exception as e:
+            print("Error:",e)
+            return "Error while getting scan"
         
         
     def delete_by_start(self, Start):
@@ -78,8 +82,9 @@ class history:
             conn.close()
             print("Scan Deleted successfully")
             return "Success"
-        except:
-            return "Failed to delete Scan" 
+        except Exception as e:
+            print("Error:",e)
+            return "Error while deleting scan"
         
 h = history()
 #h.AddScan("3","3","3","3","8")

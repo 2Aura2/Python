@@ -96,7 +96,8 @@ class server(object):
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
                     arr = server_data.split(",")
-                    print(arr)  
+#______________________________________________________________________________________________________________________________
+
                     if arr!= None and arr[0]=="Login" and len(arr)==3:
                         server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
                         print("server data:", server_data)
@@ -104,6 +105,9 @@ class server(object):
                             client_socket.send(f"Welcome {arr[1]}".encode())
                         elif server_data == False:
                             client_socket.send("Username or Password are incorrect".encode())
+#______________________________________________________________________________________________________________________________
+
+
                     elif arr != None and arr[0]=="Register" and len(arr)==4:
                         print("Register")
                         print(arr)
@@ -114,6 +118,9 @@ class server(object):
                             answer = UserDB.users().insert_user(arr[1],arr[2],arr[3])
                             print(answer)
                             client_socket.send("User created successfully".encode())
+#______________________________________________________________________________________________________________________________
+
+
                     elif server_data == "Scan":
                         server_data_hashes = recv_message()
                         arr_hashes = server_data_hashes.split(",")
@@ -128,16 +135,26 @@ class server(object):
                         arr_history = recv_message_arr()
                         UserId = UserDB.users().GetUserIdByUserName(arr_history[4])
                         HistoryDB.history().AddScan(arr_history[0],arr_history[1],arr_history[2],arr_history[3], UserId)
+#______________________________________________________________________________________________________________________________
+
+
                     elif server_data == "Show Scans":
                         UserName = recv_message()
                         UserId = UserDB.users().GetUserIdByUserName(UserName)
                         Scans = HistoryDB.history().get_scan_by_UserId(UserId)
                         send_message_arr(Scans)
+#______________________________________________________________________________________________________________________________
+
+
+
                     elif server_data == "AddEmail":
                         Email_data = recv_message()
                         UserName_data = recv_message()
                         UserDB.users().UpdateEmailByUserName(Email_data,UserName_data)
                         print("Success")
+#______________________________________________________________________________________________________________________________
+
+
                     elif server_data == "EmailExists":
                         UserName = recv_message()
                         print(UserName)
@@ -146,23 +163,29 @@ class server(object):
                             send_message("Exists")
                         elif answer == "None":
                             send_message("None")    
+#______________________________________________________________________________________________________________________________
+
+
                     elif server_data == "ChangePassword":
                         password = recv_message()
                         UserName = recv_message()
                         answer = UserDB.users().ChangePassword(password,UserName)
                         send_message(answer)
+#______________________________________________________________________________________________________________________________
+
+
                     elif server_data == "ChangeUserName":
                         NewUserName = recv_message()
                         UserName = recv_message()
                         answer = UserDB.users().ChangeUserName(NewUserName,UserName)
                         send_message(answer)
+#______________________________________________________________________________________________________________________________
+
                     else:
                         server_data = "False"
-
                 except Exception as e:
-                    print("Error",e)
+                    print("Error:",e)
                     not_crash = False
-                    print(not_crash)
                     traceback.print_exc()
                     break
         

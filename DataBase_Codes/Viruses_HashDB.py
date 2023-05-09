@@ -20,36 +20,49 @@ class hashes:
         conn.close()
 
     def md5_hash(self,file_path):
-        if os.path.isfile(file_path):
-            with open(file_path, 'rb') as f:
-                return hashlib.md5(f.read()).hexdigest()
-        else:
-            return None
+        try:
+            if os.path.isfile(file_path):
+                with open(file_path, 'rb') as f:
+                    return hashlib.md5(f.read()).hexdigest()
+            else:
+                return None
+        except Exception as e:
+            print("Error:",e)
+            return "Error while getting MD5 Hash"
 
 
     def insert_noraml_hash(self,file_path):
-        conn = sqlite3.connect(self.Location)
-        with open(file_path,'rb') as f:
-            md5_hash = hashlib.md5(f.read()).hexdigest()
-        str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{md5_hash}')"
-        conn.execute(str_insert)
-        conn.commit()
-        conn.close()
-        return "Record inserted successfully"
+        try:
+            conn = sqlite3.connect(self.Location)
+            with open(file_path,'rb') as f:
+                md5_hash = hashlib.md5(f.read()).hexdigest()
+            str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{md5_hash}')"
+            conn.execute(str_insert)
+            conn.commit()
+            conn.close()
+            return "Record inserted successfully"
+        except Exception as e:
+            print("Error:",e)
+            return "Error while inserting MD5 Hash"
 
 
     def insert_Hash(self,path):
-        with open(path, 'r') as f:
-            Hash_list = [line.strip() for line in f]
-        conn = sqlite3.connect(self.Location)
-        for i in range(len(Hash_list)):
-            Hash = Hash_list[i]
-            print(Hash)
-            str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{Hash}')"
-            conn.execute(str_insert)
-            conn.commit()
-        conn.close()
-        return "Record inserted successfully"
+        try:
+            with open(path, 'r') as f:
+                Hash_list = [line.strip() for line in f]
+            conn = sqlite3.connect(self.Location)
+            for i in range(len(Hash_list)):
+                Hash = Hash_list[i]
+                print(Hash)
+                str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{Hash}')"
+                conn.execute(str_insert)
+                conn.commit()
+            conn.close()
+            return "Record inserted successfully"
+        except Exception as e:
+            print("Error:",e)
+            return "Error while inserting MD5 Hash"
+
 
     def select_all_hashes(self):
         try:
@@ -64,8 +77,9 @@ class hashes:
                 arr_hashes.append(str_rows)
             print(arr_hashes)
             return arr_hashes
-        except:
-            return False
+        except Exception as e:
+            print("Error:",e)
+            return "Error while selecting all MD5 Hashes"
 
 
 
