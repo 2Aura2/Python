@@ -70,7 +70,7 @@ class History_Screen(tkinter.Toplevel):
         for i in range(len(result)):
             print(result)
             label = Label(self, text=result[i],bg="light gray",font=("",18))
-            label.place(relx=0.5,rely=y,anchor='center')
+            label.place(relx=0.55,rely=y,anchor='center')
             y += 0.1
 
 

@@ -56,19 +56,11 @@ class history:
             str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}='{str(UserId)}' ORDER BY UserId DESC LIMIT 5"
             cursor = conn.execute(str_info)
             row = cursor.fetchall()
-            print(type(row))
-            print(row)
             arr = ','.join(map(str, row))
-            print(type(arr))
-            print(arr)
             letters_to_remove = "()' "
             for char in letters_to_remove:
                 arr = arr.replace(char, "")
-            print(type(arr))
-            print(arr)
             arr = arr.split(",")
-            print(type(arr))
-            print(arr)
             conn.commit()
             conn.close()
             return arr
