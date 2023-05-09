@@ -16,7 +16,6 @@ import base64
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
-        self.IsLogin = False
         self.app_width = 960
         self.app_height = 540
         self.screen_width = self.winfo_screenwidth()
@@ -36,7 +35,7 @@ class Login_Screen(tkinter.Tk):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('',16),bg='light gray').place(relx=0.5,rely=0.2,anchor='center')
 
-        self.btn_Login = Button(self, text="login",command=self.login_user,font=('',16),bg='light gray').place(relx=0.5,rely=0.8,anchor='center')
+        self.btn_Login = Button(self, text="Login",command=self.login_user,font=('',16),bg='light gray').place(relx=0.5,rely=0.8,anchor='center')
         
         self.lbl_Register = Label(self, text="Don't have an account, register here:",bg='light gray',font=('',10)).place(relx=0.49, rely=0.9,anchor='center')
         self.btn_register = Button(self,text="Register",bg='light gray',font=('',8),command=self.open_Register_screen)
@@ -106,10 +105,28 @@ class Login_Screen(tkinter.Tk):
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
         self.client_socket.send(data.encode())
+
+    def send_message_arr(self,arr):
+        try:
+            str_arr = ",".join(arr)
+            cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_str_arr = cipher.encrypt(str_arr.encode())
+            encoded_str_arr = base64.b64encode(encrypted_str_arr).decode()
+            length = str(len(encoded_str_arr)).zfill(10)
+            data = length+encoded_str_arr
+            self.client_socket.send(data.encode()) 
+        except Exception as e:
+            print("Error:",e)
+            return "Error while sending message"
     
     def recv_message(self):
         length = self.client_socket.recv(10).decode()
         return self.client_socket.recv(int(length)).decode()
+    
+    def recv_message_arr(self):
+            length = self.client_socket.recv(10).decode()
+            str_arr = self.client_socket.recv(int(length)).decode()
+            return str_arr.split(",")
 
 
     def handle_thread_socket(self):
@@ -140,19 +157,15 @@ class Login_Screen(tkinter.Tk):
                 messagebox.showerror("Error","Please write password")
                 return "Error"
             else:
-                arr = ["Login", self.enr_Username.get(), self.enr_Password.get()]
-                str_arr = ",".join(arr)
-                self.client_socket.send(str_arr.encode())
-                #length = str(len(str_arr)).zfill(10)
-                #data = length+str_arr
-                #self.client_socket.send(data.encode())
-                data = self.client_socket.recv(1024).decode()
+                self.client_socket.send(b"Login")
+                arr = [self.enr_Username.get(), self.enr_Password.get()]
+                self.send_message_arr(arr)
+                data = self.recv_message()
                 if data == f"Welcome {self.enr_Username.get()}":
-                    self.IsLogin = True
                     self.open_Overview_screen()
                 else:
                     messagebox.showerror("Error",data)
-                    return "Error"
+                    print("Error:",data)
         except Exception as e:
             print("Error:", e)
             traceback.print_exc()

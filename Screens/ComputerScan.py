@@ -47,26 +47,41 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.update_label()
 
     def update_label(self):
-        current_time = time.strftime("%H:%M:%S")
-        current_date = time.strftime("%Y-%m-%d")
-        self.lbl_time.config(text=f"{current_date} {current_time}")
-        self.lbl_time.after(1000, self.update_label)
+        try:
+            current_time = time.strftime("%H:%M:%S")
+            current_date = time.strftime("%Y-%m-%d")
+            self.lbl_time.config(text=f"{current_date} {current_time}")
+            self.lbl_time.after(1000, self.update_label)
+        except Exception as e:
+            print("Error:",e)
+            return "Error with getting current time"
 
 
     def send_message(self,message):
-        cipher = PKCS1_OAEP.new(self.public_key)
-        encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
-        encoded_message = base64.b64encode(encrypted_message).decode()
-        length = str(len(encoded_message)).zfill(10)
-        data = length+encoded_message
-        self.server.client_socket.send(data.encode())
-    
+        try:
+            cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_message = cipher.encrypt(message.encode())
+            encoded_message = base64.b64encode(encrypted_message).decode()
+            length = str(len(encoded_message)).zfill(10)
+            data = length+encoded_message
+            self.server.client_socket.send(data.encode())
+        except Exception as e:
+            print("Error:",e)
+            return "Error while sending message"
+
+
     def send_message_arr(self,arr):
-        str_arr = ",".join(arr)
-        length = str(len(str_arr)).zfill(10)
-        data = length+str_arr
-        self.server.client_socket.send(data.encode()) 
+        try:
+            str_arr = ",".join(arr)
+            cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_str_arr = cipher.encrypt(str_arr.encode())
+            encoded_str_arr = base64.b64encode(encrypted_str_arr).decode()
+            length = str(len(encoded_str_arr)).zfill(10)
+            data = length+encoded_str_arr
+            self.server.client_socket.send(data.encode()) 
+        except Exception as e:
+            print("Error:",e)
+            return "Error while sending message"
 
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()

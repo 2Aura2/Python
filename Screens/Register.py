@@ -76,9 +76,23 @@ class Register_Screen(tkinter.Toplevel):
         data = length+encoded_message
         self.parent.client_socket.send(data.encode())
     
+    def send_message_arr(self,arr):
+        try:
+            str_arr = ",".join(arr)
+            cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_str_arr = cipher.encrypt(str_arr.encode())
+            encoded_str_arr = base64.b64encode(encrypted_str_arr).decode()
+            length = str(len(encoded_str_arr)).zfill(10)
+            data = length+encoded_str_arr
+            self.parent.client_socket.send(data.encode()) 
+        except Exception as e:
+            print("Error:",e)
+            return "Error while sending message"
+
+
     def recv_message(self):
-        length = self.server.client_socket.recv(10).decode()
-        return self.server.client_socket.recv(int(length)).decode()
+        length = self.parent.client_socket.recv(10).decode()
+        return self.parent.client_socket.recv(int(length)).decode()
         
 
     def register_user(self):
@@ -86,10 +100,10 @@ class Register_Screen(tkinter.Toplevel):
             messagebox.showerror("Error","Please write everything")
             return "Error"
         else:
-            arr = ["Register", self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
-            str_arr = ",".join(arr)
-            self.parent.client_socket.send(str_arr.encode())
-            data = self.parent.client_socket.recv(1024).decode()
+            self.parent.client_socket.send(b"Register")
+            arr = [self.enr_Fullname.get(), self.enr_Username.get(), self.enr_Password.get()]
+            self.send_message_arr(arr)
+            data = self.recv_message()
             if data == "The user already exists":
                 messagebox.showerror("Error",data)
                 return "Error"

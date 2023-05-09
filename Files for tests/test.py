@@ -1,6 +1,4 @@
-count = int(6)
-print(count)
-count = count / 1
-print(count)
-if count / 1 == 6:
-    print(1)
+import hashlib
+
+md5_hash_Password = hashlib.md5("2".encode()).hexdigest()
+print(type(md5_hash_Password))

@@ -86,8 +86,14 @@ class server(object):
         
         def recv_message_arr():
             length = client_socket.recv(10).decode()
-            str_arr = client_socket.recv(int(length)).decode()
-            return str_arr.split(",")
+            encoded_str_arr = client_socket.recv(int(length)).decode()
+            decoded_data = base64.b64decode(encoded_str_arr.encode())
+            cipher = PKCS1_OAEP.new(self.private_key)
+            decrypted_data = cipher.decrypt(decoded_data)
+            data = decrypted_data.decode()
+            arr = data.split(",")
+            print(arr)
+            return arr
 
 
         not_crash = True
@@ -95,29 +101,34 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
-                    arr = server_data.split(",")
+                    #arr = server_data.split(",")
 #______________________________________________________________________________________________________________________________
-
-                    if arr!= None and arr[0]=="Login" and len(arr)==3:
-                        server_data = UserDB.users().check_user_by_Username_and_Password(arr[1],arr[2])
-                        print("server data:", server_data)
-                        if server_data == True:
-                            client_socket.send(f"Welcome {arr[1]}".encode())
-                        elif server_data == False:
-                            client_socket.send("Username or Password are incorrect".encode())
-#______________________________________________________________________________________________________________________________
-
-
-                    elif arr != None and arr[0]=="Register" and len(arr)==4:
-                        print("Register")
+                    if server_data == "Login":
+                        arr = recv_message_arr()
                         print(arr)
-                        server_data = UserDB.users().check_user_by_Username(arr[2])
-                        if server_data == True:
-                            client_socket.send("The user already exists".encode())
-                        elif server_data == False:
-                            answer = UserDB.users().insert_user(arr[1],arr[2],arr[3])
-                            print(answer)
-                            client_socket.send("User created successfully".encode())
+                        if arr!= None and len(arr)==2:
+                            data = UserDB.users().check_user_by_Username_and_Password(arr[0],arr[1])
+                            print("server data:", data)
+                            if data == True:
+                                send_message(f"Welcome {arr[0]}")
+                            elif data == False:
+                                send_message("Username or Password are incorrect")
+                                
+#______________________________________________________________________________________________________________________________
+
+                    elif server_data == "Register":
+                        arr = recv_message_arr()
+                        if arr != None and len(arr)==3:
+                            server_data = UserDB.users().check_user_by_Username(arr[1])
+                            print("hi",server_data)
+                            if server_data == True:
+                                send_message("The user already exists")
+                            elif server_data == False:
+                                print("hello")
+                                answer = UserDB.users().insert_user(arr[0],arr[1],arr[2])
+                                print(answer)
+                                send_message("User created successfully")
+
 #______________________________________________________________________________________________________________________________
 
 

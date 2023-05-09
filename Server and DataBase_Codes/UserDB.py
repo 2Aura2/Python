@@ -30,7 +30,8 @@ class users:
         try:
             md5_hash_Password = hashlib.md5(Password.encode()).hexdigest()
             conn = sqlite3.connect(self.Location)
-            str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES('{FullName}','{UserName}','{md5_hash_Password}')"
+            str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES('{FullName}','{UserName}','{str(md5_hash_Password)}')"
+            print(str_insert)
             conn.execute(str_insert)
             conn.commit()
             conn.close()
@@ -39,17 +40,24 @@ class users:
             print("Error:",e)
             return "Error while creating user"
 
-    # def check_user_by_Username_and_Password(self, UserName, password):
-    #     conn=sqlite3.connect(self.Location)
-    #     strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'" + " AND " + self.Password + "=" + "'" +str(password) + "'"
-    #     cursor = conn.execute(strsql)
-    #     row=cursor.fetchall()
-    #     conn.commit()
-    #     conn.close()
-    #     if row:
-    #         return True
-    #     else:
-    #         return False
+    def check_user_by_Username_and_Password(self, UserName, password):
+        try:
+            md5_hash_Password = hashlib.md5(password.encode()).hexdigest()
+            conn=sqlite3.connect(self.Location)
+            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = '{str(UserName)}' AND {self.Password} = '{str(md5_hash_Password)}'"
+            #strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'" + " AND " + self.Password + "=" + "'" +str(md5_hash_Password) + "'"
+            print(strsql)
+            cursor = conn.execute(strsql)
+            row=cursor.fetchall()
+            conn.commit()
+            conn.close()
+            if row:
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error:",e)
+            return "Error while checking user"
         
 
     def check_user_by_Username(self, UserName):
