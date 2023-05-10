@@ -37,6 +37,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.lbl_text = Label(self,text="Junk Files Remover screen\n allows you to remove all\n unneeded files from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
         self.btn_Temp = Button(self,text="Clean temp files",font=("",18),width=16,bg="light gray",command=self.delete_temp_files).place(relx=0.8,rely=0.2,anchor='center')
         self.btn_Cache = Button(self,text="Clean browser cahce",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_UninstallUtility = Button(self,text="Uninstallation Program",font=("",17),width=17,bg="light gray",command=self.Uninstallation_utility).place(relx=0.8,rely=0.6,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
         
@@ -114,7 +115,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         temp_dir = os.path.join(tempfile.gettempdir())
         for root, dirs, files in os.walk(temp_dir, topdown=False):
             for file in files:
-                if file.endswith((".tmp", ".log", ".bak", ".cache", ".png", ".txt", ".html", ".exe", ".dat", ".bin", ".ses", ".db")):
+                if file.endswith((".tmp", ".log", ".bak", ".cache", ".png", ".txt", ".html", ".exe", ".dat", ".bin", ".ses", ".db", ".json", ".lock", ".cpuprofile", ".ico")):
                     try:
                         os.remove(os.path.join(root, file))
                         print(f"Deleted file: {os.path.join(root, file)}")
