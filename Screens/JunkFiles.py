@@ -36,7 +36,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_text = Label(self,text="Junk Files Remover screen\n allows you to remove all\n unneeded files from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
         self.btn_Temp = Button(self,text="Clean temp files",font=("",18),width=16,bg="light gray",command=self.delete_temp_files).place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_Cache = Button(self,text="Clean browser cahce",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_Cache = Button(self,text="Clean browser cache",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_UninstallUtility = Button(self,text="Uninstallation Program",font=("",17),width=17,bg="light gray",command=self.Uninstallation_utility).place(relx=0.8,rely=0.6,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
