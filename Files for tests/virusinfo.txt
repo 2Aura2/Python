@@ -1,3 +1,0 @@
-trojan.keylogger
-sample.virus
-sample.log

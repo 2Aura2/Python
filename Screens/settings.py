@@ -79,6 +79,13 @@ class Settigns_Screen(tkinter.Toplevel):
         
     def ChangeUserName(self):
         self.popup_window = Toplevel(self)
+        app_width = 220
+        app_height = 100
+        screen_width = self.popup_window.winfo_screenwidth()
+        screen_height = self.popup_window.winfo_screenheight()
+        x = (screen_width / 2)-(app_width / 2)
+        y = (screen_height / 2)-(app_height / 2)
+        self.popup_window.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
         self.popup_window.title("Change UserName")
         self.popup_window.config(bg="light grey")
         Label(self.popup_window,text="Enter a new UserName:",font=("ariel",14)).pack()
@@ -103,6 +110,13 @@ class Settigns_Screen(tkinter.Toplevel):
     
     def ChangePassword(self):
         self.popup_window = Toplevel(self)
+        app_width = 220
+        app_height = 100
+        screen_width = self.popup_window.winfo_screenwidth()
+        screen_height = self.popup_window.winfo_screenheight()
+        x = (screen_width / 2)-(app_width / 2)
+        y = (screen_height / 2)-(app_height / 2)
+        self.popup_window.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
         self.popup_window.title("Change Password")
         self.popup_window.config(bg="light grey")
         Label(self.popup_window,text="Enter a new password:",font=("ariel",14)).pack()
@@ -118,7 +132,7 @@ class Settigns_Screen(tkinter.Toplevel):
                 self.send_message(Password)
                 self.send_message(UserName)
                 self.recv_message()
-                messagebox.showinfo("Message Box", self.data)
+                messagebox.showinfo("Message Box", "Password changed successfully")
             self.popup_window.destroy()
         except Exception as e:
             print(e)
@@ -128,6 +142,13 @@ class Settigns_Screen(tkinter.Toplevel):
 
     def AddEmail(self):
         self.popup_window = Toplevel(self)
+        app_width = 220
+        app_height = 100
+        screen_width = self.popup_window.winfo_screenwidth()
+        screen_height = self.popup_window.winfo_screenheight()
+        x = (screen_width / 2)-(app_width / 2)
+        y = (screen_height / 2)-(app_height / 2)
+        self.popup_window.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
         self.popup_window.title("AddEmail")
         self.popup_window.config(bg="light grey")
         Label(self.popup_window,text="Enter an Email:",font=("ariel",14)).pack()
