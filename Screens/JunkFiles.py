@@ -11,6 +11,8 @@ from Crypto.Cipher import PKCS1_OAEP
 import tempfile
 from tkinter import messagebox
 
+
+
 class Junk_Files_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
         super().__init__(parent)
@@ -85,10 +87,19 @@ class Junk_Files_Screen(tkinter.Toplevel):
     
 
     def Uninstallation_utility(self):
+        # def uninstall_program():
+        #     selected_program = programs_listbox.get(ACTIVE)
+        #     command = f'wmic product where "name like \'{selected_program}%%\'" call uninstall'
+        #     subprocess.call(command, shell=True)
+
         def uninstall_program():
-            selected_program = programs_listbox.get(ACTIVE)
-            command = f"wmic product where name='{selected_program}' call uninstall"
-            subprocess.call(command, shell=True)
+            try:
+                selected_program = programs_listbox.get(ACTIVE)
+                command = f'wmic product where "name like \'{selected_program}%%\'" call uninstall'
+                subprocess.check_call(command, shell=True)
+                print(f'{selected_program} successfully uninstalled.')
+            except subprocess.CalledProcessError as e:
+                print(f'Error: {e}')
 
         command = "wmic product get name"
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

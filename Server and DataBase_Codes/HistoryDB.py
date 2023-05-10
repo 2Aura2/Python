@@ -10,7 +10,7 @@ class history:
         self.FindorNot = FindorNot
         self.Solution = Solution
         self.UserId = UserId
-        self.Location = 'DataBase\\HistoryDB.db'
+        self.Location = '\\DataBase\\HistoryDB.db'
         
         conn=sqlite3.connect(self.Location)
         print("Opened database successfully")

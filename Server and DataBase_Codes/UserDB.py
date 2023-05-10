@@ -11,7 +11,7 @@ class users:
         self.UserName = UserName
         self.Password = Password
         self.Email = Email
-        self.Location = "DataBase\\UserDB.db"
+        self.Location = "\\DataBase\\UserDB.db"
         
         
         conn=sqlite3.connect(self.Location)
