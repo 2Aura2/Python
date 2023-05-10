@@ -36,12 +36,12 @@ class server(object):
                 else:
                     self.private_key_bytes = self.key.export_key()
                     file_out = open("private.pem", "wb")
-                    file_out.write(self.private_key)
+                    file_out.write(self.private_key_bytes)
                     file_out.close()
 
                     self.public_key_bytes = self.key.publickey().export_key()
                     file_out = open("receiver.pem", "wb")
-                    file_out.write(self.public_key)
+                    file_out.write(self.public_key_bytes)
                     file_out.close()
 
                 self.public_key = RSA.import_key(self.public_key_bytes)
