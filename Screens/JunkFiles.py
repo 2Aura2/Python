@@ -8,8 +8,8 @@ import subprocess
 import time
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-import base64
-
+import tempfile
+from tkinter import messagebox
 
 class Junk_Files_Screen(tkinter.Toplevel):
     def __init__(self,parent,server):
@@ -35,8 +35,8 @@ class Junk_Files_Screen(tkinter.Toplevel):
     def create_gui(self):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_text = Label(self,text="Junk Files Remover screen\n allows you to remove all\n unneeded files from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
-        self.btn_Clean1 = Button(self,text="Clean",font=("",18),width=16,bg="light gray",command=self.remove_temp_files).place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_Clean2 = Button(self,text="Clean 2",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_Temp = Button(self,text="Clean temp files",font=("",18),width=16,bg="light gray",command=self.delete_temp_files).place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_Cache = Button(self,text="Clean browser cahce",font=("",18),width=16,bg="light gray",command=self.remove_browser_cache).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
         
@@ -70,17 +70,6 @@ class Junk_Files_Screen(tkinter.Toplevel):
                 elif os.path.isdir(file_path):
                     shutil.rmtree(file_path)
 
-    def remove_temp_files(self):
-        temp_dir = os.environ["TEMP"]
-        if os.path.exists(temp_dir):
-            for root, dirs, files in os.walk(temp_dir):
-                for file in files:
-                    try:
-                        os.remove(os.path.join(root, file))
-                        print("Removed")
-                    except PermissionError:
-                        pass
-
 
     def remove_browser_cache(self):
         cache_dirs = [
@@ -92,7 +81,29 @@ class Junk_Files_Screen(tkinter.Toplevel):
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
                 print("removed")
-            
+    
+
+
+    def delete_temp_files(self):
+        temp_dir = os.path.join(tempfile.gettempdir())
+        for root, dirs, files in os.walk(temp_dir, topdown=False):
+            for file in files:
+                if file.endswith((".tmp", ".log", ".bak", ".cache", ".png", ".txt", ".html", ".exe", ".dat", ".bin", ".ses", ".db")):
+                    try:
+                        os.remove(os.path.join(root, file))
+                        print(f"Deleted file: {os.path.join(root, file)}")
+                    except PermissionError as e:
+                        print(f"Error deleting file {file}: {e}")
+                        pass
+            for dir in dirs:
+                try:
+                    shutil.rmtree(os.path.join(root, dir))
+                    print(f"Deleted directory: {os.path.join(root, dir)}")
+                except OSError as e:
+                    print(f"Error deleting directory {dir}: {e}")
+                    pass
+        messagebox.showinfo("Window", "All temp files were cleaned")
+
 
     def disk_cleanup():
         subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
