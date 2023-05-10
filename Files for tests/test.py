@@ -30,33 +30,27 @@ def delete_temp_files():
 
 
 
-# Define the function to uninstall the selected program
+
 def uninstall_program():
-    # Get the selected program from the listbox widget
     selected_program = programs_listbox.get(tk.ACTIVE)
-    
-    # Construct the command to uninstall the program using wmic
     command = f"wmic product where name='{selected_program}' call uninstall"
-    
-    # Run the command in a subprocess
     subprocess.call(command, shell=True)
 
-# Get the list of installed programs using wmic
 command = "wmic product get name"
 result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-program_list = result.stdout.decode("utf-8").split("\n")[1:-1]
+program_list = result.stdout.decode("latin-1").split("\n")[1:-1]
 
-# Create the Tkinter window and listbox widget
+
 root = tk.Tk()
 root.title("Uninstall Programs")
-programs_listbox = tk.Listbox(root, height=500,width=500)
+programs_listbox = tk.Listbox(root, height=20,width=50)
 for program in program_list:
     programs_listbox.insert(tk.END, program.strip())
 programs_listbox.pack()
 
-# Create the "Uninstall" button
+
 uninstall_button = tk.Button(root, text="Uninstall", command=uninstall_program)
 uninstall_button.pack()
 
-# Start the Tkinter main loop
+
 root.mainloop()

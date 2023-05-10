@@ -83,6 +83,32 @@ class Junk_Files_Screen(tkinter.Toplevel):
                 print("removed")
     
 
+    def Uninstallation_utility(self):
+        def uninstall_program():
+            selected_program = programs_listbox.get(ACTIVE)
+            command = f"wmic product where name='{selected_program}' call uninstall"
+            subprocess.call(command, shell=True)
+
+        command = "wmic product get name"
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        program_list = result.stdout.decode("latin-1").split("\n")[1:-1]
+
+
+        root = Tk()
+        root.title("Uninstall Programs")
+        programs_listbox = Listbox(root, height=20,width=50)
+        for program in program_list:
+            programs_listbox.insert(END, program.strip())
+        programs_listbox.pack()
+
+
+        uninstall_button = Button(root, text="Uninstall", command=uninstall_program)
+        uninstall_button.pack()
+
+
+        root.mainloop()
+            
+            
 
     def delete_temp_files(self):
         temp_dir = os.path.join(tempfile.gettempdir())
