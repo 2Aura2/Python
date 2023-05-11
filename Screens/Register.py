@@ -23,7 +23,7 @@ class Register_Screen(tkinter.Toplevel):
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Register")
         #self.UserDB = UserDB.users()
-        self.img = Image.open('Images\\White.jpg')
+        self.img = Image.open('..\\Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
