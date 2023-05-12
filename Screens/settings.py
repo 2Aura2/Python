@@ -6,6 +6,8 @@ from tkinter import messagebox
 import time
 from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
+import os
+import traceback
 
 class Settigns_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName,public_key):
@@ -28,6 +30,7 @@ class Settigns_Screen(tkinter.Toplevel):
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
         self.data = None
+        self.session_key = os.urandom(16)
 
         self.create_gui()
 
@@ -65,23 +68,13 @@ class Settigns_Screen(tkinter.Toplevel):
             return "Error with getting current time"
         
     def send_message(self,message):
-        try:
-            cipher = AES.new(self.session_key, AES.MODE_EAX)
-            ciphertext, tag = cipher.encrypt_and_digest(message.encode())
-            aes_key = base64.b64encode(self.session_key).decode()
-
-            rsa_cipher = PKCS1_OAEP.new(self.public_key)
-            encrypted_key = rsa_cipher.encrypt(self.session_key)
-            rsa_key = base64.b64encode(encrypted_key).decode()
-
-            data = aes_key + cipher.nonce + tag + ciphertext
-            length = str(len(data)).zfill(10)
-            data = length + rsa_key + data
-            
-            self.server.client_socket.send(data.encode())
-        except Exception as e:
-            print("Error:",e)
-            return "Error while sending message"
+        cipher = PKCS1_OAEP.new(self.public_key)
+        encrypted_message = cipher.encrypt(message.encode())
+        print(encrypted_message)
+        encoded_message = base64.b64encode(encrypted_message).decode()
+        length = str(len(encoded_message)).zfill(10)
+        data = length+encoded_message
+        self.server.client_socket.send(data.encode())
     
     def recv_message(self):
         length = self.server.client_socket.recv(10).decode()

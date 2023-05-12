@@ -7,7 +7,7 @@ import HistoryDB
 from Crypto.PublicKey import RSA
 import os
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Cipher import PKCS1_OAEP
 import base64
 
 class server(object):
@@ -77,27 +77,13 @@ class server(object):
             client_socket.send(data.encode())
 
         def recv_message():
-            try:
-                rsa_key_length = int(client_socket.recv(10).decode())
-                rsa_key = client_socket.recv(rsa_key_length)
-                rsa_cipher = PKCS1_OAEP.new(self.private_key)
-                session_key = rsa_cipher.decrypt(base64.b64decode(rsa_key))
-                
-                aes_data_length = int(client_socket.recv(10).decode())
-                aes_data = client_socket.recv(aes_data_length)
-
-                aes_key_length = 24 #אורך של מפתח 16 ביט מוצפן בבסיס 64
-                aes_key = base64.b64decode(aes_data[:aes_key_length])
-                cipher = AES.new(aes_key, AES.MODE_EAX, nonce=aes_data[aes_key_length:aes_key_length+16])
-                tag = aes_data[aes_key_length+16:aes_key_length+32]
-                ciphertext = aes_data[aes_key_length+32:]
-                plaintext = cipher.decrypt_and_verify(ciphertext, tag)
-                return plaintext.decode()
-            
-            except Exception as e:
-                print("Error:",e)
-                return "Error while receiving message"
-
+            length = client_socket.recv(10).decode()
+            encoded_data = client_socket.recv(int(length)).decode()
+            decoded_data = base64.b64decode(encoded_data.encode())
+            cipher = PKCS1_OAEP.new(self.private_key)
+            decrypted_data = cipher.decrypt(decoded_data)
+            return decrypted_data.decode()
+        
         def recv_message_arr():
             length = client_socket.recv(10).decode()
             encoded_str_arr = client_socket.recv(int(length)).decode()
