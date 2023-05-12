@@ -7,8 +7,7 @@ import hashlib
 from tkinter import filedialog
 import time
 import datetime
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 
 class Computer_Scan_Screen(tkinter.Toplevel):
@@ -59,11 +58,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def send_message(self,message):
         try:
-            cipher = PKCS1_OAEP.new(self.public_key)
-            encrypted_message = cipher.encrypt(message.encode())
-            encoded_message = base64.b64encode(encrypted_message).decode()
-            length = str(len(encoded_message)).zfill(10)
-            data = length+encoded_message
+            cipher = AES.new(self.session_key, AES.MODE_EAX)
+            ciphertext, tag = cipher.encrypt_and_digest(message.encode())
+            aes_key = base64.b64encode(self.session_key).decode()
+
+            rsa_cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_key = rsa_cipher.encrypt(self.session_key)
+            rsa_key = base64.b64encode(encrypted_key).decode()
+
+            data = aes_key + cipher.nonce + tag + ciphertext
+            length = str(len(data)).zfill(10)
+            data = length + rsa_key + data
+            
             self.server.client_socket.send(data.encode())
         except Exception as e:
             print("Error:",e)

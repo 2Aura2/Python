@@ -9,9 +9,9 @@ from PIL import ImageTk, Image
 import traceback
 import time
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
-
+import os
 
 class Login_Screen(tkinter.Tk):
     def __init__(self):
@@ -104,11 +104,18 @@ class Login_Screen(tkinter.Tk):
 
     def send_message(self,message):
         try:
-            cipher = PKCS1_OAEP.new(self.public_key)
-            encrypted_message = cipher.encrypt(message.encode())
-            encoded_message = base64.b64encode(encrypted_message).decode()
-            length = str(len(encoded_message)).zfill(10)
-            data = length+encoded_message
+            cipher = AES.new(self.session_key, AES.MODE_EAX)
+            ciphertext, tag = cipher.encrypt_and_digest(message.encode())
+            aes_key = base64.b64encode(self.session_key).decode()
+
+            rsa_cipher = PKCS1_OAEP.new(self.public_key)
+            encrypted_key = rsa_cipher.encrypt(self.session_key)
+            rsa_key = base64.b64encode(encrypted_key).decode()
+
+            data = aes_key + cipher.nonce + tag + ciphertext
+            length = str(len(data)).zfill(10)
+            data = length + rsa_key + data
+            
             self.client_socket.send(data.encode())
         except Exception as e:
             print("Error:",e)
@@ -145,12 +152,12 @@ class Login_Screen(tkinter.Tk):
     
     def creat_socket(self):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect(("10.81.204.147",6060))
+        self.client_socket.connect(("127.0.0.1",6060))
         data = self.client_socket.recv(1024).decode()
         print(data, self.client_socket)
         self.public_key_bytes = self.client_socket.recv(2048)
         self.public_key = RSA.import_key(self.public_key_bytes)
-        print(self.public_key)
+        self.session_key = os.urandom(16)
     
     
     
