@@ -24,7 +24,7 @@ class Login_Screen(tkinter.Tk):
         self.y = (self.screen_height / 2)-(self.app_height / 2)
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Login")
-        self.img = Image.open('..\\Images\\White.jpg')
+        self.img = Image.open('Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
@@ -150,6 +150,7 @@ class Login_Screen(tkinter.Tk):
         print(data, self.client_socket)
         self.public_key_bytes = self.client_socket.recv(2048)
         self.public_key = RSA.import_key(self.public_key_bytes)
+        print(self.public_key)
     
     
     

@@ -7,7 +7,7 @@ class hashes:
         self.tablename = tablename
         self.HashId = HashId
         self.Hash = Hash
-        self.Location = "..\\DataBase\\Virus_HashDB_test.db"
+        self.Location = "DataBase\\Virus_HashDB_test.db"
         
         
         conn=sqlite3.connect(self.Location)
