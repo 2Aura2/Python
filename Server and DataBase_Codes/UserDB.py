@@ -30,9 +30,10 @@ class users:
         try:
             md5_hash_Password = hashlib.md5(Password.encode()).hexdigest()
             conn = sqlite3.connect(self.Location)
-            str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES('{FullName}','{UserName}','{str(md5_hash_Password)}')"
+            str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES(?,?,?)"
             print(str_insert)
-            conn.execute(str_insert)
+            cursor = conn.cursor()
+            cursor.execute(str_insert,(FullName,UserName,str(md5_hash_Password)))
             conn.commit()
             conn.close()
             return "User created successfully"
@@ -63,8 +64,9 @@ class users:
     def check_user_by_Username(self, UserName):
         try:
             conn=sqlite3.connect(self.Location)
-            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
-            cursor = conn.execute(strsql)
+            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?" 
+            cursor = conn.cursor()
+            cursor.execute(strsql, (UserName))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -168,6 +170,6 @@ if __name__ == "__main__":
     u = users()
     #u.check_user_by_Username_and_Password("2Aura2","12345")
     #u.insert_user("David Jvania", "2Aura","12345")
-    #u.check_user_by_Username("2Aura2")
+    u.check_user_by_Username("1")
     #u.GetEmailByUserName("2Aura2")
     #u.getall()
