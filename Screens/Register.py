@@ -1,8 +1,6 @@
-import threading
 import tkinter
 from tkinter import *
 from tkinter import ttk, messagebox
-import sys
 import time
 from PIL import ImageTk, Image
 from Crypto.Cipher import PKCS1_OAEP

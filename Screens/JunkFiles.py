@@ -63,15 +63,15 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.parent.deiconify()  # show the main window again
         
 
-    def BasicClean(self):
-        folder_path = sys.argv[1]
-        for root, dirs, files in os.walk(folder_path):
-            for file in files:
-                file_path = os.path.join(root, file)
-                if os.path.getsize(file_path) == 0:
-                    os.remove(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
+    # def BasicClean(self):
+    #     folder_path = sys.argv[1]
+    #     for root, dirs, files in os.walk(folder_path):
+    #         for file in files:
+    #             file_path = os.path.join(root, file)
+    #             if os.path.getsize(file_path) == 0:
+    #                 os.remove(file_path)
+    #             elif os.path.isdir(file_path):
+    #                 shutil.rmtree(file_path)
 
 
     def remove_browser_cache(self):
@@ -143,8 +143,8 @@ class Junk_Files_Screen(tkinter.Toplevel):
         messagebox.showinfo("Window", "All temp files were cleaned")
 
 
-    def disk_cleanup():
-        subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
+    # def disk_cleanup():
+    #     subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
 
     #/dWER: Windows error reports
     #/dThumbnails: Thumbnails

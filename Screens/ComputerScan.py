@@ -89,127 +89,42 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.parent.deiconify()  # show the main window again
 
 #_____________________________________________________________________________________________________________________________________
-    def Scan(self):
 
 
-        def generate_md5_hash(file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
-            try:
-                with open(file_path, 'rb') as f:
-                    file_hash = hashlib.md5()
-                    while chunk := f.read(8192):
-                        file_hash.update(chunk)
-                    return file_hash.hexdigest()
-            except Exception as e:
-                print("Error:",e)
-                return "Error while getting MD5 Hash"
+    def generate_md5_hash(self,file_path):#"C:\Users\dato0\AppData\Local\Microsoft\WindowsApps\clipchamp.exe"
+        try:
+            with open(file_path, 'rb') as f:
+                file_hash = hashlib.md5()
+                while chunk := f.read(8192):
+                    file_hash.update(chunk)
+                return file_hash.hexdigest()
+        except Exception as e:
+            print("Error:",e)
+            return "Error while getting MD5 Hash"
 
-        def get_all_hashes(root_dir):
-            try:
-                self.server.client_socket.send(b"Scan")
-                arr_hashes = []
-                for root, dirs, files in os.walk(root_dir):
-                    for file in files:
-                        print("starting")
-                        file_path = os.path.join(root, file)
-                        try:
-                            md5_hash = generate_md5_hash(file_path)
-                            arr_hashes.append(md5_hash)
-                        except PermissionError:
-                            continue
-                        except OSError:
-                            continue
-            except Exception as e:
-                print("Error:",e)
-                return "Error while getting array of file hashes"
-            str_hashes = ",".join(arr_hashes)
-            self.send_message(str_hashes)
-            virus_hashes_data = self.recv_message()
-            arr_virus_hashes = virus_hashes_data.split(",")
-            try:
-                for root, dirs, files in os.walk(root_dir):
-                    for file in files:
-                        file_path = os.path.join(root, file)
-                        with open(file_path, 'rb') as f:
-                            file_hash = hashlib.md5(f.read()).hexdigest()
-                            for virus_hash in arr_virus_hashes:
-                                if file_hash == virus_hash:
-                                    self.arr_viruses_to_remove.append(file_path)
-            except Exception as e:
-                print("Error:",e)
-                return "Error while finding viruses"
-            try:
-                for virues in self.arr_viruses_to_remove:
-                    os.remove(virues)
-                print("Viruses removed")
-                return "Viruses Removed"
-            except Exception as e:
-                print("Error:",e)
-                return "Error while removing viruses"
-        
-
-        get_all_hashes("C:\\")
-
-#_________________________________________________________________________________________________________________________
-    def Adv_Scan(self):
-        self.arr_viruses_to_remove = []
-        def choose_path(root):
-            root.withdraw()
-            path = filedialog.askdirectory(initialdir = '/')
-            print("Selected disk path: ", path)
-            get_all_hashes(path)
-            
-
-        
-        def select_path():
-            root = Tk()
-            root.title("Virus Scanner")
-            root.configure(background="grey")
-            root.app_width = 500
-            root.app_height = 100
-            root.screen_width = root.winfo_screenwidth()
-            root.screen_height = root.winfo_screenheight()
-            root.x = (root.screen_width / 2)-(root.app_width / 2)
-            root.y = (root.screen_height / 2)-(root.app_height / 2)
-            root.geometry(f"{root.app_width}x{root.app_height}+{int(root.x)}+{int(root.y)}")
-            path_button = Button(root, text="Select Disk Path",bg="orange", command=lambda: choose_path(root))
-            path_button.pack()
-            root.mainloop()
-
-
-        def generate_md5_hash(file_path):
-            try:
-                with open(file_path, 'rb') as f:
-                    file_hash = hashlib.md5()
-                    while chunk := f.read(8192):
-                        file_hash.update(chunk)
-                    return file_hash.hexdigest()
-            except Exception as e:
-                print("Error:",e)
-                return "Error while getting MD5 Hash"
-
-        def get_all_hashes(root_dir):
-            FindOrNot = ""
-            start_time = datetime.datetime.now()
-            print(start_time)
+    def Scan(self,root_dir):
+        try:
             self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
+                    print("starting")
                     file_path = os.path.join(root, file)
-                    md5_hash = generate_md5_hash(file_path)
-                    arr_hashes.append(md5_hash)
-            str_hashes = ",".join(arr_hashes)
-            self.send_message(str_hashes)
-            virus_hashes_data = self.recv_message()
-            print(virus_hashes_data)
-            arr_virus_hashes = virus_hashes_data.split(",")
-            print(arr_virus_hashes)
-            if len(arr_virus_hashes) == 0:
-                FindOrNot = "No"
-                Solution = "Not Removed"
-            else:
-                FindOrNot = "Yes"
-                Solution = "Removed"
+                    try:
+                        md5_hash = self.generate_md5_hash(file_path)
+                        arr_hashes.append(md5_hash)
+                    except PermissionError:
+                        continue
+                    except OSError:
+                        continue
+        except Exception as e:
+            print("Error:",e)
+            return "Error while getting array of file hashes"
+        str_hashes = ",".join(arr_hashes)
+        self.send_message(str_hashes)
+        virus_hashes_data = self.recv_message()
+        arr_virus_hashes = virus_hashes_data.split(",")
+        try:
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -218,16 +133,99 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         for virus_hash in arr_virus_hashes:
                             if file_hash == virus_hash:
                                 self.arr_viruses_to_remove.append(file_path)
+        except Exception as e:
+            print("Error:",e)
+            return "Error while finding viruses"
+        try:
             for virues in self.arr_viruses_to_remove:
                 os.remove(virues)
             print("Viruses removed")
-            end_time = datetime.datetime.now()
-            print(end_time)
-            arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
-            self.send_message_arr(arr_history)
             return "Viruses Removed"
+        except Exception as e:
+            print("Error:",e)
+            return "Error while removing viruses"
+    
+
+
+#_________________________________________________________________________________________________________________________
+    
+    def choose_path(self,root):
+        root.withdraw()
+        path = filedialog.askdirectory(initialdir = '/')
+        print("Selected disk path: ", path)
+        self.adv_Scan(path)
         
-        select_path()
+
+    
+    def select_path(self):
+        root = Tk()
+        root.title("Virus Scanner")
+        root.configure(background="grey")
+        root.app_width = 500
+        root.app_height = 100
+        root.screen_width = root.winfo_screenwidth()
+        root.screen_height = root.winfo_screenheight()
+        root.x = (root.screen_width / 2)-(root.app_width / 2)
+        root.y = (root.screen_height / 2)-(root.app_height / 2)
+        root.geometry(f"{root.app_width}x{root.app_height}+{int(root.x)}+{int(root.y)}")
+        path_button = Button(root, text="Select Disk Path",bg="orange", command=lambda: self.choose_path(root))
+        path_button.pack()
+        root.mainloop()
+
+
+    # def generate_md5_hash(file_path):
+    #     try:
+    #         with open(file_path, 'rb') as f:
+    #             file_hash = hashlib.md5()
+    #             while chunk := f.read(8192):
+    #                 file_hash.update(chunk)
+    #             return file_hash.hexdigest()
+    #     except Exception as e:
+    #         print("Error:",e)
+    #         return "Error while getting MD5 Hash"
+
+    def adv_Scan(self,root_dir):
+        self.arr_viruses_to_remove = []
+        FindOrNot = ""
+        start_time = datetime.datetime.now()
+        print(start_time)
+        self.server.client_socket.send(b"Scan")
+        arr_hashes = []
+        for root, dirs, files in os.walk(root_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                md5_hash = self.generate_md5_hash(file_path)
+                arr_hashes.append(md5_hash)
+        str_hashes = ",".join(arr_hashes)
+        self.send_message(str_hashes)
+        virus_hashes_data = self.recv_message()
+        print(virus_hashes_data)
+        arr_virus_hashes = virus_hashes_data.split(",")
+        print(arr_virus_hashes)
+        if len(arr_virus_hashes) == 0:
+            FindOrNot = "No"
+            Solution = "Not Removed"
+        else:
+            FindOrNot = "Yes"
+            Solution = "Removed"
+        for root, dirs, files in os.walk(root_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                with open(file_path, 'rb') as f:
+                    file_hash = hashlib.md5(f.read()).hexdigest()
+                    for virus_hash in arr_virus_hashes:
+                        if file_hash == virus_hash:
+                            self.arr_viruses_to_remove.append(file_path)
+        for virues in self.arr_viruses_to_remove:
+            os.remove(virues)
+        print("Viruses removed")
+        end_time = datetime.datetime.now()
+        print(end_time)
+        arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+        self.send_message_arr(arr_history)
+        return "Viruses Removed"
+    
+    select_path()
 
 
                 
