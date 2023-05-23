@@ -172,18 +172,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         path_button.pack()
         root.mainloop()
 
-
-    # def generate_md5_hash(file_path):
-    #     try:
-    #         with open(file_path, 'rb') as f:
-    #             file_hash = hashlib.md5()
-    #             while chunk := f.read(8192):
-    #                 file_hash.update(chunk)
-    #             return file_hash.hexdigest()
-    #     except Exception as e:
-    #         print("Error:",e)
-    #         return "Error while getting MD5 Hash"
-
     def adv_Scan(self,root_dir):
         self.arr_viruses_to_remove = []
         FindOrNot = ""
