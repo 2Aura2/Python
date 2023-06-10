@@ -4,7 +4,6 @@ import UserDB
 import Viruses_HashDB
 import traceback
 import HistoryDB
-from Crypto.PublicKey import RSA
 import os
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
