@@ -54,6 +54,8 @@ class Register_Screen(tkinter.Toplevel):
 
         self.lbl_Anti_Virus = Label(self, text="Anti Virus",font=('ariel',14),bg='light gray').place(relx=0.5,rely=0.1,anchor='center')
 
+        self.lbl_password_info = Label(self, text="password must contain 8 to 30 letters",font=('ariel',14),bg='light gray').place(relx=0.8,rely=0.7,anchor='center')
+
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
@@ -97,8 +99,8 @@ class Register_Screen(tkinter.Toplevel):
         
 
     def register_user(self):
-        if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())==0:
-            messagebox.showerror("Error","Please write everything")
+        if len(self.enr_Fullname.get())==0 or len(self.enr_Username.get())==0 or len(self.enr_Password.get())<8 or len(self.enr_Password.get())>30:
+            messagebox.showerror("Error","Please make sure you entered Fullname, Username and password from 8 to 30 letters")
             return "Error"
         else:
             self.parent.client_socket.send(b"Register")
