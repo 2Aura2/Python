@@ -144,8 +144,54 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         except Exception as e:
             print("Error:",e)
             return "Error while removing viruses"
-    
-
+#____________________________________________________________________________________________________________________________   
+    def Scan2(self, root_dir):
+        try:
+            self.server.client_socket.send(b"Scan")
+            hash_file_dict = {}
+            hash_list = []
+            print("starting")
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    try:
+                        md5_hash = self.generate_md5_hash(file_path)
+                        if md5_hash not in hash_list:
+                            hash_list.append(md5_hash)
+                        if md5_hash in hash_file_dict:
+                            hash_file_dict[md5_hash].append(file_path)
+                        else:
+                            hash_file_dict[md5_hash] = [file_path]
+                    except PermissionError:
+                        continue
+                    except OSError:
+                        continue
+        except Exception as e:
+            print("Error:", e)
+            return "Error while getting array of file hashes"
+        
+        str_hashes = ",".join(hash_list)
+        self.send_message(str_hashes)
+        virus_hashes_data = self.recv_message()
+        list_virus_hashes = virus_hashes_data.split(",")
+        list_viruses_to_remove = []
+        try:
+            for virus_hash in list_virus_hashes:
+                if virus_hash in hash_file_dict:
+                    list_viruses_to_remove.extend(hash_file_dict[virus_hash])
+        except Exception as e:
+            print("Error:", e)
+            return "Error while finding viruses"
+        
+        try:
+            for virus_file in list_viruses_to_remove:
+                os.remove(virus_file)
+                print("removed: " + virus_file)
+            print("Viruses removed")
+            return "Viruses Removed"
+        except Exception as e:
+            print("Error:", e)
+            return "Error while removing viruses"
 
 #_________________________________________________________________________________________________________________________
     
@@ -173,7 +219,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         root.mainloop()
 
     def adv_Scan(self,root_dir):
-        self.arr_viruses_to_remove = []
+        #self.arr_viruses_to_remove = []
         FindOrNot = ""
         start_time = datetime.datetime.now()
         print(start_time)
