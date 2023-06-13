@@ -9,6 +9,8 @@ import time
 import datetime
 from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
+import threading
+
 
 class Computer_Scan_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName,public_key):
@@ -41,9 +43,21 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.select_path).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
+        self.progress_bar = ttk.Progressbar(self, mode="indeterminate")
+        self.progress_bar.place(relx=0.55,rely=0.8,anchor='center')
+
+
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+
+    def start_scan(self):
+        self.btn_start_scan.config(state=DISABLED)
+        self.progress_bar.start(10)  
+
+        scan_thread = threading.Thread(target=self.Scan2)
+        scan_thread.start()
+
 
     def update_label(self):
         try:
@@ -102,7 +116,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Error:",e)
             return "Error while getting MD5 Hash"
 
-    def Scan(self,root_dir):
+    def Scan(self):
+        root_dir = "C:\\"
         try:
             self.server.client_socket.send(b"Scan")
             arr_hashes = []
@@ -145,12 +160,15 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Error:",e)
             return "Error while removing viruses"
 #____________________________________________________________________________________________________________________________   
-    def Scan2(self, root_dir):
+    def Scan2(self):
+        root_dir = "C:\\"
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
             hash_list = []
             print("starting")
+            file_count = 0
+            
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -166,6 +184,9 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         continue
                     except OSError:
                         continue
+
+                    file_count += 1
+                    self.update_progress(file_count)
         except Exception as e:
             print("Error:", e)
             return "Error while getting array of file hashes"
@@ -188,10 +209,21 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 os.remove(virus_file)
                 print("removed: " + virus_file)
             print("Viruses removed")
+            self.complete_scan()
             return "Viruses Removed"
         except Exception as e:
             print("Error:", e)
+            self.complete_scan()
             return "Error while removing viruses"
+        
+    def update_progress(self, file_count):
+        self.progress_bar.stop()
+        self.progress_bar["mode"] = "determinate"
+        self.progress_bar["value"] = file_count
+
+    def complete_scan(self):
+        self.progress_bar.stop()
+        self.btn_start_scan.config(state=NORMAL)
 
 #_________________________________________________________________________________________________________________________
     
