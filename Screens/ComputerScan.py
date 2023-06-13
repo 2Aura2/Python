@@ -183,8 +183,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                             hash_file_dict[md5_hash].append(file_path)
                         elif md5_hash not in hash_file_dict and md5_hash != "Error while getting MD5 Hash":
                             hash_file_dict[md5_hash] = [file_path]
-                        print(hash_file_dict)
-                        print(hash_list)
                     except PermissionError:
                         continue
                     except OSError:
