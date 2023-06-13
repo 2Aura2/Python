@@ -43,7 +43,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.lbl_text = Label(self,text="Scan screen\n allows you to remove\n all viruses from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
         self.btn_start_scan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.start_scan)
         self.btn_start_scan.place(relx=0.8,rely=0.2,anchor='center')
-        self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.select_path).place(relx=0.8,rely=0.4,anchor='center')
+        self.btn_advscan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.start_advscan)
+        self.btn_advscan.place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
         self.progress_bar = ttk.Progressbar(self, mode="indeterminate")
@@ -60,6 +61,26 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
         scan_thread = threading.Thread(target=self.Scan2)
         scan_thread.start()
+
+    def start_advscan(self):
+        self.btn_advscan.config(state=DISABLED)
+        self.progress_bar.start(10)  
+
+        scan_thread = threading.Thread(target=self.select_path)
+        scan_thread.start()
+
+    def update_progress(self, file_count):
+        self.progress_bar.stop()
+        self.progress_bar["mode"] = "determinate"
+        self.progress_bar["value"] = file_count
+
+    def complete_scan(self):
+        self.progress_bar.stop()
+        self.btn_start_scan.config(state=NORMAL)
+
+    def complete_advscan(self):
+        self.progress_bar.stop()
+        self.btn_advscan.config(state=NORMAL)
 
 
     def update_label(self):
@@ -119,53 +140,56 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Error:",e)
             return "Error while getting MD5 Hash"
 
-    def Scan(self):
-        root_dir = "C:\\"
-        try:
-            self.server.client_socket.send(b"Scan")
-            arr_hashes = []
-            for root, dirs, files in os.walk(root_dir):
-                for file in files:
-                    print("starting")
-                    file_path = os.path.join(root, file)
-                    print(file_path)
-                    try:
-                        md5_hash = self.generate_md5_hash(file_path)
-                        arr_hashes.append(md5_hash)
-                    except PermissionError:
-                        continue
-                    except OSError:
-                        continue
-        except Exception as e:
-            print("Error:",e)
-            return "Error while getting array of file hashes"
-        str_hashes = ",".join(arr_hashes)
-        self.send_message(str_hashes)
-        virus_hashes_data = self.recv_message()
-        arr_virus_hashes = virus_hashes_data.split(",")
-        try:
-            for root, dirs, files in os.walk(root_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    with open(file_path, 'rb') as f:
-                        file_hash = hashlib.md5(f.read()).hexdigest()
-                        for virus_hash in arr_virus_hashes:
-                            if file_hash == virus_hash:
-                                self.arr_viruses_to_remove.append(file_path)
-        except Exception as e:
-            print("Error:",e)
-            return "Error while finding viruses"
-        try:
-            for virues in self.arr_viruses_to_remove:
-                os.remove(virues)
-            print("Viruses removed")
-            return "Viruses Removed"
-        except Exception as e:
-            print("Error:",e)
-            return "Error while removing viruses"
+    # def Scan(self):
+    #     root_dir = "C:\\"
+    #     try:
+    #         self.server.client_socket.send(b"Scan")
+    #         arr_hashes = []
+    #         for root, dirs, files in os.walk(root_dir):
+    #             for file in files:
+    #                 print("starting")
+    #                 file_path = os.path.join(root, file)
+    #                 print(file_path)
+    #                 try:
+    #                     md5_hash = self.generate_md5_hash(file_path)
+    #                     arr_hashes.append(md5_hash)
+    #                 except PermissionError:
+    #                     continue
+    #                 except OSError:
+    #                     continue
+    #     except Exception as e:
+    #         print("Error:",e)
+    #         return "Error while getting array of file hashes"
+    #     str_hashes = ",".join(arr_hashes)
+    #     self.send_message(str_hashes)
+    #     virus_hashes_data = self.recv_message()
+    #     arr_virus_hashes = virus_hashes_data.split(",")
+    #     try:
+    #         for root, dirs, files in os.walk(root_dir):
+    #             for file in files:
+    #                 file_path = os.path.join(root, file)
+    #                 with open(file_path, 'rb') as f:
+    #                     file_hash = hashlib.md5(f.read()).hexdigest()
+    #                     for virus_hash in arr_virus_hashes:
+    #                         if file_hash == virus_hash:
+    #                             self.arr_viruses_to_remove.append(file_path)
+    #     except Exception as e:
+    #         print("Error:",e)
+    #         return "Error while finding viruses"
+    #     try:
+    #         for virues in self.arr_viruses_to_remove:
+    #             os.remove(virues)
+    #         print("Viruses removed")
+    #         return "Viruses Removed"
+    #     except Exception as e:
+    #         print("Error:",e)
+    #         return "Error while removing viruses"
 #____________________________________________________________________________________________________________________________   
     def Scan2(self):
         root_dir = "C:\\"
+        FindOrNot = ""
+        start_time = datetime.datetime.now()
+        print(start_time)
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
@@ -201,6 +225,14 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         virus_hashes_data = self.recv_message()
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
+
+        if len(list_virus_hashes) == 0:
+            FindOrNot = "No"
+            Solution = "Not Removed"
+        else:
+            FindOrNot = "Yes"
+            Solution = "Removed"
+
         try:
             for virus_hash in list_virus_hashes:
                 if virus_hash in hash_file_dict:
@@ -215,28 +247,24 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 print("removed: " + virus_file)
             print("Viruses removed")
             self.complete_scan()
+            end_time = datetime.datetime.now()
+            print(end_time)
+            list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+            self.send_message_arr(list_history)
             return "Viruses Removed"
         except Exception as e:
             print("Error3:", e)
             self.complete_scan()
             return "Error while removing viruses"
         
-    def update_progress(self, file_count):
-        self.progress_bar.stop()
-        self.progress_bar["mode"] = "determinate"
-        self.progress_bar["value"] = file_count
-
-    def complete_scan(self):
-        self.progress_bar.stop()
-        self.btn_start_scan.config(state=NORMAL)
-
+   
 #_________________________________________________________________________________________________________________________
     
     def choose_path(self,root):
         root.withdraw()
         path = filedialog.askdirectory(initialdir = '/')
         print("Selected disk path: ", path)
-        self.adv_Scan(path)
+        self.adv_Scan2(path)
         
     
     
@@ -255,47 +283,118 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         path_button.pack()
         root.mainloop()
 
-    def adv_Scan(self,root_dir):
-        #self.arr_viruses_to_remove = []
+    # def adv_Scan(self,root_dir):
+    #     #self.arr_viruses_to_remove = []
+    #     FindOrNot = ""
+    #     start_time = datetime.datetime.now()
+    #     print(start_time)
+    #     self.server.client_socket.send(b"Scan")
+    #     arr_hashes = []
+    #     for root, dirs, files in os.walk(root_dir):
+    #         for file in files:
+    #             file_path = os.path.join(root, file)
+    #             md5_hash = self.generate_md5_hash(file_path)
+    #             arr_hashes.append(md5_hash)
+    #     str_hashes = ",".join(arr_hashes)
+    #     self.send_message(str_hashes)
+    #     virus_hashes_data = self.recv_message()
+    #     print(virus_hashes_data)
+    #     arr_virus_hashes = virus_hashes_data.split(",")
+    #     print(arr_virus_hashes)
+    #     if len(arr_virus_hashes) == 0:
+    #         FindOrNot = "No"
+    #         Solution = "Not Removed"
+    #     else:
+    #         FindOrNot = "Yes"
+    #         Solution = "Removed"
+    #     for root, dirs, files in os.walk(root_dir):
+    #         for file in files:
+    #             file_path = os.path.join(root, file)
+    #             with open(file_path, 'rb') as f:
+    #                 file_hash = hashlib.md5(f.read()).hexdigest()
+    #                 for virus_hash in arr_virus_hashes:
+    #                     if file_hash == virus_hash:
+    #                         self.arr_viruses_to_remove.append(file_path)
+    #     for virues in self.arr_viruses_to_remove:
+    #         os.remove(virues)
+    #     print("Viruses removed")
+    #     end_time = datetime.datetime.now()
+    #     print(end_time)
+    #     arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+    #     self.send_message_arr(arr_history)
+    #     return "Viruses Removed"
+    
+
+    def adv_Scan2(self, root_dir):
         FindOrNot = ""
         start_time = datetime.datetime.now()
         print(start_time)
-        self.server.client_socket.send(b"Scan")
-        arr_hashes = []
-        for root, dirs, files in os.walk(root_dir):
-            for file in files:
-                file_path = os.path.join(root, file)
-                md5_hash = self.generate_md5_hash(file_path)
-                arr_hashes.append(md5_hash)
-        str_hashes = ",".join(arr_hashes)
+        try:
+            self.server.client_socket.send(b"Scan")
+            hash_file_dict = {}
+            hash_list = []
+            print("starting")
+            file_count = 0
+            
+            for root, dirs, files in os.walk(root_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    try:
+                        print("starting")
+                        md5_hash = self.generate_md5_hash(file_path)
+                        if md5_hash not in hash_list and md5_hash != "Error while getting MD5 Hash":
+                            hash_list.append(md5_hash)
+                        if md5_hash in hash_file_dict:
+                            hash_file_dict[md5_hash].append(file_path)
+                        elif md5_hash not in hash_file_dict and md5_hash != "Error while getting MD5 Hash":
+                            hash_file_dict[md5_hash] = [file_path]
+                    except PermissionError:
+                        continue
+                    except OSError:
+                        continue
+
+                    file_count += 1
+                    self.update_progress(file_count)
+        except Exception as e:
+            print("Error1:", e)
+            return "Error while getting array of file hashes"
+        
+        str_hashes = ",".join(hash_list)
         self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
-        print(virus_hashes_data)
-        arr_virus_hashes = virus_hashes_data.split(",")
-        print(arr_virus_hashes)
-        if len(arr_virus_hashes) == 0:
+        list_virus_hashes = virus_hashes_data.split(",")
+        list_viruses_to_remove = []
+
+        if len(list_virus_hashes) == 0:
             FindOrNot = "No"
             Solution = "Not Removed"
         else:
             FindOrNot = "Yes"
             Solution = "Removed"
-        for root, dirs, files in os.walk(root_dir):
-            for file in files:
-                file_path = os.path.join(root, file)
-                with open(file_path, 'rb') as f:
-                    file_hash = hashlib.md5(f.read()).hexdigest()
-                    for virus_hash in arr_virus_hashes:
-                        if file_hash == virus_hash:
-                            self.arr_viruses_to_remove.append(file_path)
-        for virues in self.arr_viruses_to_remove:
-            os.remove(virues)
-        print("Viruses removed")
-        end_time = datetime.datetime.now()
-        print(end_time)
-        arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
-        self.send_message_arr(arr_history)
-        return "Viruses Removed"
-    
+
+        try:
+            for virus_hash in list_virus_hashes:
+                if virus_hash in hash_file_dict:
+                    list_viruses_to_remove.extend(hash_file_dict[virus_hash])
+        except Exception as e:
+            print("Error2:", e)
+            return "Error while finding viruses"
+        
+        try:
+            for virus_file in list_viruses_to_remove:
+                os.remove(virus_file)
+                print("removed: " + virus_file)
+            print("Viruses removed")
+            self.complete_scan()
+            end_time = datetime.datetime.now()
+            print(end_time)
+            list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+            self.send_message_arr(list_history)
+            return "Viruses Removed"
+        except Exception as e:
+            print("Error3:", e)
+            self.complete_scan()
+            return "Error while removing viruses"
     
 
 
