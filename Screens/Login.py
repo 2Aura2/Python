@@ -29,6 +29,8 @@ class Login_Screen(tkinter.Tk):
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
+        self.wm_iconbitmap('Images\\virus.ico')
+
         
 
         self.handle_thread_socket()

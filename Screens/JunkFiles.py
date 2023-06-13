@@ -31,6 +31,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
+        self.wm_iconbitmap('Images\\virus.ico')
 
         self.create_gui()
 

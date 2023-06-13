@@ -27,6 +27,8 @@ class History_Screen(tkinter.Toplevel):
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
         self.session_key = os.urandom(16)
+        self.wm_iconbitmap('Images\\virus.ico')
+
 
         self.create_gui()
 

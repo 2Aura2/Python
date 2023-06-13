@@ -31,6 +31,7 @@ class Settigns_Screen(tkinter.Toplevel):
         self.IMGLabel.pack(expand=YES)
         self.data = None
         self.session_key = os.urandom(16)
+        self.wm_iconbitmap('Images\\virus.ico')
 
         self.create_gui()
 
