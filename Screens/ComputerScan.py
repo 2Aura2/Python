@@ -39,7 +39,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def create_gui(self):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_text = Label(self,text="Scan screen\n allows you to remove\n all viruses from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
-        self.btn_startScan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.Scan).place(relx=0.8,rely=0.2,anchor='center')
+        self.btn_start_scan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.start_scan)
+        self.btn_start_scan.place(relx=0.8,rely=0.2,anchor='center')
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.select_path).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
@@ -188,7 +189,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     file_count += 1
                     self.update_progress(file_count)
         except Exception as e:
-            print("Error:", e)
+            print("Error1:", e)
             return "Error while getting array of file hashes"
         
         str_hashes = ",".join(hash_list)
@@ -201,7 +202,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 if virus_hash in hash_file_dict:
                     list_viruses_to_remove.extend(hash_file_dict[virus_hash])
         except Exception as e:
-            print("Error:", e)
+            print("Error2:", e)
             return "Error while finding viruses"
         
         try:
@@ -212,7 +213,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             self.complete_scan()
             return "Viruses Removed"
         except Exception as e:
-            print("Error:", e)
+            print("Error3:", e)
             self.complete_scan()
             return "Error while removing viruses"
         
