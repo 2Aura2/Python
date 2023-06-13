@@ -39,7 +39,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def create_gui(self):
         self.lbl_background = Label(self,bg="light gray",width=45,height=20).place(relx=0.2,rely=0.4,anchor='center')
         self.lbl_text = Label(self,text="Scan screen\n allows you to remove\n all viruses from\n the computer",font=("ariel",18),bg="light gray").place(relx=0.2,rely=0.25,anchor='center')
-        self.btn_start_scan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.start_scan)
+        self.btn_start_scan = Button(self,text="Scan your computer",font=("",18),width=16,bg="light gray",command=self.Scan)
         self.btn_start_scan.place(relx=0.8,rely=0.2,anchor='center')
         self.btn_ADVScan = Button(self,text="Advanced Scan",font=("",18),width=16,bg="light gray",command=self.select_path).place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
@@ -123,16 +123,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             self.server.client_socket.send(b"Scan")
             arr_hashes = []
             for root, dirs, files in os.walk(root_dir):
-                for file in files:
-                    print("starting")
-                    file_path = os.path.join(root, file)
-                    try:
-                        md5_hash = self.generate_md5_hash(file_path)
-                        arr_hashes.append(md5_hash)
-                    except PermissionError:
-                        continue
-                    except OSError:
-                        continue
+                for dir in dirs:
+                    for file in files:
+                        print("starting")
+                        file_path = os.path.join(root, dir, file)
+                        print(file_path)
+                        try:
+                            md5_hash = self.generate_md5_hash(file_path)
+                            arr_hashes.append(md5_hash)
+                        except PermissionError:
+                            continue
+                        except OSError:
+                            continue
         except Exception as e:
             print("Error:",e)
             return "Error while getting array of file hashes"
