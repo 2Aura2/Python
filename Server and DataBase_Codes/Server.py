@@ -8,6 +8,8 @@ import os
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import base64
+import signal
+import sys
 
 class server(object):
     def __init__(self,ip,port):
@@ -18,6 +20,15 @@ class server(object):
         self.connected_clients = {}
 
     def start(self):
+        def signal_handler(sig, frame):
+            print('Closing server...')
+            self.sock.close()
+            sys.exit(0)
+
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
+
+
         try:
             print(f"server starting up on ip {self.ip} port {self.port}")
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
