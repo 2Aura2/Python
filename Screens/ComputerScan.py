@@ -237,6 +237,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 for file in files:
                     file_path = os.path.join(root, file)
                     try:
+                        print("starting")
                         md5_hash = self.generate_md5_hash(file_path)
                         if md5_hash not in hash_list and md5_hash != "Error while getting MD5 Hash":
                             hash_list.append(md5_hash)
