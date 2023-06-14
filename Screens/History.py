@@ -101,6 +101,7 @@ class History_Screen(tkinter.Toplevel):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
             self.server.client_socket.send(b'Logout')
             self.server.destroy()
+            self.server.client_socket.close()
         
         
     

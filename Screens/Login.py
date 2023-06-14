@@ -183,6 +183,7 @@ class Login_Screen(tkinter.Tk):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
             self.client_socket.send(b'Logout')
             self.destroy()
+            self.client_socket.close()
 
 
 if __name__ == "__main__":

@@ -125,3 +125,4 @@ class Register_Screen(tkinter.Toplevel):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
             self.parent.client_socket.send(b'Logout')
             self.parent.destroy()
+            self.parent.client_socket.close()

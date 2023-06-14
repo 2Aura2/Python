@@ -148,6 +148,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
             self.server.client_socket.send(b'Logout')
             self.server.destroy()
+            self.server.client_socket.close()
 
     # def disk_cleanup():
     #     subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)
