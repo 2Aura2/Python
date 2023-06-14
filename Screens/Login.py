@@ -60,6 +60,7 @@ class Login_Screen(tkinter.Tk):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -178,6 +179,10 @@ class Login_Screen(tkinter.Tk):
             print("Error:", e)
             traceback.print_exc()
 
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.client_socket.send(b'Logout')
+            self.destroy()
 
 
 if __name__ == "__main__":

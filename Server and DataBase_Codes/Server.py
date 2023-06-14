@@ -13,8 +13,9 @@ class server(object):
     def __init__(self,ip,port):
         self.ip = ip
         self.port = port
-        self.count = 0
+        self.client_count = 0
         self.running = True
+        self.connected_clients = {}
 
     def start(self):
         try:
@@ -46,23 +47,21 @@ class server(object):
                 self.public_key = RSA.import_key(self.public_key_bytes)
                 self.private_key = RSA.import_key(self.private_key_bytes)
                 print("Watinig for a new client")
-                clientSocket, client_addresses = self.sock.accept()
+                clientSocket, addr = self.sock.accept()
                 print("new client entered")
                 clientSocket.send("Hello, this is server".encode())
                 clientSocket.send(self.public_key_bytes)
-                self.count += 1
-                print(self.count)
-                self.handleClient(clientSocket, self.count,self.public_key,self.private_key)
+                self.handleClient(clientSocket,self.public_key,self.private_key,addr)
         except socket.error as e:
             print(e)
 
-    def handleClient(self,clientSock,current,public_key,private_key):
-        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, current, public_key, private_key,))
+    def handleClient(self,clientSock,public_key,private_key,addr):
+        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, public_key, private_key,addr,))
         client_handler.start()
 
     
 
-    def handle_client_connection(self, client_socket, current, public_key, private_key):
+    def handle_client_connection(self, client_socket, public_key, private_key,addr):
         
         def send_message(message):
             length = str(len(message)).zfill(10)
@@ -101,6 +100,7 @@ class server(object):
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
                     #arr = server_data.split(",")
+                    print(server_data)
 #1______________________________________________________________________________________________________________________________
                     if server_data == "Login":
                         arr = recv_message_arr()
@@ -110,6 +110,9 @@ class server(object):
                             print("server data:", data)
                             if data == True:
                                 send_message(f"Welcome {arr[0]}")
+                                self.connected_clients[client_socket] = addr
+                                self.client_count += 1
+                                print(self.client_count)
                             elif data == False:
                                 send_message("Username or Password are incorrect")
                                 
@@ -190,7 +193,12 @@ class server(object):
                         answer = UserDB.users().ChangeUserName(NewUserName,UserName)
                         send_message(answer)
 #9______________________________________________________________________________________________________________________________
-
+                    elif server_data == "Logout":
+                        if self.client_count != 0:
+                            del self.connected_clients[client_socket]
+                            self.client_count -= 1
+                            print(self.client_count)
+                            not_crash = False
                     else:
                         server_data = "False"
                 except Exception as e:

@@ -6,6 +6,9 @@ import JunkFiles
 import History
 import settings
 import time
+from tkinter import ttk, messagebox
+
+
 
 class Overview_Screen(tkinter.Toplevel):
     def __init__(self,parent,UserName,public_key):
@@ -55,6 +58,8 @@ class Overview_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
 
     def update_label(self):
         try:
@@ -85,5 +90,10 @@ class Overview_Screen(tkinter.Toplevel):
         window = settings.Settigns_Screen(self,self.parent,self.UserName,self.public_key)
         window.grab_set()
         self.withdraw()
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.parent.client_socket.send(b'Logout')
+            self.parent.destroy()
 
 

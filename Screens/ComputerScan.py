@@ -54,6 +54,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
 
     def start_scan(self):
         self.btn_start_scan.config(state=DISABLED)
@@ -226,36 +228,35 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
 
-        if len(list_virus_hashes) == 0:
+        if len(list_virus_hashes) > 0:
+            FindOrNot = "Yes"
+            try:
+                for virus_hash in list_virus_hashes:
+                    if virus_hash in hash_file_dict:
+                        list_viruses_to_remove.extend(hash_file_dict[virus_hash])
+            except Exception as e:
+                print("Error2:", e)
+                return "Error while finding viruses"
+            
+            try:
+                for virus_file in list_viruses_to_remove:
+                    os.remove(virus_file)
+                    print("removed: " + virus_file)
+                print("Viruses removed")
+                Solution = "Removed"
+                self.complete_scan()
+                end_time = datetime.datetime.now()
+                print(end_time)
+                list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+                self.send_message_arr(list_history)
+                return "Viruses Removed"
+            except Exception as e:
+                print("Error3:", e)
+                self.complete_scan()
+                return "Error while removing viruses"
+        else:
             FindOrNot = "No"
             Solution = "Not Removed"
-        else:
-            FindOrNot = "Yes"
-            Solution = "Removed"
-
-        try:
-            for virus_hash in list_virus_hashes:
-                if virus_hash in hash_file_dict:
-                    list_viruses_to_remove.extend(hash_file_dict[virus_hash])
-        except Exception as e:
-            print("Error2:", e)
-            return "Error while finding viruses"
-        
-        try:
-            for virus_file in list_viruses_to_remove:
-                os.remove(virus_file)
-                print("removed: " + virus_file)
-            print("Viruses removed")
-            self.complete_scan()
-            end_time = datetime.datetime.now()
-            print(end_time)
-            list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
-            self.send_message_arr(list_history)
-            return "Viruses Removed"
-        except Exception as e:
-            print("Error3:", e)
-            self.complete_scan()
-            return "Error while removing viruses"
         
    
 #_________________________________________________________________________________________________________________________
@@ -365,37 +366,41 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
 
-        if len(list_virus_hashes) == 0:
+        if len(list_virus_hashes) > 0:
+            FindOrNot = "Yes"
+            try:
+                for virus_hash in list_virus_hashes:
+                    if virus_hash in hash_file_dict:
+                        list_viruses_to_remove.extend(hash_file_dict[virus_hash])
+            except Exception as e:
+                print("Error2:", e)
+                return "Error while finding viruses"
+            
+            try:
+                for virus_file in list_viruses_to_remove:
+                    os.remove(virus_file)
+                    print("removed: " + virus_file)
+                print("Viruses removed")
+                Solution = "Removed"
+                self.complete_scan()
+                end_time = datetime.datetime.now()
+                print(end_time)
+                list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
+                self.send_message_arr(list_history)
+                return "Viruses Removed"
+            except Exception as e:
+                print("Error3:", e)
+                self.complete_scan()
+                return "Error while removing viruses"
+        else:
             FindOrNot = "No"
             Solution = "Not Removed"
-        else:
-            FindOrNot = "Yes"
-            Solution = "Removed"
 
-        try:
-            for virus_hash in list_virus_hashes:
-                if virus_hash in hash_file_dict:
-                    list_viruses_to_remove.extend(hash_file_dict[virus_hash])
-        except Exception as e:
-            print("Error2:", e)
-            return "Error while finding viruses"
-        
-        try:
-            for virus_file in list_viruses_to_remove:
-                os.remove(virus_file)
-                print("removed: " + virus_file)
-            print("Viruses removed")
-            self.complete_scan()
-            end_time = datetime.datetime.now()
-            print(end_time)
-            list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
-            self.send_message_arr(list_history)
-            return "Viruses Removed"
-        except Exception as e:
-            print("Error3:", e)
-            self.complete_scan()
-            return "Error while removing viruses"
-    
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.parent.client_socket.send(b'Logout')
+            self.server.destroy()
 
 
                 

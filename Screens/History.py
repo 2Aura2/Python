@@ -5,6 +5,8 @@ import time
 from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 import os
+from tkinter import ttk, messagebox
+
 
 class History_Screen(tkinter.Toplevel):
     def __init__(self,parent,server,UserName,public_key):
@@ -41,6 +43,8 @@ class History_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
 
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
@@ -93,7 +97,10 @@ class History_Screen(tkinter.Toplevel):
         self.destroy()  # close the second window
         self.parent.deiconify()  # show the main window again
     
-        
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.parent.client_socket.send(b'Logout')
+            self.server.destroy()
         
         
     

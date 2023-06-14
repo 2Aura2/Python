@@ -57,6 +57,7 @@ class Settigns_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -188,7 +189,10 @@ class Settigns_Screen(tkinter.Toplevel):
 
 
 
-
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.parent.client_socket.send(b'Logout')
+            self.server.destroy()
 
 
     def Login_window(self):
