@@ -89,4 +89,3 @@ class history:
 h = history()
 #h.AddScan("3","3","3","3","8")
 #x = h.get_scan_by_UserId(8)
-#print(x)

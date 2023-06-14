@@ -31,7 +31,6 @@ class users:
             md5_hash_Password = hashlib.md5(Password.encode()).hexdigest()
             conn = sqlite3.connect(self.Location)
             str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES(?,?,?)"
-            print(str_insert)
             cursor = conn.cursor()
             cursor.execute(str_insert,(FullName,UserName,str(md5_hash_Password)))
             conn.commit()
@@ -46,8 +45,6 @@ class users:
             md5_hash_Password = hashlib.md5(password.encode()).hexdigest()
             conn=sqlite3.connect(self.Location)
             strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = '{str(UserName)}' AND {self.Password} = '{str(md5_hash_Password)}'"
-            #strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'" + " AND " + self.Password + "=" + "'" +str(md5_hash_Password) + "'"
-            print(strsql)
             cursor = conn.execute(strsql)
             row=cursor.fetchall()
             conn.commit()
@@ -70,7 +67,6 @@ class users:
             row=cursor.fetchone()
             conn.commit()
             conn.close()
-            print(row)
             if row:
                 return True
             else:
@@ -97,7 +93,6 @@ class users:
         try:
             conn = sqlite3.connect(self.Location)
             str_update = f"UPDATE {self.tablename} Set {self.Email} = '{Email}' WHERE {self.UserName} = '{UserName}'"
-            print(str_update)
             conn.execute(str_update)
             conn.commit()
             conn.close()
@@ -110,7 +105,6 @@ class users:
     def GetEmailByUserName(self,UserName):
         try:
             conn=sqlite3.connect(self.Location)
-            print(UserName)
             strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
             cursor = conn.execute(strsql)
             row=cursor.fetchone()
