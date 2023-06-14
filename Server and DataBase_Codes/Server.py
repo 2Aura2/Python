@@ -6,7 +6,8 @@ import traceback
 import HistoryDB
 import os
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Random import get_random_bytes
+from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 import signal
 import sys
@@ -101,6 +102,29 @@ class server(object):
             arr = data.split(",")
             return arr
 
+        def decrypt_data(enc_session_key, nonce, tag, ciphertext):
+            # Decrypt the session key with the private RSA key
+            private_key = RSA.import_key(open("private.pem").read())
+            cipher_rsa = PKCS1_OAEP.new(private_key)
+            session_key = cipher_rsa.decrypt(enc_session_key)
+
+            # Decrypt the data with the AES session key
+            cipher_aes = AES.new(session_key, AES.MODE_EAX, nonce)
+            data = cipher_aes.decrypt_and_verify(ciphertext, tag)
+
+            return data
+        
+        def recv_data():
+            enc_session_key = client_socket.recv(256)
+            nonce = client_socket.recv(16)
+            tag = client_socket.recv(16)
+            ciphertext = client_socket.recv(4096)
+
+            # Decrypt the received data
+            data = decrypt_data(enc_session_key, nonce, tag, ciphertext)
+            print("Received data from client:", data.decode("utf-8"))
+            return data.decode("utf-8")
+
 
         not_crash = True
         while self.running:
@@ -137,7 +161,7 @@ class server(object):
 
 
                     elif server_data == "Scan":
-                        server_data_hashes = recv_message()
+                        server_data_hashes = recv_data()
                         arr_hashes = server_data_hashes.split(",")
                         arr_virus_hashes=[]
                         for hash in arr_hashes:

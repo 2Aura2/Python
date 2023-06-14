@@ -9,10 +9,11 @@ from PIL import ImageTk, Image
 import traceback
 import time
 from Crypto.PublicKey import RSA
+from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 import os
-
+from tkinter import filedialog
 
 class Login_Screen(tkinter.Tk):
     def __init__(self):
@@ -157,8 +158,42 @@ class Login_Screen(tkinter.Tk):
                 self.destroy()
                 self.client_socket.close()
     
+
+    def encrypt_data(self,data):
+        # Encrypt the data
+        recipient_key = RSA.import_key(open("receiver.pem").read())
+        session_key = get_random_bytes(16)
+
+        # Encrypt the session key with the public RSA key
+        cipher_rsa = PKCS1_OAEP.new(recipient_key)
+        enc_session_key = cipher_rsa.encrypt(session_key)
+
+        # Encrypt the data with the AES session key
+        cipher_aes = AES.new(session_key, AES.MODE_EAX)
+        ciphertext, tag = cipher_aes.encrypt_and_digest(data)
+
+        return enc_session_key, cipher_aes.nonce, tag, ciphertext
     
+
+    def send_data(self,data):
+        # Select a file to encrypt and send
+        # file_path = filedialog.askopenfilename()
+        # with open(file_path, "rb") as file:
+        #     data = file.read()
+
+        # Encrypt the data
+        enc_session_key, nonce, tag, ciphertext = self.encrypt_data(data.encode())
+
+        self.client_socket.sendall(enc_session_key)
+        self.client_socket.sendall(nonce)
+        self.client_socket.sendall(tag)
+        self.client_socket.sendall(ciphertext)
+        self.client_socket.close()
+
+        print("Data sent to server.")
     
+
+
     def login_user(self):
         try:
             if (self.enr_Username.get() == "Username" or len(self.enr_Username.get()) == 0) and (self.enr_Password.get() == "Password" or len(self.enr_Password.get()) == 0):
