@@ -35,8 +35,8 @@ class hashes:
             conn = sqlite3.connect(self.Location)
             with open(file_path,'rb') as f:
                 md5_hash = hashlib.md5(f.read()).hexdigest()
-            str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{md5_hash}')"
-            conn.execute(str_insert)
+            str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES(?)"
+            conn.execute(str_insert,(md5_hash))
             conn.commit()
             conn.close()
             return "Record inserted successfully"
@@ -52,8 +52,8 @@ class hashes:
             conn = sqlite3.connect(self.Location)
             for i in range(len(Hash_list)):
                 Hash = Hash_list[i]
-                str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES('{Hash}')"
-                conn.execute(str_insert)
+                str_insert = f"INSERT INTO {self.tablename} ({self.Hash})VALUES(?)"
+                conn.execute(str_insert,(Hash))
                 conn.commit()
             conn.close()
             return "Record inserted successfully"
@@ -65,7 +65,7 @@ class hashes:
     def select_all_hashes(self):
         try:
             conn = sqlite3.connect(self.Location)
-            str1 = "select*from " + self.tablename
+            str1 = F"select*from {self.tablename}"
             cursor = conn.execute(str1)
             rows = cursor.fetchall()
             arr_hashes = []

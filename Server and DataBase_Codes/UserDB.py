@@ -44,8 +44,8 @@ class users:
         try:
             md5_hash_Password = hashlib.md5(password.encode()).hexdigest()
             conn=sqlite3.connect(self.Location)
-            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = '{str(UserName)}' AND {self.Password} = '{str(md5_hash_Password)}'"
-            cursor = conn.execute(strsql)
+            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ? AND {self.Password} = ?"
+            cursor = conn.execute(strsql,(UserName, md5_hash_Password))
             row=cursor.fetchall()
             conn.commit()
             conn.close()
@@ -79,8 +79,8 @@ class users:
     def delete_by_UserName(self, UserName):
         try:
             conn = sqlite3.connect(self.Location)
-            str_delete = "DELETE from " + self.tablename + " where " + self.UserName + "=" + "'" + str(UserName) + "'"
-            conn.execute(str_delete)
+            str_delete = f"DELETE from {self.tablename} WHERE {self.UserName} = ?"
+            conn.execute(str_delete,(UserName))
             conn.commit()
             conn.close()
             print("User Deleted successfully")
@@ -92,8 +92,8 @@ class users:
     def UpdateEmailByUserName(self,Email,UserName):
         try:
             conn = sqlite3.connect(self.Location)
-            str_update = f"UPDATE {self.tablename} Set {self.Email} = '{Email}' WHERE {self.UserName} = '{UserName}'"
-            conn.execute(str_update)
+            str_update = f"UPDATE {self.tablename} Set {self.Email} = ? WHERE {self.UserName} = ?"
+            conn.execute(str_update,(Email,UserName))
             conn.commit()
             conn.close()
             print("User updated successfully")
@@ -105,8 +105,8 @@ class users:
     def GetEmailByUserName(self,UserName):
         try:
             conn=sqlite3.connect(self.Location)
-            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
-            cursor = conn.execute(strsql)
+            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?"
+            cursor = conn.execute(strsql,(UserName))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -121,8 +121,8 @@ class users:
     def GetUserIdByUserName(self,UserName):
         try:
             conn=sqlite3.connect(self.Location)
-            strsql = "SELECT * FROM " + self.tablename + " WHERE " + self.UserName + "=" + "'" + str(UserName) + "'"
-            cursor = conn.execute(strsql)
+            strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?"
+            cursor = conn.execute(strsql,(UserName))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -138,8 +138,8 @@ class users:
         try:
             md5_hash_Password = hashlib.md5(Password.encode()).hexdigest()
             conn = sqlite3.connect(self.Location)
-            str_update = f"UPDATE {self.tablename} Set {self.Password} = '{md5_hash_Password}' WHERE {self.UserName} = '{UserName}'"
-            conn.execute(str_update)
+            str_update = f"UPDATE {self.tablename} Set {self.Password} = ? WHERE {self.UserName} = ?"
+            conn.execute(str_update,(md5_hash_Password, UserName))
             conn.commit()
             conn.close()
             return "Password changed successfully"
@@ -150,8 +150,8 @@ class users:
     def ChangeUserName(self,NewUserName,UserName):
         try:
             conn = sqlite3.connect(self.Location)
-            str_update = f"UPDATE {self.tablename} Set {self.UserName} = '{NewUserName}' WHERE {self.UserName} = '{UserName}'"
-            conn.execute(str_update)
+            str_update = f"UPDATE {self.tablename} Set {self.UserName} = ? WHERE {self.UserName} = ?"
+            conn.execute(str_update,(NewUserName,UserName))
             conn.commit()
             conn.close()
             return "UserName changed successfully"
@@ -162,7 +162,7 @@ class users:
 
 if __name__ == "__main__":
     u = users()
-    #u.check_user_by_Username_and_Password("2Aura2","12345")
+    #u.check_user_by_Username_and_Password("1","1")
     #u.insert_user("David Jvania", "2Aura","12345")
     #u.check_user_by_Username("1")
     #u.GetEmailByUserName("2Aura2")

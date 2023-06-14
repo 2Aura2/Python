@@ -29,8 +29,8 @@ class history:
     def AddScan(self, Start, End, FindorNot, Solution, UserId):
         try:
             conn = sqlite3.connect(self.Location)
-            str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES('{Start}','{End}','{FindorNot}','{Solution}','{UserId}')"
-            conn.execute(str_insert)
+            str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES(?,?,?,?,?)"
+            conn.execute(str_insert,(Start,End,FindorNot,Solution,UserId))
             conn.commit()
             conn.close()
             return "Scan added successfully"
@@ -41,8 +41,8 @@ class history:
     def get_scan_by_start_end(self,Start,End):
         try:
             conn = sqlite3.connect(self.Location)
-            strsql = f"SELECT * from {self.tablename} where {self.Start} = '{str(Start)}' And {self.End} = '{str(End)}'"
-            cursor = conn.execute(strsql)
+            strsql = f"SELECT * from {self.tablename} where {self.Start} = ? And {self.End} = ?"
+            cursor = conn.execute(strsql,(Start,End))
             row = cursor.fetchone()
             scan_data = str(row[1],row[2],row[3],row[4])
             print("Scan data: " + str(scan_data))
@@ -57,8 +57,8 @@ class history:
     def get_scan_by_UserId(self,UserId):
         try:
             conn = sqlite3.connect(self.Location)
-            str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}='{str(UserId)}' ORDER BY UserId DESC LIMIT 5"
-            cursor = conn.execute(str_info)
+            str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}= ?"#ORDER BY UserId DESC LIMIT 5
+            cursor = conn.execute(str_info,(UserId))
             row = cursor.fetchall()
             arr = ','.join(map(str, row))
             letters_to_remove = "()' "
@@ -76,8 +76,8 @@ class history:
     def delete_by_start(self, Start):
         try:
             conn = sqlite3.connect(self.Location)
-            str_delete = "DELETE from " + self.tablename + " where " + self.Start + "=" + "'" + str(Start) + "'"
-            conn.execute(str_delete)
+            str_delete = f"DELETE from {self.tablename} WHERE {self.Start} = ?"
+            conn.execute(str_delete,(Start))
             conn.commit()
             conn.close()
             print("Scan Deleted successfully")
