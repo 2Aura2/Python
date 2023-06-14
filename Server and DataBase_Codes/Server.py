@@ -125,6 +125,37 @@ class server(object):
             print("Received data from client:", data.decode("utf-8"))
             return data.decode("utf-8")
 
+        def encrypt_data(data):
+            # Encrypt the data
+            recipient_key = RSA.import_key(open("receiver.pem").read())
+            session_key = get_random_bytes(16)
+
+            # Encrypt the session key with the public RSA key
+            cipher_rsa = PKCS1_OAEP.new(recipient_key)
+            enc_session_key = cipher_rsa.encrypt(session_key)
+
+            # Encrypt the data with the AES session key
+            cipher_aes = AES.new(session_key, AES.MODE_EAX)
+            ciphertext, tag = cipher_aes.encrypt_and_digest(data)
+
+            return enc_session_key, cipher_aes.nonce, tag, ciphertext
+    
+
+        def send_data(data):
+            # Select a file to encrypt and send
+            # file_path = filedialog.askopenfilename()
+            # with open(file_path, "rb") as file:
+            #     data = file.read()
+
+            # Encrypt the data
+            enc_session_key, nonce, tag, ciphertext = self.encrypt_data(data.encode())
+
+            client_socket.sendall(enc_session_key)
+            client_socket.sendall(nonce)
+            client_socket.sendall(tag)
+            client_socket.sendall(ciphertext)
+            client_socket.close()
+
 
         not_crash = True
         while self.running:
@@ -161,7 +192,7 @@ class server(object):
 
 
                     elif server_data == "Scan":
-                        server_data_hashes = recv_data()
+                        server_data_hashes = recv_message()
                         arr_hashes = server_data_hashes.split(",")
                         arr_virus_hashes=[]
                         for hash in arr_hashes:

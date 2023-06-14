@@ -150,13 +150,36 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         # Encrypt the data
         enc_session_key, nonce, tag, ciphertext = self.encrypt_data(data.encode())
 
-        self.client_socket.sendall(enc_session_key)
-        self.client_socket.sendall(nonce)
-        self.client_socket.sendall(tag)
-        self.client_socket.sendall(ciphertext)
-        self.client_socket.close()
+        self.server.client_socket.sendall(enc_session_key)
+        self.server.client_socket.sendall(nonce)
+        self.server.client_socket.sendall(tag)
+        self.server.client_socket.sendall(ciphertext)
+        self.server.client_socket.close()
 
         print("Data sent to server.")
+
+    def decrypt_data(self,enc_session_key, nonce, tag, ciphertext):
+            # Decrypt the session key with the private RSA key
+            private_key = RSA.import_key(open("private.pem").read())
+            cipher_rsa = PKCS1_OAEP.new(private_key)
+            session_key = cipher_rsa.decrypt(enc_session_key)
+
+            # Decrypt the data with the AES session key
+            cipher_aes = AES.new(session_key, AES.MODE_EAX, nonce)
+            data = cipher_aes.decrypt_and_verify(ciphertext, tag)
+
+            return data
+        
+    def recv_data(self):
+        enc_session_key = self.server.client_socket.recv(256)
+        nonce = self.server.client_socket.recv(16)
+        tag = self.server.client_socket.recv(16)
+        ciphertext = self.server.client_socket.recv(4096)
+
+        # Decrypt the received data
+        data = self.decrypt_data(enc_session_key, nonce, tag, ciphertext)
+        print("Received data from client:", data.decode("utf-8"))
+        return data.decode("utf-8")
 
 #_____________________________________________________________________________________________________________________________________
 
@@ -288,7 +311,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Error1:", e)
             return "Error while getting array of file hashes"
         str_hashes = ",".join(hash_list)
-        self.send_data(str_hashes)
+        self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
