@@ -93,13 +93,9 @@ class History_Screen(tkinter.Toplevel):
         self.server.client_socket.send(b"Show Scans")
         self.send_message(self.UserName)
         arr_Scans = self.recv_message_arr()
-        print(arr_Scans)
         result = [','.join(arr_Scans[i+1:i+5]) for i in range(0, len(arr_Scans), 6)]
-        print(result)
         list_result = ",".join(result)
-        print(list_result)
         data = list_result.split(',')
-        print(data)
         return data
 
 

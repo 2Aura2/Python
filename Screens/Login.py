@@ -12,8 +12,7 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 import os
-import sys
-import signal
+
 
 class Login_Screen(tkinter.Tk):
     def __init__(self):
@@ -144,14 +143,7 @@ class Login_Screen(tkinter.Tk):
         client_handler.start()
     
     
-    def create_socket(self):
-        def signal_handler(sig, frame):
-            print('Closing client...')
-            self.client_socket.close()
-            sys.exit(0)
-
-        signal.signal(signal.SIGINT, signal_handler)
-        signal.signal(signal.SIGTERM, signal_handler)
+    def create_socket(self):        
         try:
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.client_socket.connect(("127.0.0.1",6060))
