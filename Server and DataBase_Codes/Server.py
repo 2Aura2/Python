@@ -22,7 +22,7 @@ class server(object):
             print(f"server starting up on ip {self.ip} port {self.port}")
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.bind((self.ip,self.port))
-            self.sock.listen(3)
+            self.sock.listen(10)
 
             while True:
                 filename1 = "receiver.pem"
