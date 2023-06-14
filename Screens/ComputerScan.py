@@ -198,7 +198,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def Scan2(self):
         root_dir = "C:\\"
         FindOrNot = ""
-        start_time = datetime.datetime.now()
+        start_time = str(datetime.datetime.now())
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
@@ -240,7 +240,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 for virus_file in list_viruses_to_remove:
                     os.remove(virus_file)
                     print("removed: " + virus_file)
-                end_time = datetime.datetime.now()
+                end_time = str(datetime.datetime.now())
                 print("Viruses removed "+end_time)
                 Solution = "Removed"
                 self.complete_scan()
