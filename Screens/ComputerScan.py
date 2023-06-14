@@ -71,10 +71,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         scan_thread = threading.Thread(target=self.select_path)
         scan_thread.start()
 
-    # def update_progress(self, file_count):
-    #     self.progress_bar.stop()
-    #     self.progress_bar["mode"] = "determinate"
-    #     self.progress_bar["value"] = file_count
 
     def complete_scan(self):
         self.progress_bar.stop()
@@ -140,52 +136,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         except Exception as e:
             print("Error:",e)
             return "Error while getting MD5 Hash"
-
-    # def Scan(self):
-    #     root_dir = "C:\\"
-    #     try:
-    #         self.server.client_socket.send(b"Scan")
-    #         arr_hashes = []
-    #         for root, dirs, files in os.walk(root_dir):
-    #             for file in files:
-    #                 print("starting")
-    #                 file_path = os.path.join(root, file)
-    #                 print(file_path)
-    #                 try:
-    #                     md5_hash = self.generate_md5_hash(file_path)
-    #                     arr_hashes.append(md5_hash)
-    #                 except PermissionError:
-    #                     continue
-    #                 except OSError:
-    #                     continue
-    #     except Exception as e:
-    #         print("Error:",e)
-    #         return "Error while getting array of file hashes"
-    #     str_hashes = ",".join(arr_hashes)
-    #     self.send_message(str_hashes)
-    #     virus_hashes_data = self.recv_message()
-    #     arr_virus_hashes = virus_hashes_data.split(",")
-    #     try:
-    #         for root, dirs, files in os.walk(root_dir):
-    #             for file in files:
-    #                 file_path = os.path.join(root, file)
-    #                 with open(file_path, 'rb') as f:
-    #                     file_hash = hashlib.md5(f.read()).hexdigest()
-    #                     for virus_hash in arr_virus_hashes:
-    #                         if file_hash == virus_hash:
-    #                             self.arr_viruses_to_remove.append(file_path)
-    #     except Exception as e:
-    #         print("Error:",e)
-    #         return "Error while finding viruses"
-    #     try:
-    #         for virues in self.arr_viruses_to_remove:
-    #             os.remove(virues)
-    #         print("Viruses removed")
-    #         return "Viruses Removed"
-    #     except Exception as e:
-    #         print("Error:",e)
-    #         return "Error while removing viruses"
-#____________________________________________________________________________________________________________________________   
+  
     def Scan2(self):
         root_dir = "C:\\"
         FindOrNot = ""
@@ -195,8 +146,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             hash_file_dict = {}
             hash_list = []
             print("starting "+start_time)
-            #file_count = 0
-            
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -212,19 +161,14 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         continue
                     except OSError:
                         continue
-
-                    #file_count += 1
-                    #self.update_progress(file_count)
         except Exception as e:
             print("Error1:", e)
             return "Error while getting array of file hashes"
-        
         str_hashes = ",".join(hash_list)
         self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
-
         if len(list_virus_hashes) > 0:
             FindOrNot = "Yes"
             try:
@@ -234,7 +178,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             except Exception as e:
                 print("Error2:", e)
                 return "Error while finding viruses"
-            
             try:
                 for virus_file in list_viruses_to_remove:
                     os.remove(virus_file)
@@ -280,48 +223,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         path_button.pack()
         root.mainloop()
 
-    # def adv_Scan(self,root_dir):
-    #     #self.arr_viruses_to_remove = []
-    #     FindOrNot = ""
-    #     start_time = datetime.datetime.now()
-    #     print(start_time)
-    #     self.server.client_socket.send(b"Scan")
-    #     arr_hashes = []
-    #     for root, dirs, files in os.walk(root_dir):
-    #         for file in files:
-    #             file_path = os.path.join(root, file)
-    #             md5_hash = self.generate_md5_hash(file_path)
-    #             arr_hashes.append(md5_hash)
-    #     str_hashes = ",".join(arr_hashes)
-    #     self.send_message(str_hashes)
-    #     virus_hashes_data = self.recv_message()
-    #     print(virus_hashes_data)
-    #     arr_virus_hashes = virus_hashes_data.split(",")
-    #     print(arr_virus_hashes)
-    #     if len(arr_virus_hashes) == 0:
-    #         FindOrNot = "No"
-    #         Solution = "Not Removed"
-    #     else:
-    #         FindOrNot = "Yes"
-    #         Solution = "Removed"
-    #     for root, dirs, files in os.walk(root_dir):
-    #         for file in files:
-    #             file_path = os.path.join(root, file)
-    #             with open(file_path, 'rb') as f:
-    #                 file_hash = hashlib.md5(f.read()).hexdigest()
-    #                 for virus_hash in arr_virus_hashes:
-    #                     if file_hash == virus_hash:
-    #                         self.arr_viruses_to_remove.append(file_path)
-    #     for virues in self.arr_viruses_to_remove:
-    #         os.remove(virues)
-    #     print("Viruses removed")
-    #     end_time = datetime.datetime.now()
-    #     print(end_time)
-    #     arr_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
-    #     self.send_message_arr(arr_history)
-    #     return "Viruses Removed"
     
-
     def adv_Scan2(self, root_dir):
         FindOrNot = ""
         start_time = datetime.datetime.now()
@@ -331,8 +233,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             hash_list = []
             print("starting")
             print(start_time)
-            file_count = 0
-            
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -348,19 +248,14 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                         continue
                     except OSError:
                         continue
-
-                    file_count += 1
-                    self.update_progress(file_count)
         except Exception as e:
             print("Error1:", e)
             return "Error while getting array of file hashes"
-        
         str_hashes = ",".join(hash_list)
         self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
-
         if len(list_virus_hashes) > 0:
             FindOrNot = "Yes"
             try:
@@ -370,7 +265,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             except Exception as e:
                 print("Error2:", e)
                 return "Error while finding viruses"
-            
             try:
                 for virus_file in list_viruses_to_remove:
                     os.remove(virus_file)
