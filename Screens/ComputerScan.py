@@ -47,8 +47,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.btn_advscan.place(relx=0.8,rely=0.4,anchor='center')
         self.btn_previous_window = Button(self,text="Previous Window",font=("",18),width=16,bg="light gray",command=self.previous_window).place(relx=0.15,rely=0.9,anchor='center')
         
-        self.progress_bar = ttk.Progressbar(self, mode="indeterminate")
-        self.progress_bar.place(relx=0.55,rely=0.8,anchor='center')
+        self.progress_bar = ttk.Progressbar(self, mode="indeterminate",length=400)
+        self.progress_bar.place(relx=0.65,rely=0.8,anchor='center')
 
 
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
