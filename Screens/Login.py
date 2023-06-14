@@ -152,8 +152,9 @@ class Login_Screen(tkinter.Tk):
             self.public_key = RSA.import_key(self.public_key_bytes)
             self.session_key = os.urandom(16)
         except:
-            messagebox.showerror("Error","Server is currently offline")
-            self.client_socket.close()
+            if messagebox.showerror("Error","Server is currently offline"):
+                self.destroy()
+                self.client_socket.close()
     
     
     
