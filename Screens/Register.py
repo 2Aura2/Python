@@ -60,6 +60,7 @@ class Register_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -74,7 +75,6 @@ class Register_Screen(tkinter.Toplevel):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
@@ -119,3 +119,9 @@ class Register_Screen(tkinter.Toplevel):
     def return_to_Login_page(self):
         self.parent.deiconify()
         self.destroy()
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.parent.client_socket.send(b'Quit')
+            self.parent.destroy()
+            self.parent.client_socket.close()

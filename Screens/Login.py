@@ -13,6 +13,7 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 import base64
 import os
 
+
 class Login_Screen(tkinter.Tk):
     def __init__(self):
         super().__init__()
@@ -60,6 +61,7 @@ class Login_Screen(tkinter.Tk):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -107,7 +109,6 @@ class Login_Screen(tkinter.Tk):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
@@ -137,19 +138,24 @@ class Login_Screen(tkinter.Tk):
 
 
     def handle_thread_socket(self):
-        client_handler = threading.Thread(target=self.creat_socket, args=())
+        client_handler = threading.Thread(target=self.create_socket, args=())
         client_handler.daemon = True
         client_handler.start()
     
     
-    def creat_socket(self):
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect(("127.0.0.1",6060))
-        data = self.client_socket.recv(1024).decode()
-        print(data, self.client_socket)
-        self.public_key_bytes = self.client_socket.recv(2048)
-        self.public_key = RSA.import_key(self.public_key_bytes)
-        self.session_key = os.urandom(16)
+    def create_socket(self):        
+        try:
+            self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client_socket.connect(("127.0.0.1",6060))
+            data = self.client_socket.recv(1024).decode()
+            print(data, self.client_socket)
+            self.public_key_bytes = self.client_socket.recv(2048)
+            self.public_key = RSA.import_key(self.public_key_bytes)
+            self.session_key = os.urandom(16)
+        except:
+            if messagebox.showerror("Error","Server is currently offline"):
+                self.destroy()
+                self.client_socket.close()
     
     
     
@@ -178,6 +184,11 @@ class Login_Screen(tkinter.Tk):
             print("Error:", e)
             traceback.print_exc()
 
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.client_socket.send(b'Quit')
+            self.destroy()
+            self.client_socket.close()
 
 
 if __name__ == "__main__":

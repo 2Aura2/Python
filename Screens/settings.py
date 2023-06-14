@@ -57,6 +57,7 @@ class Settigns_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -71,7 +72,6 @@ class Settigns_Screen(tkinter.Toplevel):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
@@ -104,8 +104,8 @@ class Settigns_Screen(tkinter.Toplevel):
                 self.send_message(NewUserName)
                 self.send_message(UserName)
                 self.data = self.recv_message()
-                messagebox.showinfo("Message Box", self.data)
-            self.popup_window.destroy()
+                self.Login_window2()
+            #self.popup_window.destroy()
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -135,9 +135,9 @@ class Settigns_Screen(tkinter.Toplevel):
                 self.server.client_socket.send(b'ChangePassword')
                 self.send_message(Password)
                 self.send_message(UserName)
-                self.recv_message()
-                messagebox.showinfo("Message Box", "Password changed successfully")
-            self.popup_window.destroy()
+                self.data = self.recv_message()
+                self.Login_window2()
+            #self.popup_window.destroy()
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -188,14 +188,25 @@ class Settigns_Screen(tkinter.Toplevel):
 
 
 
-
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.server.client_socket.send(b'Quit')
+            self.server.destroy()
+            self.server.client_socket.close()
 
 
     def Login_window(self):
-        self.destroy()  # close the second window
-        self.server.deiconify()  # show the main window again
-
+        if messagebox.askokcancel("Logout", "Do you want to Logout?"):
+            self.server.client_socket.send(b'Logout')
+            self.destroy()
+            self.server.deiconify()
+        
+    def Login_window2(self):
+        if messagebox.showinfo("Message Box", f"{self.data}\nPlease LogIn again"):
+            self.server.client_socket.send(b'Logout')
+            self.destroy()
+            self.server.deiconify()
 
     def previous_window(self):
-        self.destroy()  # close the second window
-        self.parent.deiconify()  # show the main window again
+        self.destroy()
+        self.parent.deiconify() 

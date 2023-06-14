@@ -47,6 +47,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         self.lbl_time = Label(self,bg='light gray' ,font=("", 18))
         self.lbl_time.place(relx = 0.85,rely=0.05, anchor='center')
         self.update_label()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def update_label(self):
         try:
@@ -84,7 +85,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         for cache_dir in cache_dirs:
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
-                print("removed")
+        return "removed"
     
 
     def Uninstallation_utility(self):
@@ -143,6 +144,11 @@ class Junk_Files_Screen(tkinter.Toplevel):
                     pass
         messagebox.showinfo("Window", "All temp files were cleaned")
 
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to exit?"):
+            self.server.client_socket.send(b'Quit')
+            self.server.destroy()
+            self.server.client_socket.close()
 
     # def disk_cleanup():
     #     subprocess.run("cleanmgr /sagerun:7 /dWER /dThumbnails /dDownloadedProgramFiles /dTemporaryInternetFiles /dSystemArchive /dSystem", shell=True)

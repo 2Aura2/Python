@@ -8,20 +8,32 @@ import os
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import base64
+import signal
+import sys
 
 class server(object):
     def __init__(self,ip,port):
         self.ip = ip
         self.port = port
-        self.count = 0
+        self.client_count = 0
         self.running = True
+        self.connected_clients = {}
 
     def start(self):
+        def signal_handler(sig, frame):
+            print('Closing server...')
+            self.sock.close()
+            sys.exit(0)
+
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
+
+
         try:
             print(f"server starting up on ip {self.ip} port {self.port}")
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.bind((self.ip,self.port))
-            self.sock.listen(3)
+            self.sock.listen(10)
 
             while True:
                 filename1 = "receiver.pem"
@@ -45,24 +57,20 @@ class server(object):
 
                 self.public_key = RSA.import_key(self.public_key_bytes)
                 self.private_key = RSA.import_key(self.private_key_bytes)
-                print("Watinig for a new client")
-                clientSocket, client_addresses = self.sock.accept()
-                print("new client entered")
+                clientSocket, addr = self.sock.accept()
                 clientSocket.send("Hello, this is server".encode())
                 clientSocket.send(self.public_key_bytes)
-                self.count += 1
-                print(self.count)
-                self.handleClient(clientSocket, self.count,self.public_key,self.private_key)
+                self.handleClient(clientSocket,self.public_key,self.private_key,addr)
         except socket.error as e:
             print(e)
 
-    def handleClient(self,clientSock,current,public_key,private_key):
-        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, current, public_key, private_key,))
+    def handleClient(self,clientSock,public_key,private_key,addr):
+        client_handler = threading.Thread(target=self.handle_client_connection, args=(clientSock, public_key, private_key,addr,))
         client_handler.start()
 
     
 
-    def handle_client_connection(self, client_socket, current, public_key, private_key):
+    def handle_client_connection(self, client_socket, public_key, private_key,addr):
         
         def send_message(message):
             length = str(len(message)).zfill(10)
@@ -91,7 +99,6 @@ class server(object):
             decrypted_data = cipher.decrypt(decoded_data)
             data = decrypted_data.decode()
             arr = data.split(",")
-            print(arr)
             return arr
 
 
@@ -100,16 +107,17 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
-                    #arr = server_data.split(",")
 #1______________________________________________________________________________________________________________________________
                     if server_data == "Login":
                         arr = recv_message_arr()
-                        print(arr)
                         if arr!= None and len(arr)==2:
                             data = UserDB.users().check_user_by_Username_and_Password(arr[0],arr[1])
                             print("server data:", data)
                             if data == True:
                                 send_message(f"Welcome {arr[0]}")
+                                self.connected_clients[client_socket] = addr
+                                self.client_count += 1
+                                print(self.client_count)
                             elif data == False:
                                 send_message("Username or Password are incorrect")
                                 
@@ -119,13 +127,10 @@ class server(object):
                         arr = recv_message_arr()
                         if arr != None and len(arr)==3:
                             server_data = UserDB.users().check_user_by_Username(arr[1])
-                            print("hi",server_data)
                             if server_data == True:
                                 send_message("The user already exists")
                             elif server_data == False:
-                                print("hello")
                                 answer = UserDB.users().insert_user(arr[0],arr[1],arr[2])
-                                print(answer)
                                 send_message("User created successfully")
 
 #3______________________________________________________________________________________________________________________________
@@ -151,6 +156,7 @@ class server(object):
                     elif server_data == "Show Scans":
                         UserName = recv_message()
                         UserId = UserDB.users().GetUserIdByUserName(UserName)
+                        print(UserId)
                         Scans = HistoryDB.history().get_scan_by_UserId(UserId)
                         send_message_arr(Scans)
 #5______________________________________________________________________________________________________________________________
@@ -167,7 +173,6 @@ class server(object):
 
                     elif server_data == "EmailExists":
                         UserName = recv_message()
-                        print(UserName)
                         answer = UserDB.users().GetEmailByUserName(UserName)
                         if answer == "Exists":
                             send_message("Exists")
@@ -180,6 +185,7 @@ class server(object):
                         password = recv_message()
                         UserName = recv_message()
                         answer = UserDB.users().ChangePassword(password,UserName)
+                        print(answer)
                         send_message(answer)
 #8______________________________________________________________________________________________________________________________
 
@@ -190,7 +196,14 @@ class server(object):
                         answer = UserDB.users().ChangeUserName(NewUserName,UserName)
                         send_message(answer)
 #9______________________________________________________________________________________________________________________________
-
+                    elif server_data == "Quit" or server_data == "Logout":
+                        if self.client_count != 0:
+                            if server_data == "Quit":
+                                del self.connected_clients[client_socket]
+                                not_crash = False
+                            self.client_count -= 1
+                            print(self.client_count)
+                            
                     else:
                         server_data = "False"
                 except Exception as e:
