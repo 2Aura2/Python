@@ -30,7 +30,7 @@ class history:
         try:
             conn = sqlite3.connect(self.Location)
             str_insert = f"INSERT INTO {self.tablename} ({self.Start},{self.End},{self.FindorNot},{self.Solution},{self.UserId})VALUES(?,?,?,?,?)"
-            conn.execute(str_insert,(Start,End,FindorNot,Solution,UserId))
+            conn.execute(str_insert,(str(Start),str(End),str(FindorNot),str(Solution),str(UserId),))
             conn.commit()
             conn.close()
             return "Scan added successfully"
@@ -42,7 +42,7 @@ class history:
         try:
             conn = sqlite3.connect(self.Location)
             strsql = f"SELECT * from {self.tablename} where {self.Start} = ? And {self.End} = ?"
-            cursor = conn.execute(strsql,(Start,End))
+            cursor = conn.execute(strsql,(str(Start),str(End),))
             row = cursor.fetchone()
             scan_data = str(row[1],row[2],row[3],row[4])
             print("Scan data: " + str(scan_data))
@@ -57,8 +57,8 @@ class history:
     def get_scan_by_UserId(self,UserId):
         try:
             conn = sqlite3.connect(self.Location)
-            str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}= ?"#ORDER BY UserId DESC LIMIT 5
-            cursor = conn.execute(str_info,(UserId))
+            str_info = f"SELECT * FROM {self.tablename} WHERE {self.UserId}= ? ORDER BY UserId DESC LIMIT 5"#
+            cursor = conn.execute(str_info,(str(UserId),))
             row = cursor.fetchall()
             arr = ','.join(map(str, row))
             letters_to_remove = "()' "
@@ -77,7 +77,7 @@ class history:
         try:
             conn = sqlite3.connect(self.Location)
             str_delete = f"DELETE from {self.tablename} WHERE {self.Start} = ?"
-            conn.execute(str_delete,(Start))
+            conn.execute(str_delete,(str(Start),))
             conn.commit()
             conn.close()
             print("Scan Deleted successfully")

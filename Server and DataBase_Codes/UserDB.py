@@ -32,7 +32,7 @@ class users:
             conn = sqlite3.connect(self.Location)
             str_insert = f"INSERT INTO {self.tablename} ({self.FullName},{self.UserName},{self.Password})VALUES(?,?,?)"
             cursor = conn.cursor()
-            cursor.execute(str_insert,(FullName,UserName,str(md5_hash_Password)))
+            cursor.execute(str_insert,(str(FullName),str(UserName),str(md5_hash_Password),))
             conn.commit()
             conn.close()
             return "User created successfully"
@@ -45,7 +45,7 @@ class users:
             md5_hash_Password = hashlib.md5(password.encode()).hexdigest()
             conn=sqlite3.connect(self.Location)
             strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ? AND {self.Password} = ?"
-            cursor = conn.execute(strsql,(UserName, md5_hash_Password))
+            cursor = conn.execute(strsql,(str(UserName), str(md5_hash_Password),))
             row=cursor.fetchall()
             conn.commit()
             conn.close()
@@ -63,7 +63,7 @@ class users:
             conn=sqlite3.connect(self.Location)
             strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?" 
             cursor = conn.cursor()
-            cursor.execute(strsql, (UserName))
+            cursor.execute(strsql, (str(UserName),))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -80,7 +80,7 @@ class users:
         try:
             conn = sqlite3.connect(self.Location)
             str_delete = f"DELETE from {self.tablename} WHERE {self.UserName} = ?"
-            conn.execute(str_delete,(UserName))
+            conn.execute(str_delete,(str(UserName),))
             conn.commit()
             conn.close()
             print("User Deleted successfully")
@@ -93,7 +93,7 @@ class users:
         try:
             conn = sqlite3.connect(self.Location)
             str_update = f"UPDATE {self.tablename} Set {self.Email} = ? WHERE {self.UserName} = ?"
-            conn.execute(str_update,(Email,UserName))
+            conn.execute(str_update,(str(Email),str(UserName),))
             conn.commit()
             conn.close()
             print("User updated successfully")
@@ -106,7 +106,7 @@ class users:
         try:
             conn=sqlite3.connect(self.Location)
             strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?"
-            cursor = conn.execute(strsql,(UserName))
+            cursor = conn.execute(strsql,(str(UserName),))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -122,7 +122,7 @@ class users:
         try:
             conn=sqlite3.connect(self.Location)
             strsql = f"SELECT * FROM {self.tablename} WHERE {self.UserName} = ?"
-            cursor = conn.execute(strsql,(UserName))
+            cursor = conn.execute(strsql,(str(UserName),))
             row=cursor.fetchone()
             conn.commit()
             conn.close()
@@ -139,7 +139,7 @@ class users:
             md5_hash_Password = hashlib.md5(Password.encode()).hexdigest()
             conn = sqlite3.connect(self.Location)
             str_update = f"UPDATE {self.tablename} Set {self.Password} = ? WHERE {self.UserName} = ?"
-            conn.execute(str_update,(md5_hash_Password, UserName))
+            conn.execute(str_update,(str(md5_hash_Password), str(UserName),))
             conn.commit()
             conn.close()
             return "Password changed successfully"
@@ -151,7 +151,7 @@ class users:
         try:
             conn = sqlite3.connect(self.Location)
             str_update = f"UPDATE {self.tablename} Set {self.UserName} = ? WHERE {self.UserName} = ?"
-            conn.execute(str_update,(NewUserName,UserName))
+            conn.execute(str_update,(str(NewUserName),str(UserName),))
             conn.commit()
             conn.close()
             return "UserName changed successfully"

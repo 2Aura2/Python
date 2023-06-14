@@ -147,6 +147,7 @@ class server(object):
                     elif server_data == "Show Scans":
                         UserName = recv_message()
                         UserId = UserDB.users().GetUserIdByUserName(UserName)
+                        print(UserId)
                         Scans = HistoryDB.history().get_scan_by_UserId(UserId)
                         send_message_arr(Scans)
 #5______________________________________________________________________________________________________________________________
