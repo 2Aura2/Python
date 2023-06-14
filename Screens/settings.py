@@ -191,16 +191,19 @@ class Settigns_Screen(tkinter.Toplevel):
 
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
-            self.server.client_socket.send(b'Logout')
+            self.server.client_socket.send(b'Quit')
             self.server.destroy()
             self.server.client_socket.close()
 
 
     def Login_window(self):
-        self.destroy()  # close the second window
-        self.server.deiconify()  # show the main window again
+        if messagebox.askokcancel("Logout", "Do you want to Logout?"):
+            self.server.client_socket.send(b'Logout')
+            self.destroy()
+            self.server.deiconify()
+        
 
 
     def previous_window(self):
-        self.destroy()  # close the second window
-        self.parent.deiconify()  # show the main window again
+        self.destroy()
+        self.parent.deiconify() 

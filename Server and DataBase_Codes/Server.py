@@ -193,12 +193,14 @@ class server(object):
                         answer = UserDB.users().ChangeUserName(NewUserName,UserName)
                         send_message(answer)
 #9______________________________________________________________________________________________________________________________
-                    elif server_data == "Logout":
+                    elif server_data == "Quit" or server_data == "Logout":
                         if self.client_count != 0:
-                            del self.connected_clients[client_socket]
+                            if server_data == "Quit":
+                                del self.connected_clients[client_socket]
+                                not_crash = False
                             self.client_count -= 1
                             print(self.client_count)
-                            not_crash = False
+                            
                     else:
                         server_data = "False"
                 except Exception as e:

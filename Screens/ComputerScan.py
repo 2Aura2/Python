@@ -399,7 +399,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
 
     def on_closing(self):
         if messagebox.askokcancel("Quit", "Do you want to exit?"):
-            self.server.client_socket.send(b'Logout')
+            self.server.client_socket.send(b'Quit')
             self.server.destroy()
             self.server.client_socket.close()
 
