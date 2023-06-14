@@ -284,7 +284,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     
     def adv_Scan2(self, root_dir):
         FindOrNot = ""
-        start_time = datetime.datetime.now()
+        start_time = str(datetime.datetime.now())
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
@@ -331,7 +331,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 print("Viruses removed")
                 Solution = "Removed"
                 self.complete_scan()
-                end_time = datetime.datetime.now()
+                end_time = str(datetime.datetime.now())
                 print(end_time)
                 list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
                 self.send_message_arr(list_history)

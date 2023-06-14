@@ -204,7 +204,7 @@ class server(object):
                         send_message(str_virus_hashes)
                         arr_history = recv_message_arr()
                         UserId = UserDB.users().GetUserIdByUserName(arr_history[4])
-                        HistoryDB.history().AddScan(arr_history[0],arr_history[1],arr_history[2],arr_history[3], UserId)
+                        HistoryDB.history().AddScan(str(arr_history[0]),str(arr_history[1]),str(arr_history[2]),str(arr_history[3]), str(UserId))
 #4______________________________________________________________________________________________________________________________
 
 
