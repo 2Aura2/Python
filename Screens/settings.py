@@ -72,7 +72,6 @@ class Settigns_Screen(tkinter.Toplevel):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message

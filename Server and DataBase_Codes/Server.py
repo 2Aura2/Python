@@ -90,7 +90,6 @@ class server(object):
             decrypted_data = cipher.decrypt(decoded_data)
             data = decrypted_data.decode()
             arr = data.split(",")
-            print(arr)
             return arr
 
 
@@ -99,12 +98,9 @@ class server(object):
             while not_crash:
                 try:
                     server_data = client_socket.recv(1024).decode('utf-8')
-                    #arr = server_data.split(",")
-                    print(server_data)
 #1______________________________________________________________________________________________________________________________
                     if server_data == "Login":
                         arr = recv_message_arr()
-                        print(arr)
                         if arr!= None and len(arr)==2:
                             data = UserDB.users().check_user_by_Username_and_Password(arr[0],arr[1])
                             print("server data:", data)
@@ -122,13 +118,10 @@ class server(object):
                         arr = recv_message_arr()
                         if arr != None and len(arr)==3:
                             server_data = UserDB.users().check_user_by_Username(arr[1])
-                            print("hi",server_data)
                             if server_data == True:
                                 send_message("The user already exists")
                             elif server_data == False:
-                                print("hello")
                                 answer = UserDB.users().insert_user(arr[0],arr[1],arr[2])
-                                print(answer)
                                 send_message("User created successfully")
 
 #3______________________________________________________________________________________________________________________________
@@ -170,7 +163,6 @@ class server(object):
 
                     elif server_data == "EmailExists":
                         UserName = recv_message()
-                        print(UserName)
                         answer = UserDB.users().GetEmailByUserName(UserName)
                         if answer == "Exists":
                             send_message("Exists")

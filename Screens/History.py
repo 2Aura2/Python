@@ -49,7 +49,6 @@ class History_Screen(tkinter.Toplevel):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
@@ -75,7 +74,6 @@ class History_Screen(tkinter.Toplevel):
         label2 = Label(self, text="Start/End/FindOrNot/Solution",bg="light blue",font=("",18))
         label2.place(relx=0.55,rely=0.2,anchor='center')
         for i in range(len(result)):
-            print(result)
             label = Label(self, text=result[i],bg="light gray",font=("",18))
             label.place(relx=0.55,rely=y,anchor='center')
             y += 0.1

@@ -85,7 +85,7 @@ class Junk_Files_Screen(tkinter.Toplevel):
         for cache_dir in cache_dirs:
             if os.path.exists(cache_dir):
                 shutil.rmtree(cache_dir)
-                print("removed")
+        return "removed"
     
 
     def Uninstallation_utility(self):

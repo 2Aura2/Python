@@ -99,7 +99,6 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def send_message(self,message):
         cipher = PKCS1_OAEP.new(self.public_key)
         encrypted_message = cipher.encrypt(message.encode())
-        print(encrypted_message)
         encoded_message = base64.b64encode(encrypted_message).decode()
         length = str(len(encoded_message)).zfill(10)
         data = length+encoded_message
@@ -191,19 +190,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         root_dir = "C:\\"
         FindOrNot = ""
         start_time = datetime.datetime.now()
-        print(start_time)
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
             hash_list = []
             print("starting")
+            print(start_time)
             file_count = 0
             
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
                     try:
-                        print("starting")
                         md5_hash = self.generate_md5_hash(file_path)
                         if md5_hash not in hash_list and md5_hash != "Error while getting MD5 Hash":
                             hash_list.append(md5_hash)
@@ -329,19 +327,18 @@ class Computer_Scan_Screen(tkinter.Toplevel):
     def adv_Scan2(self, root_dir):
         FindOrNot = ""
         start_time = datetime.datetime.now()
-        print(start_time)
         try:
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
             hash_list = []
             print("starting")
+            print(start_time)
             file_count = 0
             
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
                     try:
-                        print("starting")
                         md5_hash = self.generate_md5_hash(file_path)
                         if md5_hash not in hash_list and md5_hash != "Error while getting MD5 Hash":
                             hash_list.append(md5_hash)
