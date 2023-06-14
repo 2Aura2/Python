@@ -104,8 +104,8 @@ class Settigns_Screen(tkinter.Toplevel):
                 self.send_message(NewUserName)
                 self.send_message(UserName)
                 self.data = self.recv_message()
-                messagebox.showinfo("Message Box", self.data)
-            self.popup_window.destroy()
+                self.Login_window2()
+            #self.popup_window.destroy()
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -135,9 +135,9 @@ class Settigns_Screen(tkinter.Toplevel):
                 self.server.client_socket.send(b'ChangePassword')
                 self.send_message(Password)
                 self.send_message(UserName)
-                self.recv_message()
-                messagebox.showinfo("Message Box", "Password changed successfully")
-            self.popup_window.destroy()
+                self.data = self.recv_message()
+                self.Login_window2()
+            #self.popup_window.destroy()
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -201,7 +201,11 @@ class Settigns_Screen(tkinter.Toplevel):
             self.destroy()
             self.server.deiconify()
         
-
+    def Login_window2(self):
+        if messagebox.showinfo("Message Box", f"{self.data}\nPlease LogIn again"):
+            self.server.client_socket.send(b'Logout')
+            self.destroy()
+            self.server.deiconify()
 
     def previous_window(self):
         self.destroy()

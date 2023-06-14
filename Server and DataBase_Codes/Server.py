@@ -176,6 +176,7 @@ class server(object):
                         password = recv_message()
                         UserName = recv_message()
                         answer = UserDB.users().ChangePassword(password,UserName)
+                        print(answer)
                         send_message(answer)
 #8______________________________________________________________________________________________________________________________
 
