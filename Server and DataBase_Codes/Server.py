@@ -46,9 +46,7 @@ class server(object):
 
                 self.public_key = RSA.import_key(self.public_key_bytes)
                 self.private_key = RSA.import_key(self.private_key_bytes)
-                print("Watinig for a new client")
                 clientSocket, addr = self.sock.accept()
-                print("new client entered")
                 clientSocket.send("Hello, this is server".encode())
                 clientSocket.send(self.public_key_bytes)
                 self.handleClient(clientSocket,self.public_key,self.private_key,addr)
