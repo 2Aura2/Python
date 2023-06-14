@@ -71,10 +71,10 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         scan_thread = threading.Thread(target=self.select_path)
         scan_thread.start()
 
-    def update_progress(self, file_count):
-        self.progress_bar.stop()
-        self.progress_bar["mode"] = "determinate"
-        self.progress_bar["value"] = file_count
+    # def update_progress(self, file_count):
+    #     self.progress_bar.stop()
+    #     self.progress_bar["mode"] = "determinate"
+    #     self.progress_bar["value"] = file_count
 
     def complete_scan(self):
         self.progress_bar.stop()
@@ -194,9 +194,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             self.server.client_socket.send(b"Scan")
             hash_file_dict = {}
             hash_list = []
-            print("starting")
-            print(start_time)
-            file_count = 0
+            print("starting "+start_time)
+            #file_count = 0
             
             for root, dirs, files in os.walk(root_dir):
                 for file in files:
@@ -214,8 +213,8 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     except OSError:
                         continue
 
-                    file_count += 1
-                    self.update_progress(file_count)
+                    #file_count += 1
+                    #self.update_progress(file_count)
         except Exception as e:
             print("Error1:", e)
             return "Error while getting array of file hashes"
@@ -240,11 +239,10 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                 for virus_file in list_viruses_to_remove:
                     os.remove(virus_file)
                     print("removed: " + virus_file)
-                print("Viruses removed")
+                end_time = datetime.datetime.now()
+                print("Viruses removed "+end_time)
                 Solution = "Removed"
                 self.complete_scan()
-                end_time = datetime.datetime.now()
-                print(end_time)
                 list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
                 self.send_message_arr(list_history)
                 return "Viruses Removed"
