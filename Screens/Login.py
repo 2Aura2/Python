@@ -137,19 +137,23 @@ class Login_Screen(tkinter.Tk):
 
 
     def handle_thread_socket(self):
-        client_handler = threading.Thread(target=self.creat_socket, args=())
+        client_handler = threading.Thread(target=self.create_socket, args=())
         client_handler.daemon = True
         client_handler.start()
     
     
-    def creat_socket(self):
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect(("127.0.0.1",6060))
-        data = self.client_socket.recv(1024).decode()
-        print(data, self.client_socket)
-        self.public_key_bytes = self.client_socket.recv(2048)
-        self.public_key = RSA.import_key(self.public_key_bytes)
-        self.session_key = os.urandom(16)
+    def create_socket(self):
+        try:
+            self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client_socket.connect(("127.0.0.1",6060))
+            data = self.client_socket.recv(1024).decode()
+            print(data, self.client_socket)
+            self.public_key_bytes = self.client_socket.recv(2048)
+            self.public_key = RSA.import_key(self.public_key_bytes)
+            self.session_key = os.urandom(16)
+        except:
+            messagebox.showerror("Error","Server is currently offline")
+            self.client_socket.close()
     
     
     
