@@ -147,7 +147,7 @@ class Login_Screen(tkinter.Tk):
     def create_socket(self):        
         try:
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.client_socket.connect(("127.0.0.1",6060))
+            self.client_socket.connect(("10.81.205.93",6060))
             data = self.client_socket.recv(1024).decode()
             print(data, self.client_socket)
             self.public_key_bytes = self.client_socket.recv(2048)
