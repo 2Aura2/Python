@@ -172,7 +172,7 @@ class server(object):
                                 send_message(f"Welcome {arr[0]}")
                                 self.connected_clients[client_socket] = addr
                                 self.client_count += 1
-                                print(self.client_count)
+                                print("Online Clients: "+self.client_count)
                             elif data == False:
                                 send_message("Username or Password are incorrect")
                                 
@@ -257,7 +257,7 @@ class server(object):
                                 del self.connected_clients[client_socket]
                                 not_crash = False
                             self.client_count -= 1
-                            print(self.client_count)
+                            print("Online Clients: "+self.client_count)
                             
                     else:
                         server_data = "False"
