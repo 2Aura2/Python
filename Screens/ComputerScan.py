@@ -315,6 +315,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
         print(virus_hashes_data)
+        print(type(virus_hashes_data))
         list_virus_hashes = virus_hashes_data.split(",")
         print(list_virus_hashes)
         list_viruses_to_remove = []
