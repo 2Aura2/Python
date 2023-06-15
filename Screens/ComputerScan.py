@@ -315,6 +315,7 @@ class Computer_Scan_Screen(tkinter.Toplevel):
         virus_hashes_data = self.recv_message()
         list_virus_hashes = virus_hashes_data.split(",")
         list_viruses_to_remove = []
+        print(len(list_virus_hashes))
         if len(list_virus_hashes) > 0:
             FindOrNot = "Yes"
             try:
