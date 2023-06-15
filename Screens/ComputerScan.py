@@ -311,9 +311,13 @@ class Computer_Scan_Screen(tkinter.Toplevel):
             print("Error1:", e)
             return "Error while getting array of file hashes"
         str_hashes = ",".join(hash_list)
+        print(str_hashes)
         self.send_message(str_hashes)
         virus_hashes_data = self.recv_message()
+        print(virus_hashes_data)
+        print(type(virus_hashes_data))
         list_virus_hashes = virus_hashes_data.split(",")
+        print(list_virus_hashes)
         list_viruses_to_remove = []
         print(len(list_virus_hashes))
         if len(list_virus_hashes) > 0:
@@ -331,11 +335,11 @@ class Computer_Scan_Screen(tkinter.Toplevel):
                     print("removed: " + virus_file)
                 print("Viruses removed")
                 Solution = "Removed"
-                self.complete_scan()
                 end_time = str(datetime.datetime.now())
                 print(end_time)
                 list_history = [start_time, end_time, FindOrNot, Solution, self.UserName]
                 self.send_message_arr(list_history)
+                self.complete_scan()
                 return "Viruses Removed"
             except Exception as e:
                 print("Error3:", e)
