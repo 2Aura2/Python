@@ -24,14 +24,14 @@ class Settigns_Screen(tkinter.Toplevel):
         self.y = (self.screen_height / 2)-(self.app_height / 2)
         self.geometry(f"{self.app_width}x{self.app_height}+{int(self.x)}+{int(self.y)}")
         self.title("Settings")
-        self.img = Image.open('Images\\White.jpg')
+        self.img = Image.open('..\\Images\\White.jpg')
         self.resized = self.img.resize((1920,1080), Image.Resampling.LANCZOS)
         self.bg = ImageTk.PhotoImage(self.resized)
         self.IMGLabel = Label(self, image=self.bg)
         self.IMGLabel.pack(expand=YES)
         self.data = None
         self.session_key = os.urandom(16)
-        self.wm_iconbitmap('Images\\virus.ico')
+        self.wm_iconbitmap('..\\Images\\virus.ico')
 
         self.create_gui()
 
